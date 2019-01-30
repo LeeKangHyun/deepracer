@@ -1,6 +1,7 @@
 # deepracer
 
 * <https://github.com/aws-samples/aws-deepracer-workshops>
+* <https://github.com/aws-robotics/aws-robomaker-sample-application-deepracer>
 * <https://us-west-2.console.aws.amazon.com/sagemaker/home?region=us-west-2>
 
 ## reward_function
