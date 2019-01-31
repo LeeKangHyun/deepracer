@@ -4,7 +4,7 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 
     # distance_from_center as reward
     if on_track and track_width > 0:
-        reward = 1 - (distance_from_center / track_width / 2)
+        reward = 1 - (distance_from_center / (track_width / 2))
 
     # add steering penalty
     # if abs(steering) > 0.8:
