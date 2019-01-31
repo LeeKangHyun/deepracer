@@ -7,7 +7,7 @@ class DeepRacerEnv():
 
         # distance_from_center as reward
         if on_track and distance_from_center >= 0 and track_width > 0:
-            reward = (1 - (distance_from_center / (track_width / 2))) * 50
+            reward = (1 - (distance_from_center / (track_width / 2))) * 100
 
         # add steering penalty
         # if abs(steering) > 0.8:
