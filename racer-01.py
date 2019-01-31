@@ -12,6 +12,6 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 
     # add throttle penalty
     if throttle < 0.5:
-        reward *= 0.5
+        reward *= throttle
 
     return float(reward)
