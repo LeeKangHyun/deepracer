@@ -10,8 +10,8 @@ class DeepRacerEnv():
             reward = (1 - (distance_from_center / (track_width / 2))) * 50
 
         # add steering penalty
-        # if abs(steering) > 0.8:
-        #     reward *= 0.5
+        if abs(steering) > 0.8:
+            reward *= 0.5
 
         # add throttle penalty
         if throttle < 0.3:
