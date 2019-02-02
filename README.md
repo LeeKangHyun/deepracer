@@ -34,7 +34,8 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 ### Advanced Reward Function 1
 
 ```python
-def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps, throttle, steering, track_width, waypoints, closest_waypoint):
+def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps,
+                     throttle, steering, track_width, waypoints, closest_waypoint):
 
     import math
 
@@ -63,7 +64,8 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 ### Advanced Reward Function 2
 
 ```python
-def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps, throttle, steering, track_width, waypoints, closest_waypoint):
+def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps,
+                     throttle, steering, track_width, waypoints, closest_waypoint):
 
     import math
 
@@ -92,7 +94,8 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 ### Advanced Reward Function 3
 
 ```python
-def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps, throttle, steering, track_width, waypoints, closest_waypoint):
+def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps,
+                     throttle, steering, track_width, waypoints, closest_waypoint):
 
     reward = 1e-3
     if distance_from_center >= 0.0 and distance_from_center <= 0.03:
