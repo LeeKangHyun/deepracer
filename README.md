@@ -4,10 +4,13 @@
 * <https://github.com/aws-robotics/aws-robomaker-sample-application-deepracer>
 * <https://us-west-2.console.aws.amazon.com/sagemaker/home?region=us-west-2>
 
+* <https://docs.aws.amazon.com/ko_kr/deepracer/latest/developerguide/deepracer-build-your-track.html>
+
 ## reward_function
 
 ```
-def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps, throttle, steering, track_width, waypoints, closest_waypoint):
+def reward_function (on_track, x, y, distance_from_center, car_orientation, progress, steps,
+                     throttle, steering, track_width, waypoints, closest_waypoint):
 ```
 
 | Name | Type | Description |
