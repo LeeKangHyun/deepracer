@@ -29,7 +29,7 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 | closest_waypoint | int |
 | reward | float: [-1e5, 1e5] |
 
-> 1e5 == 100000
+> 1e5 == 100,000
 
 ### Advanced Reward Function 1
 
