@@ -102,6 +102,7 @@ class DeepRacerEnv(gym.Env):
     def reset(self):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
+
         print('Total Reward Reward=%.2f' % self.reward_in_episode,
               'Total Steps=%.2f' % self.steps)
         self.send_reward_to_cloudwatch(self.reward_in_episode)
@@ -303,6 +304,7 @@ class DeepRacerEnv(gym.Env):
         print('MATDORI_LOG',
               'ep=%d' % self.episodes,
               'step=%d' % self.steps,
+              'progress=%d' % self.total_progress,
               'x=%.2f' % self.x,
               'y=%.2f' % self.y,
               'distance=%.2f' % self.distance_from_center,
@@ -311,11 +313,12 @@ class DeepRacerEnv(gym.Env):
               'steering=%.2f' % steering_angle,
               'road_width=%.2f' % self.road_width,
               'reward=%.2f' % reward,
+              'action=%d' % self.action_taken,
               'on_track=%s' % self.on_track,
               'done=%s' % self.done)
 
-        print('Step No=%.2f' % self.steps,
-              'Step Reward=%.2f' % reward)
+        # print('Step No=%.2f' % self.steps,
+        #       'Step Reward=%.2f' % reward)
 
         self.reward_in_episode += reward
         self.reward = reward
