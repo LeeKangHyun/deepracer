@@ -292,7 +292,7 @@ class DeepRacerEnv(gym.Env):
         else:
             reward = self.reward_function(on_track, self.x, self.y, self.distance_from_center, self.yaw,
                                           self.total_progress, self.steps, throttle, steering_angle, self.road_width,
-                                          list(self.waypoints), self.get_closest_waypoint())
+                                          list(self.waypoints), self.closest_waypoint_index)
 
             reward += 0.5  # reward bonus for surviving
 
@@ -314,6 +314,7 @@ class DeepRacerEnv(gym.Env):
               'road_width=%.2f' % self.road_width,
               'reward=%.2f' % reward,
               'action=%d' % self.action_taken,
+              'waypoint=%d' % self.closest_waypoint_index,
               'on_track=%s' % self.on_track,
               'done=%s' % self.done)
 
