@@ -11,14 +11,18 @@ class DeepRacerEnv():
         self.yaw = 0
         self.road_width = 0
         self.y = 0
+        self.on_track = 0
+        self.done = 0
 
     def reward_function(self, on_track, x, y, distance_from_center, car_orientation, progress, steps,
                         throttle, steering, track_width, waypoints, closest_waypoints):
         reward = 1e-3
 
+        track_half = track_width / 2.0
+
         # distance_from_center as reward
-        if on_track and distance_from_center >= 0 and track_width > 0:
-            reward = (1.0 - (distance_from_center / (track_width / 2.0)))
+        if on_track and distance_from_center < track_half:
+            reward = 1.0 - (distance_from_center / track_half)
 
         # # add steering penalty
         # if abs(steering) > 0.8:
@@ -33,7 +37,8 @@ class DeepRacerEnv():
     def infer_reward_state(self, steering_angle, throttle):
         reward = 0
 
-        print('ep=%d' % self.episodes,
+        print('MATDORI_LOG',
+              'ep=%d' % self.episodes,
               'step=%d' % self.steps,
               'x=%.2f' % self.x,
               'y=%.2f' % self.y,
@@ -42,4 +47,6 @@ class DeepRacerEnv():
               'throttle=%.2f' % throttle,
               'steering=%.2f' % steering_angle,
               'road_width=%.2f' % self.road_width,
-              'reward=%.2f' % reward)
+              'reward=%.2f' % reward,
+              'on_track=%s' % self.on_track,
+              'done=%s' % self.done)
