@@ -293,18 +293,16 @@ class DeepRacerEnv(gym.Env):
             self.prev_action = self.action_taken
 
         print('MATDORI_LOG',
-              'E:%d' % self.episodes,
-              'S:%d' % self.steps,
-              'P:%d' % self.total_progress,
-              'X:%.2f' % self.x,
-              'Y:%.2f' % self.y,
-              'D:%.2f' % self.distance_from_center,
-              'Y:%.2f' % self.yaw,
-              'T:%.2f' % throttle,
-              'S:%.2f' % steering_angle,
-              'R:%.2f' % reward,
-              'A:%d' % self.action_taken,
-              'W:%d' % self.closest_waypoint_index,
+              '%d-%d' % (self.episodes, self.steps),
+              '%.2f:%.2f' % (self.x, self.y),
+              'waypoint=%d' % self.closest_waypoint_index,
+              'progress=%d' % self.total_progress,
+              'distance=%.2f' % self.distance_from_center,
+              'yaw=%.2f' % self.yaw,
+              'throttle=%.2f' % throttle,
+              'steering=%.2f' % steering_angle,
+              'reward=%.2f' % reward,
+              'action:%d' % self.action_taken,
               'on:%s' % self.on_track,
               'done:%s' % self.done)
 
@@ -368,38 +366,57 @@ class DeepRacerEnv(gym.Env):
             vertices[0][0] = -1.08;   vertices[0][1] = -0.05;
             vertices[1][0] =  1.08;   vertices[1][1] = -0.05;
         else:
-            self.waypoints = vertices = np.zeros((30, 2))
+            self.waypoints = vertices = np.zeros((33, 2))
             self.road_width = 0.44
             vertices[0][0] = 1.5;     vertices[0][1] = 0.58;
-            vertices[1][0] = 5.5;     vertices[1][1] = 0.58;
-            vertices[2][0] = 5.6;     vertices[2][1] = 0.6;
-            vertices[3][0] = 5.7;     vertices[3][1] = 0.65;
-            vertices[4][0] = 5.8;     vertices[4][1] = 0.7;
-            vertices[5][0] = 5.9;     vertices[5][1] = 0.8;
-            vertices[6][0] = 6.0;     vertices[6][1] = 0.9;
-            vertices[7][0] = 6.08;    vertices[7][1] = 1.1;
-            vertices[8][0] = 6.1;     vertices[8][1] = 1.2;
-            vertices[9][0] = 6.1;     vertices[9][1] = 1.3;
-            vertices[10][0] = 6.1;    vertices[10][1] = 1.4;
-            vertices[11][0] = 6.07;   vertices[11][1] = 1.5;
-            vertices[12][0] = 6.05;   vertices[12][1] = 1.6;
-            vertices[13][0] = 6;      vertices[13][1] = 1.7;
-            vertices[14][0] = 5.9;    vertices[14][1] = 1.8;
-            vertices[15][0] = 5.75;   vertices[15][1] = 1.9;
-            vertices[16][0] = 5.6;    vertices[16][1] = 2.0;
-            vertices[17][0] = 4.2;    vertices[17][1] = 2.02;
-            vertices[18][0] = 4;      vertices[18][1] = 2.1;
-            vertices[19][0] = 2.6;    vertices[19][1] = 3.92;
-            vertices[20][0] = 2.4;    vertices[20][1] = 4;
-            vertices[21][0] = 1.2;    vertices[21][1] = 3.95;
-            vertices[22][0] = 1.1;    vertices[22][1] = 3.92;
-            vertices[23][0] = 1;      vertices[23][1] = 3.88;
-            vertices[24][0] = 0.8;    vertices[24][1] = 3.72;
-            vertices[25][0] = 0.6;    vertices[25][1] = 3.4;
-            vertices[26][0] = 0.58;   vertices[26][1] = 3.3;
-            vertices[27][0] = 0.57;   vertices[27][1] = 3.2;
-            vertices[28][0] = 1;      vertices[28][1] = 1;
-            vertices[29][0] = 1.25;   vertices[29][1] = 0.7;
+            vertices[1][0] = 2.5;     vertices[1][1] = 0.58;
+            vertices[2][0] = 3.5;     vertices[2][1] = 0.58;
+            vertices[3][0] = 4.5;     vertices[3][1] = 0.58;
+            vertices[4][0] = 5.5;     vertices[4][1] = 0.58;
+            vertices[5][0] = 5.6;     vertices[5][1] = 0.6;
+            vertices[6][0] = 5.7;     vertices[6][1] = 0.65;
+            vertices[7][0] = 5.8;     vertices[7][1] = 0.7;
+            vertices[8][0] = 5.9;     vertices[8][1] = 0.8;
+            vertices[9][0] = 6.0;     vertices[9][1] = 0.9;
+            vertices[10][0] = 6.08;   vertices[10][1] = 1.1;
+            vertices[11][0] = 6.1;    vertices[11][1] = 1.2;
+            vertices[12][0] = 6.1;    vertices[12][1] = 1.3;
+            vertices[13][0] = 6.1;    vertices[13][1] = 1.4;
+            vertices[14][0] = 6.07;   vertices[14][1] = 1.5;
+            vertices[15][0] = 6.05;   vertices[15][1] = 1.6;
+            vertices[16][0] = 6;      vertices[16][1] = 1.7;
+            vertices[17][0] = 5.9;    vertices[17][1] = 1.8;
+            vertices[18][0] = 5.75;   vertices[18][1] = 1.9;
+            vertices[19][0] = 5.6;    vertices[19][1] = 2.0;
+            vertices[20][0] = 4.2;    vertices[20][1] = 2.02;
+            vertices[21][0] = 4;      vertices[21][1] = 2.1;
+            vertices[22][0] = 2.6;    vertices[22][1] = 3.92;
+            vertices[23][0] = 2.4;    vertices[23][1] = 4;
+            vertices[24][0] = 1.2;    vertices[24][1] = 3.95;
+            vertices[25][0] = 1.1;    vertices[25][1] = 3.92;
+            vertices[26][0] = 1;      vertices[26][1] = 3.88;
+            vertices[27][0] = 0.8;    vertices[27][1] = 3.72;
+            vertices[28][0] = 0.6;    vertices[28][1] = 3.4;
+            vertices[29][0] = 0.58;   vertices[29][1] = 3.3;
+            vertices[30][0] = 0.57;   vertices[30][1] = 3.2;
+            vertices[31][0] = 1;      vertices[31][1] = 1;
+            vertices[32][0] = 1.25;   vertices[32][1] = 0.7;
+
+    def calculate_distance(self, x1, x2, y1, y2):
+        x = 0
+        y = 0
+
+        if x1 > x2:
+            x = (x1 - x2) * (x1 - x2)
+        else:
+            x = (x2 - x1) * (x2 - x1)
+
+        if y1 > y2:
+            y = (y1 - y2) * (y1 - y2)
+        else:
+            y = (y2 - y1) * (y2 - y1)
+
+        return math.sqrt(x + y)
 
     def get_closest_waypoint(self):
         res = 0
@@ -408,18 +425,7 @@ class DeepRacerEnv(gym.Env):
         y = self.y
         min_distnce = 100
         for row in self.waypoints:
-            x2 = 0
-            y2 = 0
-            if row[0] > x:
-                x2 = (row[0] - x) * (row[0] - x)
-            else:
-                x2 = (x - row[0]) * (x - row[0])
-            if row[1] > y:
-                y2 = (row[1] - y) * (row[1] - y)
-            else:
-                y2 = (y - row[1]) * (y - row[1])
-
-            distance = math.sqrt(x2 + y2)
+            distance = self.calculate_distance(row[0], x, row[1], y)
             if distance < min_distnce:
                 min_distnce = distance
                 res = index
@@ -432,7 +438,7 @@ class DeepRacerEnv(gym.Env):
         # calculate distance in meters
         coor1 = self.waypoints[closest_waypoint_index]
         coor2 = self.waypoints[prev_closest_waypoint_index]
-        current_progress = math.sqrt((coor1[0] - coor2[0]) *(coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
+        current_progress = self.calculate_distance(coor1[0], coor2[0], coor1[1], coor2[1])
 
         # convert to ratio and then percentage
         current_progress /= self.track_length
@@ -444,7 +450,7 @@ class DeepRacerEnv(gym.Env):
         track_length = 0.0
         prev_row = self.waypoints[0]
         for row in self.waypoints[1:]:
-            track_length += math.sqrt((row[0] - prev_row[0]) * (row[0] - prev_row[0]) + (row[1] - prev_row[1]) * (row[1] - prev_row[1]))
+            track_length += self.calculate_distance(row[0], prev_row[0], row[1], prev_row[1])
             prev_row = row
 
         if track_length == 0.0:
@@ -464,10 +470,10 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         # Convert discrete to continuous
         throttle = 1.0
         throttle_multiplier = 0.8
-        throttle = throttle*throttle_multiplier
+        throttle = throttle * throttle_multiplier
         steering_angle = 0.8
 
-        self.throttle, self.steering_angle = self.two_steering_one_throttle_5_states(throttle, steering_angle, action)
+        self.throttle, self.steering_angle = self.default_6_actions(throttle, steering_angle, action)
 
         self.action_taken = action
 
@@ -488,7 +494,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
             steering_angle = -0.2
         elif action == 5:  # slow straight
             steering_angle = 0
-            throttle = throttle/2
+            throttle = throttle / 2
         else:  # should not be here
             raise ValueError("Invalid action")
 
