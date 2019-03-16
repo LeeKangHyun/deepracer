@@ -47,8 +47,6 @@ SLEEP_BETWEEN_ACTION_AND_REWARD_CALCULATION_TIME_IN_SECOND = 0.1
 SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND = 0.01
 
 ### Gym Env ###
-
-
 class DeepRacerEnv(gym.Env):
     def __init__(self):
 
@@ -71,8 +69,7 @@ class DeepRacerEnv(gym.Env):
         self.closest_waypoint_index = 0
 
         # actions -> steering angle, throttle
-        self.action_space = spaces.Box(low=np.array(
-            [-1, 0]), high=np.array([+1, +1]), dtype=np.float32)
+        self.action_space = spaces.Box(low=np.array([-1, 0]), high=np.array([+1, +1]), dtype=np.float32)
 
         # given image from simulator
         self.observation_space = spaces.Box(low=0, high=255,
@@ -82,14 +79,12 @@ class DeepRacerEnv(gym.Env):
             # ROS initialization
             self.ack_publisher = rospy.Publisher('/vesc/low_level/ackermann_cmd_mux/output',
                                                  AckermannDriveStamped, queue_size=100)
-            self.racecar_service = rospy.ServiceProxy(
-                '/gazebo/set_model_state', SetModelState)
+            self.racecar_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
             rospy.init_node('rl_coach', anonymous=True)
 
             # Subscribe to ROS topics and register callbacks
             rospy.Subscriber('/progress', Progress, self.callback_progress)
-            rospy.Subscriber('/camera/zed/rgb/image_rect_color',
-                             sensor_image, self.callback_image)
+            rospy.Subscriber('/camera/zed/rgb/image_rect_color', sensor_image, self.callback_image)
             self.world_name = rospy.get_param('WORLD_NAME')
             self.set_waypoints()
             self.track_length = self.calculate_track_length()
@@ -102,7 +97,6 @@ class DeepRacerEnv(gym.Env):
     def reset(self):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
-
         print('Total Reward Reward=%.2f' % self.reward_in_episode,
               'Total Steps=%.2f' % self.steps)
         self.send_reward_to_cloudwatch(self.reward_in_episode)
@@ -116,9 +110,9 @@ class DeepRacerEnv(gym.Env):
         self.episodes += 1
         self.prev_progress = 0
         self.total_progress = 0
-        self.action_taken = 2  # straight
-        self.prev_action = 2  # straight
-        self.prev_closest_waypoint_index = 0  # always starts from first waypoint
+        self.action_taken = 2 #straight
+        self.prev_action = 2 #straight
+        self.prev_closest_waypoint_index = 0 #always starts from first waypoint
         self.closest_waypoint_index = 0
 
         # Reset car in Gazebo
@@ -139,8 +133,7 @@ class DeepRacerEnv(gym.Env):
         modelState.pose.orientation.x = 0
         modelState.pose.orientation.y = 0
         modelState.pose.orientation.z = 0
-        # Use this to randomize the orientation of the car
-        modelState.pose.orientation.w = 0
+        modelState.pose.orientation.w = 0  # Use this to randomize the orientation of the car
         modelState.twist.linear.x = 0
         modelState.twist.linear.y = 0
         modelState.twist.linear.z = 0
@@ -173,9 +166,9 @@ class DeepRacerEnv(gym.Env):
                 z = sy * cr * cp - cy * sr * sp
                 return [x, y, z, w]
 
-            # clockwise
+            #clockwise
             quaternion = toQuaternion(roll=0.0, pitch=0.0, yaw=np.pi)
-            # anti-clockwise
+            #anti-clockwise
             quaternion = toQuaternion(roll=0.0, pitch=0.0, yaw=0.0)
             modelState.pose.orientation.x = quaternion[0]
             modelState.pose.orientation.y = quaternion[1]
@@ -183,8 +176,7 @@ class DeepRacerEnv(gym.Env):
             modelState.pose.orientation.w = quaternion[3]
 
         else:
-            raise ValueError(
-                "Unknown simulation world: {}".format(self.world_name))
+            raise ValueError("Unknown simulation world: {}".format(self.world_name))
 
         self.racecar_service(modelState)
         time.sleep(SLEEP_AFTER_RESET_TIME_IN_SECOND)
@@ -242,13 +234,13 @@ class DeepRacerEnv(gym.Env):
 
         return float(reward)
 
-        # if distance_from_center >= 0.0 and distance_from_center <= 0.02:
-        #     return 1.0
-        # elif distance_from_center >= 0.02 and distance_from_center <= 0.03:
-        #     return 0.3
-        # elif distance_from_center >= 0.03 and distance_from_center <= 0.05:
-        #     return 0.1
-        # return 1e-3  # like crashed
+#         if distance_from_center >= 0.0 and distance_from_center <= 0.02:
+#             return 1.0
+#         elif distance_from_center >= 0.02 and distance_from_center <= 0.03:
+#             return 0.3
+#         elif distance_from_center >= 0.03 and distance_from_center <= 0.05:
+#             return 0.1
+#         return 1e-3  # like crashed
 
     def infer_reward_state(self, steering_angle, throttle):
         # Wait till we have a image from the camera
@@ -269,8 +261,7 @@ class DeepRacerEnv(gym.Env):
         # calculate the closest way point
         self.closest_waypoint_index = self.get_closest_waypoint()
         # calculate the current progress with respect to the way points
-        current_progress = self.calculate_current_progress(
-            self.closest_waypoint_index, self.prev_closest_waypoint_index)
+        current_progress = self.calculate_current_progress(self.closest_waypoint_index, self.prev_closest_waypoint_index)
         self.total_progress = current_progress + self.prev_progress
         # re-assign the prev progress and way point variables
         self.prev_progress = self.total_progress
@@ -281,7 +272,7 @@ class DeepRacerEnv(gym.Env):
         if on_track != 1:
             reward = CRASHED
             done = True
-        # elif total_progress >= FINISH_LINE:  # reached max waypoints
+        #elif total_progress >= FINISH_LINE:  # reached max waypoints
         #    print("Congratulations! You finished the race!")
         #    if self.steps == 0:
         #        reward = 0.0
@@ -294,32 +285,31 @@ class DeepRacerEnv(gym.Env):
                                           self.total_progress, self.steps, throttle, steering_angle, self.road_width,
                                           list(self.waypoints), self.closest_waypoint_index)
 
-            reward += 0.5  # reward bonus for surviving
+            reward += 0.5 #reward bonus for surviving
 
-            # smooth
-            # if self.action_taken == self.prev_action:
+            #smooth
+            #if self.action_taken == self.prev_action:
             #    reward += 0.5
             self.prev_action = self.action_taken
 
         print('MATDORI_LOG',
-              'ep=%d' % self.episodes,
-              'step=%d' % self.steps,
-              'progress=%d' % self.total_progress,
-              'x=%.2f' % self.x,
-              'y=%.2f' % self.y,
-              'distance=%.2f' % self.distance_from_center,
-              'yaw=%.2f' % self.yaw,
-              'throttle=%.2f' % throttle,
-              'steering=%.2f' % steering_angle,
-              'road_width=%.2f' % self.road_width,
-              'reward=%.2f' % reward,
-              'action=%d' % self.action_taken,
-              'waypoint=%d' % self.closest_waypoint_index,
-              'on_track=%s' % self.on_track,
-              'done=%s' % self.done)
+              'E:%d' % self.episodes,
+              'S:%d' % self.steps,
+              'P:%d' % self.total_progress,
+              'X:%.2f' % self.x,
+              'Y:%.2f' % self.y,
+              'D:%.2f' % self.distance_from_center,
+              'Y:%.2f' % self.yaw,
+              'T:%.2f' % throttle,
+              'S:%.2f' % steering_angle,
+              'R:%.2f' % reward,
+              'A:%d' % self.action_taken,
+              'W:%d' % self.closest_waypoint_index,
+              'on:%s' % self.on_track,
+              'done:%s' % self.done)
 
-        # print('Step No=%.2f' % self.steps,
-        #       'Step Reward=%.2f' % reward)
+#         print('Step No=%.2f' % self.steps,
+#               'Step Reward=%.2f' % reward)
 
         self.reward_in_episode += reward
         self.reward = reward
@@ -328,28 +318,27 @@ class DeepRacerEnv(gym.Env):
 
         # Trace logs to help us debug and visualize the training runs
         stdout_ = 'SIM_TRACE_LOG:%d,%d,%.4f,%.4f,%.4f,%.2f,%.2f,%.2f,%d,%.4f,%.4f,%d,%s,%s,%.4f,%d,%d,%.2f,%s\n' % (
-            self.episodes, self.steps, self.x, self.y,
-            self.yaw,
-            self.steering_angle,
-            self.throttle,
-            self.distance_from_center,
-            self.action_taken,
-            self.reward,
-            self.total_progress,
-            0,  # self.get_waypoint_action(), #the expert action at the next waypoint
-            self.done,
-            self.on_track,
-            current_progress,
-            0,  # self.initidxWayPoint, #starting waypoint for an episode
-            self.closest_waypoint_index,
-            self.track_length,
-            time.time())
+        self.episodes, self.steps, self.x, self.y,
+        self.yaw,
+        self.steering_angle,
+        self.throttle,
+        self.distance_from_center,
+        self.action_taken,
+        self.reward,
+        self.total_progress,
+        0, #self.get_waypoint_action(), #the expert action at the next waypoint
+        self.done,
+        self.on_track,
+        current_progress,
+        0, #self.initidxWayPoint, #starting waypoint for an episode
+        self.closest_waypoint_index,
+        self.track_length,
+        time.time())
         print(stdout_)
 
     def send_reward_to_cloudwatch(self, reward):
         session = boto3.session.Session()
-        cloudwatch_client = session.client(
-            'cloudwatch', region_name=self.aws_region)
+        cloudwatch_client = session.client('cloudwatch', region_name=self.aws_region)
         cloudwatch_client.put_metric_data(
             MetricData=[
                 {
@@ -365,104 +354,74 @@ class DeepRacerEnv(gym.Env):
         if self.world_name.startswith(MEDIUM_TRACK_WORLD):
             self.waypoints = vertices = np.zeros((8, 2))
             self.road_width = 0.50
-            vertices[0][0] = -0.99
-            vertices[0][1] = 2.25
-            vertices[1][0] = 0.69
-            vertices[1][1] = 2.26
-            vertices[2][0] = 1.37
-            vertices[2][1] = 1.67
-            vertices[3][0] = 1.48
-            vertices[3][1] = -1.54
-            vertices[4][0] = 0.81
-            vertices[4][1] = -2.44
-            vertices[5][0] = -1.25
-            vertices[5][1] = -2.30
-            vertices[6][0] = -1.67
-            vertices[6][1] = -1.64
-            vertices[7][0] = -1.73
-            vertices[7][1] = 1.63
+            vertices[0][0] = -0.99; vertices[0][1] = 2.25;
+            vertices[1][0] = 0.69;  vertices[1][1] = 2.26;
+            vertices[2][0] = 1.37;  vertices[2][1] = 1.67;
+            vertices[3][0] = 1.48;  vertices[3][1] = -1.54;
+            vertices[4][0] = 0.81;  vertices[4][1] = -2.44;
+            vertices[5][0] = -1.25; vertices[5][1] = -2.30;
+            vertices[6][0] = -1.67; vertices[6][1] = -1.64;
+            vertices[7][0] = -1.73; vertices[7][1] = 1.63;
         elif self.world_name.startswith(EASY_TRACK_WORLD):
             self.waypoints = vertices = np.zeros((2, 2))
             self.road_width = 0.90
-            vertices[0][0] = -1.08
-            vertices[0][1] = -0.05
-            vertices[1][0] = 1.08
-            vertices[1][1] = -0.05
+            vertices[0][0] = -1.08;   vertices[0][1] = -0.05;
+            vertices[1][0] =  1.08;   vertices[1][1] = -0.05;
         else:
             self.waypoints = vertices = np.zeros((30, 2))
             self.road_width = 0.44
-            vertices[0][0] = 1.5
-            vertices[0][1] = 0.58
-            vertices[1][0] = 5.5
-            vertices[1][1] = 0.58
-            vertices[2][0] = 5.6
-            vertices[2][1] = 0.6
-            vertices[3][0] = 5.7
-            vertices[3][1] = 0.65
-            vertices[4][0] = 5.8
-            vertices[4][1] = 0.7
-            vertices[5][0] = 5.9
-            vertices[5][1] = 0.8
-            vertices[6][0] = 6.0
-            vertices[6][1] = 0.9
-            vertices[7][0] = 6.08
-            vertices[7][1] = 1.1
-            vertices[8][0] = 6.1
-            vertices[8][1] = 1.2
-            vertices[9][0] = 6.1
-            vertices[9][1] = 1.3
-            vertices[10][0] = 6.1
-            vertices[10][1] = 1.4
-            vertices[11][0] = 6.07
-            vertices[11][1] = 1.5
-            vertices[12][0] = 6.05
-            vertices[12][1] = 1.6
-            vertices[13][0] = 6
-            vertices[13][1] = 1.7
-            vertices[14][0] = 5.9
-            vertices[14][1] = 1.8
-            vertices[15][0] = 5.75
-            vertices[15][1] = 1.9
-            vertices[16][0] = 5.6
-            vertices[16][1] = 2.0
-            vertices[17][0] = 4.2
-            vertices[17][1] = 2.02
-            vertices[18][0] = 4
-            vertices[18][1] = 2.1
-            vertices[19][0] = 2.6
-            vertices[19][1] = 3.92
-            vertices[20][0] = 2.4
-            vertices[20][1] = 4
-            vertices[21][0] = 1.2
-            vertices[21][1] = 3.95
-            vertices[22][0] = 1.1
-            vertices[22][1] = 3.92
-            vertices[23][0] = 1
-            vertices[23][1] = 3.88
-            vertices[24][0] = 0.8
-            vertices[24][1] = 3.72
-            vertices[25][0] = 0.6
-            vertices[25][1] = 3.4
-            vertices[26][0] = 0.58
-            vertices[26][1] = 3.3
-            vertices[27][0] = 0.57
-            vertices[27][1] = 3.2
-            vertices[28][0] = 1
-            vertices[28][1] = 1
-            vertices[29][0] = 1.25
-            vertices[29][1] = 0.7
+            vertices[0][0] = 1.5;     vertices[0][1] = 0.58;
+            vertices[1][0] = 5.5;     vertices[1][1] = 0.58;
+            vertices[2][0] = 5.6;     vertices[2][1] = 0.6;
+            vertices[3][0] = 5.7;     vertices[3][1] = 0.65;
+            vertices[4][0] = 5.8;     vertices[4][1] = 0.7;
+            vertices[5][0] = 5.9;     vertices[5][1] = 0.8;
+            vertices[6][0] = 6.0;     vertices[6][1] = 0.9;
+            vertices[7][0] = 6.08;    vertices[7][1] = 1.1;
+            vertices[8][0] = 6.1;     vertices[8][1] = 1.2;
+            vertices[9][0] = 6.1;     vertices[9][1] = 1.3;
+            vertices[10][0] = 6.1;    vertices[10][1] = 1.4;
+            vertices[11][0] = 6.07;   vertices[11][1] = 1.5;
+            vertices[12][0] = 6.05;   vertices[12][1] = 1.6;
+            vertices[13][0] = 6;      vertices[13][1] = 1.7;
+            vertices[14][0] = 5.9;    vertices[14][1] = 1.8;
+            vertices[15][0] = 5.75;   vertices[15][1] = 1.9;
+            vertices[16][0] = 5.6;    vertices[16][1] = 2.0;
+            vertices[17][0] = 4.2;    vertices[17][1] = 2.02;
+            vertices[18][0] = 4;      vertices[18][1] = 2.1;
+            vertices[19][0] = 2.6;    vertices[19][1] = 3.92;
+            vertices[20][0] = 2.4;    vertices[20][1] = 4;
+            vertices[21][0] = 1.2;    vertices[21][1] = 3.95;
+            vertices[22][0] = 1.1;    vertices[22][1] = 3.92;
+            vertices[23][0] = 1;      vertices[23][1] = 3.88;
+            vertices[24][0] = 0.8;    vertices[24][1] = 3.72;
+            vertices[25][0] = 0.6;    vertices[25][1] = 3.4;
+            vertices[26][0] = 0.58;   vertices[26][1] = 3.3;
+            vertices[27][0] = 0.57;   vertices[27][1] = 3.2;
+            vertices[28][0] = 1;      vertices[28][1] = 1;
+            vertices[29][0] = 1.25;   vertices[29][1] = 0.7;
 
     def get_closest_waypoint(self):
         res = 0
         index = 0
         x = self.x
         y = self.y
-        minDistance = float('inf')
+        min_distnce = 100
         for row in self.waypoints:
-            distance = math.sqrt(
-                (row[0] - x) * (row[0] - x) + (row[1] - y) * (row[1] - y))
-            if distance < minDistance:
-                minDistance = distance
+            x2 = 0
+            y2 = 0
+            if row[0] > x:
+                x2 = (row[0] - x) * (row[0] - x)
+            else:
+                x2 = (x - row[0]) * (x - row[0])
+            if row[1] > y:
+                y2 = (row[1] - y) * (row[1] - y)
+            else:
+                y2 = (y - row[1]) * (y - row[1])
+
+            distance = math.sqrt(x2 + y2)
+            if distance < min_distnce:
+                min_distnce = distance
                 res = index
             index = index + 1
         return res
@@ -473,8 +432,7 @@ class DeepRacerEnv(gym.Env):
         # calculate distance in meters
         coor1 = self.waypoints[closest_waypoint_index]
         coor2 = self.waypoints[prev_closest_waypoint_index]
-        current_progress = math.sqrt(
-            (coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
+        current_progress = math.sqrt((coor1[0] - coor2[0]) *(coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
 
         # convert to ratio and then percentage
         current_progress /= self.track_length
@@ -486,8 +444,7 @@ class DeepRacerEnv(gym.Env):
         track_length = 0.0
         prev_row = self.waypoints[0]
         for row in self.waypoints[1:]:
-            track_length += math.sqrt((row[0] - prev_row[0]) * (
-                row[0] - prev_row[0]) + (row[1] - prev_row[1]) * (row[1] - prev_row[1]))
+            track_length += math.sqrt((row[0] - prev_row[0]) * (row[0] - prev_row[0]) + (row[1] - prev_row[1]) * (row[1] - prev_row[1]))
             prev_row = row
 
         if track_length == 0.0:
@@ -495,7 +452,6 @@ class DeepRacerEnv(gym.Env):
             raise
 
         return track_length
-
 
 class DeepRacerDiscreteEnv(DeepRacerEnv):
     def __init__(self):
@@ -511,8 +467,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         throttle = throttle*throttle_multiplier
         steering_angle = 0.8
 
-        self.throttle, self.steering_angle = self.default_6_actions(
-            throttle, steering_angle, action)
+        self.throttle, self.steering_angle = self.two_steering_one_throttle_5_states(throttle, steering_angle, action)
 
         self.action_taken = action
 
@@ -539,7 +494,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
 
         return throttle, steering_angle
 
-    def two_steering_one_throttle_5_states(self, throttle_, steering_angle_, action):
+    def two_steering_one_throttle_5_states(self,throttle_, steering_angle_, action):
         if action == 0:  # move left
             steering_angle = 1 * steering_angle_
             throttle = throttle_
@@ -561,7 +516,8 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
 
         return throttle, steering_angle
 
-    def two_steering_two_throttle_10_states(self, throttle_, steering_angle_, action):
+
+    def two_steering_two_throttle_10_states(self,throttle_, steering_angle_, action):
         if action == 0:  # move left
             steering_angle = 1 * steering_angle_
             throttle = throttle_
@@ -599,7 +555,8 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
 
         return throttle, steering_angle
 
-    def two_steering_three_throttle_15_states(self, throttle_, steering_angle_, action):
+
+    def two_steering_three_throttle_15_states(self,throttle_, steering_angle_, action):
 
         # Convert discrete to continuous
         if action == 0:  # move left
@@ -632,7 +589,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
             throttle = 0.5 * throttle_
         elif action == 9:  # slow straight
             steering_angle = 0
-            throttle = throttle_ * 0.5
+            throttle = throttle_ *0.5
 
         elif action == 10:  # move left
             steering_angle = 1 * steering_angle_
