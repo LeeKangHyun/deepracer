@@ -241,13 +241,13 @@ class DeepRacerEnv(gym.Env):
 
         return float(reward)
 
-#         if distance_from_center >= 0.0 and distance_from_center <= 0.02:
-#             return 1.0
-#         elif distance_from_center >= 0.02 and distance_from_center <= 0.03:
-#             return 0.3
-#         elif distance_from_center >= 0.03 and distance_from_center <= 0.05:
-#             return 0.1
-#         return 1e-3  # like crashed
+        # if distance_from_center >= 0.0 and distance_from_center <= 0.02:
+        #     return 1.0
+        # elif distance_from_center >= 0.02 and distance_from_center <= 0.03:
+        #     return 0.3
+        # elif distance_from_center >= 0.03 and distance_from_center <= 0.05:
+        #     return 0.1
+        # return 1e-3  # like crashed
 
     def infer_reward_state(self, steering_angle, throttle):
         # Wait till we have a image from the camera
@@ -295,32 +295,39 @@ class DeepRacerEnv(gym.Env):
 
             reward += 0.5  # reward bonus for surviving
 
+            hint = self.waypoints[self.closest_waypoint_index][2]
+
+            if hint == 0 and steering_angle == 0:
+                reward += 0.5
+            elif hint > 0 and steering_angle > 0:
+                reward += 0.5
+            elif hint < 0 and steering_angle < 0:
+                reward += 0.5
+
             # smooth
             # if self.action_taken == self.prev_action:
             #    reward += 0.5
             self.prev_action = self.action_taken
 
+        self.reward_in_episode += reward
+        self.reward = reward
+        self.done = done
+        self.next_state = state
+
         print('MATDORI_LOG',
               '[%d-%d]' % (self.episodes, self.steps),
-              '%.2f,%.2f' % (self.x, self.y),
+              '(%.2f,%.2f)' % (self.x, self.y),
               'waypoint=%d' % self.closest_waypoint_index,
               'progress=%d' % self.total_progress,
               'distance=%.2f' % self.distance_from_center,
               'yaw=%.2f' % self.yaw,
               'throttle=%.2f' % throttle,
               'steering=%.2f' % steering_angle,
-              'reward=%.2f' % reward,
-              'action:%d' % self.action_taken,
-              'on:%s' % self.on_track,
-              'done:%s' % self.done)
-
-#         print('Step No=%.2f' % self.steps,
-#               'Step Reward=%.2f' % reward)
-
-        self.reward_in_episode += reward
-        self.reward = reward
-        self.done = done
-        self.next_state = state
+              'action=%d' % self.action_taken,
+              'reward=%.2f' % self.reward,
+              'total=%.2f' % self.reward_in_episode,
+              'on=%s' % self.on_track,
+              'done=%s' % self.done)
 
         # Trace logs to help us debug and visualize the training runs
         stdout_ = 'SIM_TRACE_LOG:%d,%d,%.4f,%.4f,%.4f,%.2f,%.2f,%.2f,%d,%.4f,%.4f,%d,%s,%s,%.4f,%d,%d,%.2f,%s\n' % (
@@ -359,109 +366,72 @@ class DeepRacerEnv(gym.Env):
 
     def set_waypoints(self):
         if self.world_name.startswith(MEDIUM_TRACK_WORLD):
-            self.waypoints = vertices = np.zeros((8, 2))
+            self.waypoints = vertices = np.zeros((8, 3))
             self.road_width = 0.50
-            vertices[0] = [-0.99, 2.25]
-            vertices[1] = [0.69, 2.26]
-            vertices[2] = [1.37, 1.67]
-            vertices[3] = [1.48, -1.54]
-            vertices[4] = [0.81, -2.44]
-            vertices[5] = [-1.25, -2.30]
-            vertices[6] = [-1.67, -1.64]
-            vertices[7] = [-1.73, 1.63]
+            vertices[0] = [-0.99, 2.25, 0]
+            vertices[1] = [0.69, 2.26, 0]
+            vertices[2] = [1.37, 1.67, 0]
+            vertices[3] = [1.48, -1.54, 0]
+            vertices[4] = [0.81, -2.44, 0]
+            vertices[5] = [-1.25, -2.30, 0]
+            vertices[6] = [-1.67, -1.64, 0]
+            vertices[7] = [-1.73, 1.63, 0]
 
-            # vertices[0][0] = -0.99; vertices[0][1] = 2.25
-            # vertices[1][0] = 0.69;  vertices[1][1] = 2.26
-            # vertices[2][0] = 1.37;  vertices[2][1] = 1.67
-            # vertices[3][0] = 1.48;  vertices[3][1] = -1.54
-            # vertices[4][0] = 0.81;  vertices[4][1] = -2.44
-            # vertices[5][0] = -1.25; vertices[5][1] = -2.30
-            # vertices[6][0] = -1.67; vertices[6][1] = -1.64
-            # vertices[7][0] = -1.73; vertices[7][1] = 1.63
         elif self.world_name.startswith(EASY_TRACK_WORLD):
-            self.waypoints = vertices = np.zeros((2, 2))
+            self.waypoints = vertices = np.zeros((2, 3))
             self.road_width = 0.90
-            vertices[0] = [-1.08, -0.05]
-            vertices[0] = [1.08, -0.05]
+            vertices[0] = [-1.08, -0.05, 0]
+            vertices[0] = [1.08, -0.05, 0]
 
-            # vertices[0][0] = -1.08;   vertices[0][1] = -0.05
-            # vertices[1][0] =  1.08;   vertices[1][1] = -0.05
         else:
-            self.waypoints = vertices = np.zeros((33, 2))
+            self.waypoints = vertices = np.zeros((42, 3))
             self.road_width = 0.44
-            vertices[0] = [1.5, 0.58]
-            vertices[1] = [2.5, 0.58]
-            vertices[2] = [3.5, 0.58]
-            vertices[3] = [4.5, 0.58]
-            vertices[4] = [5.5, 0.58]
-            vertices[5] = [5.6, 0.6]
-            vertices[6] = [5.7, 0.65]
-            vertices[7] = [5.8, 0.7]
-            vertices[8] = [5.9, 0.8]
-            vertices[9] = [6.0, 0.9]
+            vertices[0] = [1.50, 0.58, 0]
+            vertices[1] = [2.50, 0.58, 0]
+            vertices[2] = [3.50, 0.58, 0]
+            vertices[3] = [4.50, 0.58, 0]
+            vertices[4] = [5.50, 0.58, 0]
+            vertices[5] = [5.60, 0.60, -1]
+            vertices[6] = [5.70, 0.65, -1]
+            vertices[7] = [5.80, 0.70, -1]
+            vertices[8] = [5.90, 0.80, -1]
+            vertices[9] = [6.00, 0.90, -1]
 
-            # vertices[0][0] = 1.5;     vertices[0][1] = 0.58
-            # vertices[1][0] = 2.5;     vertices[1][1] = 0.58
-            # vertices[2][0] = 3.5;     vertices[2][1] = 0.58
-            # vertices[3][0] = 4.5;     vertices[3][1] = 0.58
-            # vertices[4][0] = 5.5;     vertices[4][1] = 0.58
-            # vertices[5][0] = 5.6;     vertices[5][1] = 0.6
-            # vertices[6][0] = 5.7;     vertices[6][1] = 0.65
-            # vertices[7][0] = 5.8;     vertices[7][1] = 0.7
-            # vertices[8][0] = 5.9;     vertices[8][1] = 0.8
-            # vertices[9][0] = 6.0;     vertices[9][1] = 0.9
+            vertices[10] = [6.08, 1.10, -1]
+            vertices[11] = [6.10, 1.20, -1]
+            vertices[12] = [6.10, 1.30, -1]
+            vertices[13] = [6.10, 1.40, -1]
+            vertices[14] = [6.07, 1.50, -1]
+            vertices[15] = [6.05, 1.60, -1]
+            vertices[16] = [6.00, 1.70, -1]
+            vertices[17] = [5.90, 1.80, -1]
+            vertices[18] = [5.75, 1.90, -1]
+            vertices[19] = [5.60, 2.00, 0]
 
-            vertices[10] = [6.08, 1.1]
-            vertices[11] = [6.1, 1.2]
-            vertices[12] = [6.1, 1.3]
-            vertices[13] = [6.1, 1.4]
-            vertices[14] = [6.07, 1.5]
-            vertices[15] = [6.05, 1.6]
-            vertices[16] = [6.0, 1.7]
-            vertices[17] = [5.9, 1.8]
-            vertices[18] = [5.75, 1.9]
-            vertices[19] = [5.6, 2.0]
+            vertices[20] = [5.10, 2.00, 0]
+            vertices[21] = [4.60, 2.00, 0]
+            vertices[22] = [4.20, 2.00, 0]
+            vertices[23] = [4.10, 2.05, 1]
+            vertices[24] = [4.00, 2.10, 1]
+            vertices[25] = [3.90, 2.15, 0]
+            vertices[26] = [2.70, 3.80, 0]
+            vertices[27] = [2.60, 3.90, -1]
+            vertices[28] = [2.40, 4.00, -1]
+            vertices[29] = [2.30, 4.00, 0]
 
-            # vertices[10][0] = 6.08;   vertices[10][1] = 1.1
-            # vertices[11][0] = 6.1;    vertices[11][1] = 1.2
-            # vertices[12][0] = 6.1;    vertices[12][1] = 1.3
-            # vertices[13][0] = 6.1;    vertices[13][1] = 1.4
-            # vertices[14][0] = 6.07;   vertices[14][1] = 1.5
-            # vertices[15][0] = 6.05;   vertices[15][1] = 1.6
-            # vertices[16][0] = 6.0;    vertices[16][1] = 1.7
-            # vertices[17][0] = 5.9;    vertices[17][1] = 1.8
-            # vertices[18][0] = 5.75;   vertices[18][1] = 1.9
-            # vertices[19][0] = 5.6;    vertices[19][1] = 2.0
+            vertices[30] = [1.20, 3.95, 0]
+            vertices[31] = [1.10, 3.92, -1]
+            vertices[32] = [1.00, 3.88, -1]
+            vertices[33] = [0.80, 3.72, -1]
+            vertices[34] = [0.60, 3.40, -1]
+            vertices[35] = [0.58, 3.30, -1]
+            vertices[36] = [0.57, 3.20, 0]
+            vertices[37] = [1.00, 1.00, 0]
+            vertices[38] = [1.10, 0.90, -1]
+            vertices[39] = [1.20, 0.80, -1]
 
-            vertices[20] = [4.2, 2.02]
-            vertices[21] = [4.0, 2.1]
-            vertices[22] = [2.6, 3.92]
-            vertices[23] = [2.4, 4.0]
-            vertices[24] = [1.2, 3.95]
-            vertices[25] = [1.1, 3.92]
-            vertices[26] = [1.0, 3.88]
-            vertices[27] = [0.8, 3.72]
-            vertices[28] = [0.6, 3.4]
-            vertices[29] = [0.58, 3.3]
-
-            # vertices[20][0] = 4.2;    vertices[20][1] = 2.02
-            # vertices[21][0] = 4.0;    vertices[21][1] = 2.1
-            # vertices[22][0] = 2.6;    vertices[22][1] = 3.92
-            # vertices[23][0] = 2.4;    vertices[23][1] = 4.0
-            # vertices[24][0] = 1.2;    vertices[24][1] = 3.95
-            # vertices[25][0] = 1.1;    vertices[25][1] = 3.92
-            # vertices[26][0] = 1.0;    vertices[26][1] = 3.88
-            # vertices[27][0] = 0.8;    vertices[27][1] = 3.72
-            # vertices[28][0] = 0.6;    vertices[28][1] = 3.4
-            # vertices[29][0] = 0.58;   vertices[29][1] = 3.3
-
-            vertices[20] = [0.57, 3.2]
-            vertices[21] = [1.0, 1.0]
-            vertices[22] = [1.25, 0.7]
-
-            # vertices[30][0] = 0.57;   vertices[30][1] = 3.2
-            # vertices[31][0] = 1.0;    vertices[31][1] = 1.0
-            # vertices[32][0] = 1.25;   vertices[32][1] = 0.7
+            vertices[40] = [1.30, 0.70, -1]
+            vertices[41] = [1.40, 0.60, -1]
 
     def calculate_distance(self, x1, x2, y1, y2):
         x = 0
