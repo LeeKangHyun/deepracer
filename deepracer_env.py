@@ -295,14 +295,13 @@ class DeepRacerEnv(gym.Env):
 
             reward += 0.5  # reward bonus for surviving
 
-            hint = self.waypoints[self.closest_waypoint_index][2]
-
-            if hint == 0 and steering_angle == 0:
-                reward += 0.5
-            elif hint > 0 and steering_angle > 0:
-                reward += 0.5
-            elif hint < 0 and steering_angle < 0:
-                reward += 0.5
+            # hint = self.waypoints[self.closest_waypoint_index][2]
+            # if hint == 0 and steering_angle == 0:
+            #     reward += 0.5
+            # elif hint > 0 and steering_angle > 0:
+            #     reward += 0.5
+            # elif hint < 0 and steering_angle < 0:
+            #     reward += 0.5
 
             # smooth
             # if self.action_taken == self.prev_action:
