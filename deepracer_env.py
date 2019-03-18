@@ -326,6 +326,10 @@ class DeepRacerEnv(gym.Env):
               '"on":"%s",' % self.on_track,
               '"done":"%s"}' % self.done)
 
+        # aws cloudwatch insights
+        # fields episodes, steps, x, y
+        # | filter log == 'MATDORI_LOG'
+
         # Trace logs to help us debug and visualize the training runs
         stdout_ = 'SIM_TRACE_LOG:%d,%d,%.4f,%.4f,%.4f,%.2f,%.2f,%d,%.4f,%.4f,%d,%s,%s,%.4f,%d,%d,%.2f,%s\n' % (
             self.episodes, self.steps, self.x, self.y,
