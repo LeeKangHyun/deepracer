@@ -380,7 +380,7 @@ class DeepRacerEnv(gym.Env):
             self.waypoints = vertices = np.zeros((2, 3))
             self.road_width = 0.90
             vertices[0] = [-1.08, -0.05, 0]
-            vertices[0] = [1.08, -0.05, 0]
+            vertices[1] = [1.08, -0.05, 0]
 
         else:
             self.waypoints = vertices = np.zeros((42, 3))
