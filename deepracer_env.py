@@ -322,7 +322,7 @@ class DeepRacerEnv(gym.Env):
               '"reward":%.2f,' % self.reward,
               '"total":%.2f,' % self.reward_in_episode,
               '"progress":%d,' % self.total_progress,
-              '"current":%d,' % self.current_progress,
+              '"current":%.2f,' % current_progress,
               '"on":"%s",' % self.on_track,
               '"done":"%s"}' % self.done)
 
