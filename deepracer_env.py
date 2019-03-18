@@ -433,22 +433,6 @@ class DeepRacerEnv(gym.Env):
             vertices[40] = [1.30, 0.70, -1]
             vertices[41] = [1.40, 0.60, -1]
 
-    def calculate_distance(self, x1, x2, y1, y2):
-        x = 0
-        y = 0
-
-        if x1 > x2:
-            x = (x1 - x2) * (x1 - x2)
-        else:
-            x = (x2 - x1) * (x2 - x1)
-
-        if y1 > y2:
-            y = (y1 - y2) * (y1 - y2)
-        else:
-            y = (y2 - y1) * (y2 - y1)
-
-        return math.sqrt(x + y)
-
     def get_closest_waypoint(self):
         res = 0
         index = 0
@@ -456,7 +440,7 @@ class DeepRacerEnv(gym.Env):
         y = self.y
         min_distnce = 100
         for row in self.waypoints:
-            distance = self.calculate_distance(row[0], x, row[1], y)
+            distance = math.sqrt(math.pow(row[0] - x) + math.pow(row[1] - y))
             if distance < min_distnce:
                 min_distnce = distance
                 res = index
@@ -469,8 +453,7 @@ class DeepRacerEnv(gym.Env):
         # calculate distance in meters
         coor1 = self.waypoints[closest_waypoint_index]
         coor2 = self.waypoints[prev_closest_waypoint_index]
-        current_progress = self.calculate_distance(
-            coor1[0], coor2[0], coor1[1], coor2[1])
+        current_progress = math.sqrt(math.pow(coor1[0] - coor2[0]) + math.pow(coor1[1] - coor2[1]))
 
         # convert to ratio and then percentage
         current_progress /= self.track_length
@@ -482,8 +465,7 @@ class DeepRacerEnv(gym.Env):
         track_length = 0.0
         prev_row = self.waypoints[0]
         for row in self.waypoints[1:]:
-            track_length += self.calculate_distance(
-                row[0], prev_row[0], row[1], prev_row[1])
+            track_length += math.sqrt(math.pow(row[0] - prev_row[0]) + math.pow(row[1] - prev_row[1]))
             prev_row = row
 
         if track_length == 0.0:
