@@ -291,22 +291,17 @@ class DeepRacerEnv(gym.Env):
         else:
             reward = self.reward_function(on_track, self.x, self.y, self.distance_from_center, self.yaw,
                                           self.total_progress, self.steps, throttle, steering_angle, self.road_width,
-                                          list(self.waypoints), self.closest_waypoint_index)
+                                          list(self.waypoints), self.get_closest_waypoint())
 
             reward += 0.5  # reward bonus for surviving
-
-            # hint = self.waypoints[self.closest_waypoint_index][2]
-            # if hint == 0 and steering_angle == 0:
-            #     reward += 0.5
-            # elif hint > 0 and steering_angle > 0:
-            #     reward += 0.5
-            # elif hint < 0 and steering_angle < 0:
-            #     reward += 0.5
 
             # smooth
             # if self.action_taken == self.prev_action:
             #    reward += 0.5
             self.prev_action = self.action_taken
+
+        print('Step No=%.2f' % self.steps,
+              'Step Reward=%.2f' % reward)
 
         self.reward_in_episode += reward
         self.reward = reward
@@ -331,12 +326,11 @@ class DeepRacerEnv(gym.Env):
               ',"done"="%s"}' % self.done)
 
         # Trace logs to help us debug and visualize the training runs
-        stdout_ = 'SIM_TRACE_LOG:%d,%d,%.4f,%.4f,%.4f,%.2f,%.2f,%.2f,%d,%.4f,%.4f,%d,%s,%s,%.4f,%d,%d,%.2f,%s\n' % (
+        stdout_ = 'SIM_TRACE_LOG:%d,%d,%.4f,%.4f,%.4f,%.2f,%.2f,%d,%.4f,%.4f,%d,%s,%s,%.4f,%d,%d,%.2f,%s\n' % (
             self.episodes, self.steps, self.x, self.y,
             self.yaw,
             self.steering_angle,
             self.throttle,
-            self.distance_from_center,
             self.action_taken,
             self.reward,
             self.total_progress,
@@ -434,16 +428,19 @@ class DeepRacerEnv(gym.Env):
             vertices[40] = [1.30, 0.70, -1]
             vertices[41] = [1.40, 0.60, -1]
 
+    def calculate_distance(self, x1, x2, y1, y2):
+        return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
+
     def get_closest_waypoint(self):
         res = 0
         index = 0
         x = self.x
         y = self.y
-        min_distnce = 100
+        minDistance = float('inf')
         for row in self.waypoints:
-            distance = math.sqrt(math.pow(row[0] - x) + math.pow(row[1] - y))
-            if distance < min_distnce:
-                min_distnce = distance
+            distance = self.calculate_distance(row[0], x, row[1],  y)
+            if distance < minDistance:
+                minDistance = distance
                 res = index
             index = index + 1
         return res
@@ -454,8 +451,8 @@ class DeepRacerEnv(gym.Env):
         # calculate distance in meters
         coor1 = self.waypoints[closest_waypoint_index]
         coor2 = self.waypoints[prev_closest_waypoint_index]
-        current_progress = math.sqrt(
-            math.pow(coor1[0] - coor2[0]) + math.pow(coor1[1] - coor2[1]))
+        current_progress = self.calculate_distance(
+            coor1[0], coor2[0], coor1[1], coor2[1])
 
         # convert to ratio and then percentage
         current_progress /= self.track_length
@@ -467,8 +464,8 @@ class DeepRacerEnv(gym.Env):
         track_length = 0.0
         prev_row = self.waypoints[0]
         for row in self.waypoints[1:]:
-            track_length += math.sqrt(math.pow(row[0] -
-                                               prev_row[0]) + math.pow(row[1] - prev_row[1]))
+            track_length += self.calculate_distance(
+                row[0], prev_row[0], row[1], prev_row[1])
             prev_row = row
 
         if track_length == 0.0:
