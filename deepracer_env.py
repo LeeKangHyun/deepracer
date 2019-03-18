@@ -308,22 +308,23 @@ class DeepRacerEnv(gym.Env):
         self.done = done
         self.next_state = state
 
-        print('{"log":"MATDORI_LOG"',
-              ',"episodes"=%d' % self.episodes,
-              ',"steps"=%d' % self.steps,
-              ',"x"=%.2f' % self.x,
-              ',"y"=%.2f' % self.y,
-              ',"waypoint"=%d' % self.closest_waypoint_index,
-              ',"progress"=%d' % self.total_progress,
-              ',"distance"=%.2f' % self.distance_from_center,
-              ',"yaw"=%.2f' % self.yaw,
-              ',"throttle"=%.2f' % throttle,
-              ',"steering"=%.2f' % steering_angle,
-              ',"action"=%d' % self.action_taken,
-              ',"reward"=%.2f' % self.reward,
-              ',"total"=%.2f' % self.reward_in_episode,
-              ',"on"="%s"' % self.on_track,
-              ',"done"="%s"}' % self.done)
+        print('{"log":"MATDORI_LOG",',
+              '"episodes":%d,' % self.episodes,
+              '"steps":%d,' % self.steps,
+              '"x":%.2f,' % self.x,
+              '"y":%.2f,' % self.y,
+              '"waypoint":%d,' % self.closest_waypoint_index,
+              '"distance":%.2f,' % self.distance_from_center,
+              '"yaw":%.2f,' % self.yaw,
+              '"throttle":%.2f,' % throttle,
+              '"steering":%.2f,' % steering_angle,
+              '"action":%d,' % self.action_taken,
+              '"reward":%.2f,' % self.reward,
+              '"total":%.2f,' % self.reward_in_episode,
+              '"progress":%d,' % self.total_progress,
+              '"current":%d,' % self.current_progress,
+              '"on":"%s",' % self.on_track,
+              '"done":"%s"}' % self.done)
 
         # Trace logs to help us debug and visualize the training runs
         stdout_ = 'SIM_TRACE_LOG:%d,%d,%.4f,%.4f,%.4f,%.2f,%.2f,%d,%.4f,%.4f,%d,%s,%s,%.4f,%d,%d,%.2f,%s\n' % (
