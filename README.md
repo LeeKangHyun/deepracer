@@ -6,6 +6,14 @@
 
 * <https://docs.aws.amazon.com/ko_kr/deepracer/latest/developerguide/deepracer-build-your-track.html>
 
+## python
+
+```
+sudo pip3 install --upgrade gym
+sudo pip3 install --upgrade boto3
+sudo pip3 install --upgrade Image
+```
+
 ## reward_function
 
 ```

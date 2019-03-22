@@ -233,7 +233,7 @@ class DeepRacerEnv(gym.Env):
                         throttle, steering, track_width, waypoints, closest_waypoints):
         reward = 1e-3
 
-        track_half = track_width / 2.0
+        track_half = track_width * 0.5
 
         # distance_from_center as reward
         if on_track and distance_from_center < track_half:

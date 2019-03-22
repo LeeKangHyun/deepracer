@@ -5,18 +5,10 @@ class DeepRacerEnv():
                         throttle, steering, track_width, waypoints, closest_waypoints):
         reward = 1e-3
 
-        track_half = track_width / 2.0
+        track_half = track_width * 0.5
 
         # distance_from_center as reward
         if on_track and distance_from_center < track_half:
             reward = 1.0 - (distance_from_center / track_half)
-
-        # # add steering penalty
-        # if abs(steering) > 0.8:
-        #     reward *= 0.5
-
-        # # add throttle penalty
-        # if throttle < 0.3:
-        #     reward *= throttle
 
         return float(reward)
