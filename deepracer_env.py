@@ -308,7 +308,7 @@ class DeepRacerEnv(gym.Env):
         self.done = done
         self.next_state = state
 
-        print('{"log":"MATDORI_LOG",',
+        print('{"log":"NALBAM_LOG",',
               '"episodes":%d,' % self.episodes,
               '"steps":%d,' % self.steps,
               '"x":%.2f,' % self.x,
@@ -328,7 +328,7 @@ class DeepRacerEnv(gym.Env):
 
         # aws cloudwatch insights
         # fields episodes, steps, x, y
-        # | filter log == 'MATDORI_LOG'
+        # | filter log == 'NALBAM_LOG'
 
         # Trace logs to help us debug and visualize the training runs
         stdout_ = 'SIM_TRACE_LOG:%d,%d,%.4f,%.4f,%.4f,%.2f,%.2f,%d,%.4f,%.4f,%d,%s,%s,%.4f,%d,%d,%.2f,%s\n' % (

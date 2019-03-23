@@ -120,9 +120,9 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
     return reward
 ```
 
-## MATDORI_LOG
+## NALBAM_LOG
 
 ```
 fields episodes, steps, x, y, distance, reward, steering, throttle
-| filter log == 'MATDORI_LOG' and reward == 1.5
+| filter log == 'NALBAM_LOG' and reward == 1.5
 ```
