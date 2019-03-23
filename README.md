@@ -48,7 +48,7 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
     import math
 
     marker_1 = 0.1 * track_width
-    marker_2 = 0.25 * track_width
+    marker_2 = 0.3 * track_width
     marker_3 = 0.5 * track_width
 
     reward = 1e-3
@@ -78,7 +78,7 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
     import math
 
     marker_1 = 0.1 * track_width
-    marker_2 = 0.25 * track_width
+    marker_2 = 0.3 * track_width
     marker_3 = 0.5 * track_width
 
     reward = 1e-3
@@ -118,4 +118,11 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
         reward *= 0.80
 
     return reward
+```
+
+## MATDORI_LOG
+
+```
+fields episodes, steps, x, y, distance, reward, steering, throttle
+| filter log == 'MATDORI_LOG' and reward == 1.5
 ```
