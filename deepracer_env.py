@@ -231,13 +231,17 @@ class DeepRacerEnv(gym.Env):
 
     def reward_function(self, on_track, x, y, distance_from_center, car_orientation, progress, steps,
                         throttle, steering, track_width, waypoints, closest_waypoints):
-        reward = 1e-3
+        reward = 0.001
 
-        track_half = track_width * 0.5
+        if on_track:
+            distance_rate = distance_from_center / (track_width * 0.5)
 
-        # distance_from_center as reward
-        if on_track and distance_from_center < track_half:
-            reward = 1.0 - (distance_from_center / track_half)
+            if distance_rate <= 0.2:
+                reward = 1.0
+            elif distance_rate <= 0.4:
+                reward = 0.5
+            elif distance_rate <= 0.8:
+                reward = 0.1
 
         return float(reward)
 
