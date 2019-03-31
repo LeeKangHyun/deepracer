@@ -243,6 +243,24 @@ class DeepRacerEnv(gym.Env):
             elif distance_rate <= 0.9:
                 reward = 0.1
 
+            # penalize reward if the car is steering way too much
+            # steering angle is in radians in the reward function
+            # assumes your action space maximum steering angle is 30 and you have a steering granularity of at least 5.
+            # We will penalize any steering action that requires more than 15 degrees, absolute.
+            if abs(steering) < math.radians(5):
+                reward *= 1.3
+            elif abs(steering) > math.radians(15):
+                reward *= 0.5
+
+            # penalize reward for the car taking slow actions
+            # throttle is in m/s
+            # the below assumes your action space has a maximum speed of 5 m/s and speed granularity of 3
+            # we penalize any throttle less than 2m/s
+            if throttle > 3.0:
+                reward *= 1.3
+            elif throttle < 2.0:
+                reward *= 0.5
+
         return float(reward)
 
         # if distance_from_center >= 0.0 and distance_from_center <= 0.02:
@@ -278,6 +296,8 @@ class DeepRacerEnv(gym.Env):
         # re-assign the prev progress and way point variables
         self.prev_progress = self.total_progress
         self.prev_closest_waypoint_index = self.closest_waypoint_index
+
+        suggest_radians = self.get_suggest_radians(self.closest_waypoint_index)
 
         done = False
         on_track = self.on_track
@@ -319,6 +339,7 @@ class DeepRacerEnv(gym.Env):
               '"y":%.2f,' % self.y,
               '"waypoint":%d,' % self.closest_waypoint_index,
               '"distance":%.2f,' % self.distance_from_center,
+              '"rad":%.2f,' % suggest_radians,
               '"yaw":%.2f,' % self.yaw,
               '"throttle":%.2f,' % throttle,
               '"steering":%.2f,' % steering_angle,
@@ -436,6 +457,35 @@ class DeepRacerEnv(gym.Env):
 
             vertices[40] = [1.30, 0.70]
             vertices[41] = [1.40, 0.60]
+
+    def get_suggest_radians(self, closest_waypoint_index):
+        coor1 = self.waypoints[closest_waypoint_index]
+
+        if closest_waypoint_index == 0:
+            coor2 = self.waypoints[1]
+
+            res = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+
+        elif closest_waypoint_index == (len(self.waypoints) - 1):
+            coor2 = self.waypoints[0]
+
+            res = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+
+        else:
+            coor3 = self.waypoints[closest_waypoint_index - 1]
+            coor4 = self.waypoints[closest_waypoint_index + 1]
+
+            distance3 = self.calculate_distance(
+                coor1[0], coor3[0], coor1[1], coor3[1])
+            distance4 = self.calculate_distance(
+                coor1[0], coor4[0], coor1[1], coor4[1])
+
+            if distance3 > distance4:
+                res = math.atan2((coor4[1] - coor1[1]), (coor4[0] - coor1[0]))
+            else:
+                res = math.atan2((coor1[1] - coor3[1]), (coor1[0] - coor3[0]))
+
+        return res
 
     def calculate_distance(self, x1, x2, y1, y2):
         return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
