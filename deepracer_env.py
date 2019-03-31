@@ -238,9 +238,9 @@ class DeepRacerEnv(gym.Env):
 
             if distance_rate <= 0.2:
                 reward = 1.0
-            elif distance_rate <= 0.4:
+            elif distance_rate <= 0.6:
                 reward = 0.5
-            elif distance_rate <= 0.8:
+            elif distance_rate <= 0.9:
                 reward = 0.1
 
         return float(reward)
@@ -370,72 +370,72 @@ class DeepRacerEnv(gym.Env):
 
     def set_waypoints(self):
         if self.world_name.startswith(MEDIUM_TRACK_WORLD):
-            self.waypoints = vertices = np.zeros((8, 3))
+            self.waypoints = vertices = np.zeros((8, 2))
             self.road_width = 0.50
-            vertices[0] = [-0.99, 2.25, 0]
-            vertices[1] = [0.69, 2.26, 0]
-            vertices[2] = [1.37, 1.67, 0]
-            vertices[3] = [1.48, -1.54, 0]
-            vertices[4] = [0.81, -2.44, 0]
-            vertices[5] = [-1.25, -2.30, 0]
-            vertices[6] = [-1.67, -1.64, 0]
-            vertices[7] = [-1.73, 1.63, 0]
+            vertices[0] = [-0.99, 2.25]
+            vertices[1] = [0.69, 2.26]
+            vertices[2] = [1.37, 1.67]
+            vertices[3] = [1.48, -1.54]
+            vertices[4] = [0.81, -2.44]
+            vertices[5] = [-1.25, -2.30]
+            vertices[6] = [-1.67, -1.64]
+            vertices[7] = [-1.73, 1.63]
 
         elif self.world_name.startswith(EASY_TRACK_WORLD):
-            self.waypoints = vertices = np.zeros((2, 3))
+            self.waypoints = vertices = np.zeros((2, 2))
             self.road_width = 0.90
-            vertices[0] = [-1.08, -0.05, 0]
-            vertices[1] = [1.08, -0.05, 0]
+            vertices[0] = [-1.08, -0.05]
+            vertices[1] = [1.08, -0.05]
 
         else:
-            self.waypoints = vertices = np.zeros((42, 3))
+            self.waypoints = vertices = np.zeros((42, 2))
             self.road_width = 0.44
-            vertices[0] = [1.50, 0.58, 0]
-            vertices[1] = [2.50, 0.58, 0]
-            vertices[2] = [3.50, 0.58, 0]
-            vertices[3] = [4.50, 0.58, 0]
-            vertices[4] = [5.50, 0.58, 0]
-            vertices[5] = [5.60, 0.60, -1]
-            vertices[6] = [5.70, 0.65, -1]
-            vertices[7] = [5.80, 0.70, -1]
-            vertices[8] = [5.90, 0.80, -1]
-            vertices[9] = [6.00, 0.90, -1]
+            vertices[0] = [1.50, 0.58]
+            vertices[1] = [2.50, 0.58]
+            vertices[2] = [3.50, 0.58]
+            vertices[3] = [4.50, 0.58]
+            vertices[4] = [5.50, 0.58]
+            vertices[5] = [5.60, 0.60]
+            vertices[6] = [5.70, 0.65]
+            vertices[7] = [5.80, 0.70]
+            vertices[8] = [5.90, 0.80]
+            vertices[9] = [6.00, 0.90]
 
-            vertices[10] = [6.08, 1.10, -1]
-            vertices[11] = [6.10, 1.20, -1]
-            vertices[12] = [6.10, 1.30, -1]
-            vertices[13] = [6.10, 1.40, -1]
-            vertices[14] = [6.07, 1.50, -1]
-            vertices[15] = [6.05, 1.60, -1]
-            vertices[16] = [6.00, 1.70, -1]
-            vertices[17] = [5.90, 1.80, -1]
-            vertices[18] = [5.75, 1.90, -1]
-            vertices[19] = [5.60, 2.00, 0]
+            vertices[10] = [6.08, 1.10]
+            vertices[11] = [6.10, 1.20]
+            vertices[12] = [6.10, 1.30]
+            vertices[13] = [6.10, 1.40]
+            vertices[14] = [6.07, 1.50]
+            vertices[15] = [6.05, 1.60]
+            vertices[16] = [6.00, 1.70]
+            vertices[17] = [5.90, 1.80]
+            vertices[18] = [5.75, 1.90]
+            vertices[19] = [5.60, 2.00]
 
-            vertices[20] = [5.10, 2.00, 0]
-            vertices[21] = [4.60, 2.00, 0]
-            vertices[22] = [4.20, 2.00, 0]
-            vertices[23] = [4.10, 2.05, 1]
-            vertices[24] = [4.00, 2.10, 1]
-            vertices[25] = [3.90, 2.15, 0]
-            vertices[26] = [2.70, 3.80, 0]
-            vertices[27] = [2.60, 3.90, -1]
-            vertices[28] = [2.40, 4.00, -1]
-            vertices[29] = [2.30, 4.00, 0]
+            vertices[20] = [5.10, 2.00]
+            vertices[21] = [4.60, 2.00]
+            vertices[22] = [4.20, 2.00]
+            vertices[23] = [4.10, 2.05]
+            vertices[24] = [4.00, 2.10]
+            vertices[25] = [3.90, 2.15]
+            vertices[26] = [2.70, 3.80]
+            vertices[27] = [2.60, 3.90]
+            vertices[28] = [2.40, 4.00]
+            vertices[29] = [2.30, 4.00]
 
-            vertices[30] = [1.20, 3.95, 0]
-            vertices[31] = [1.10, 3.92, -1]
-            vertices[32] = [1.00, 3.88, -1]
-            vertices[33] = [0.80, 3.72, -1]
-            vertices[34] = [0.60, 3.40, -1]
-            vertices[35] = [0.58, 3.30, -1]
-            vertices[36] = [0.57, 3.20, 0]
-            vertices[37] = [1.00, 1.00, 0]
-            vertices[38] = [1.10, 0.90, -1]
-            vertices[39] = [1.20, 0.80, -1]
+            vertices[30] = [1.20, 3.95]
+            vertices[31] = [1.10, 3.92]
+            vertices[32] = [1.00, 3.88]
+            vertices[33] = [0.80, 3.72]
+            vertices[34] = [0.60, 3.40]
+            vertices[35] = [0.58, 3.30]
+            vertices[36] = [0.57, 3.20]
+            vertices[37] = [1.00, 1.00]
+            vertices[38] = [1.10, 0.90]
+            vertices[39] = [1.20, 0.80]
 
-            vertices[40] = [1.30, 0.70, -1]
-            vertices[41] = [1.40, 0.60, -1]
+            vertices[40] = [1.30, 0.70]
+            vertices[41] = [1.40, 0.60]
 
     def calculate_distance(self, x1, x2, y1, y2):
         return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
@@ -488,7 +488,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
     def __init__(self):
         DeepRacerEnv.__init__(self)
 
-        self.action_space = spaces.Discrete(6)
+        self.action_space = spaces.Discrete(15)
 
     def step(self, action):
 
@@ -498,7 +498,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         throttle = throttle * throttle_multiplier
         steering_angle = 0.8
 
-        self.throttle, self.steering_angle = self.default_6_actions(
+        self.throttle, self.steering_angle = self.two_steering_three_throttle_15_states(
             throttle, steering_angle, action)
 
         self.action_taken = action

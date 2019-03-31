@@ -16,8 +16,8 @@ sudo ufw allow 22/tcp
 
 ```
 # wifi-creds.txt
-ssid: ''
-password: ''
+ssid: 'nalbam-bs'
+password: '01067684010'
 ```
 
 ## python
