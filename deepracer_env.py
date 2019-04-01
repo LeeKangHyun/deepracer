@@ -316,11 +316,28 @@ class DeepRacerEnv(gym.Env):
                                           self.total_progress, self.steps, throttle, steering_angle, self.road_width,
                                           list(self.waypoints), self.get_closest_waypoint())
 
-            reward += 0.5  # reward bonus for surviving
+            # reward += 0.5  # reward bonus for surviving
+
+            # pi_allow_range = 0.3
+
+            # if self.yaw > (math.pi - pi_allow_range):
+            #     radians1 = suggest_radians + pi_allow_range
+            # else:
+            #     radians1 = suggest_radians + pi_allow_range
+
+
+            # radians1 = suggest_radians + 0.3
+
+            # if radians1 > math.pi:
+
+
+            # radians2 = suggest_radians - 0.3
+
 
             # smooth
             # if self.action_taken == self.prev_action:
             #    reward += 0.5
+
             self.prev_action = self.action_taken
 
         print('Step No=%.2f' % self.steps,
