@@ -312,7 +312,7 @@ class DeepRacerEnv(gym.Env):
             pi_allow_range = 0.2
 
             if suggest_radians > (math.pi - pi_allow_range) or suggest_radians < (math.pi * -1) + pi_allow_range:
-                if self.yaw <= math.pi and self.yaw >= (suggest_radians + pi_allow_range):
+                if self.yaw <= math.pi and self.yaw >= (suggest_radians - pi_allow_range):
                     in_allow = True
                 elif self.yaw >= (math.pi * -1) and self.yaw <= (suggest_radians + pi_allow_range):
                     in_allow = True
@@ -321,7 +321,7 @@ class DeepRacerEnv(gym.Env):
                     in_allow = True
 
             if in_allow == True:
-                reward += 0.5
+                reward += 0.7
 
             # smooth
             # if self.action_taken == self.prev_action:
