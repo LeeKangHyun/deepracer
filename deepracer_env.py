@@ -318,21 +318,20 @@ class DeepRacerEnv(gym.Env):
 
             # reward += 0.5  # reward bonus for surviving
 
-            # pi_allow_range = 0.3
+            in_allow = False
+            pi_allow_range = 0.2
 
-            # if self.yaw > (math.pi - pi_allow_range):
-            #     radians1 = suggest_radians + pi_allow_range
-            # else:
-            #     radians1 = suggest_radians + pi_allow_range
+            if suggest_radians > (math.pi - pi_allow_range) or suggest_radians < (math.pi * -1) + pi_allow_range:
+                if self.yaw <= math.pi and self.yaw >= (suggest_radians + pi_allow_range):
+                    in_allow = True
+                elif self.yaw >= (math.pi * -1) and self.yaw <= (suggest_radians + pi_allow_range):
+                    in_allow = True
+            else:
+                if self.yaw >= (suggest_radians - pi_allow_range) and self.yaw <= (suggest_radians + pi_allow_range):
+                    in_allow = True
 
-
-            # radians1 = suggest_radians + 0.3
-
-            # if radians1 > math.pi:
-
-
-            # radians2 = suggest_radians - 0.3
-
+            if in_allow == True:
+                reward += 0.5
 
             # smooth
             # if self.action_taken == self.prev_action:
@@ -357,8 +356,8 @@ class DeepRacerEnv(gym.Env):
               '"distance":%.2f,' % self.distance_from_center,
               '"rad":%.2f,' % suggest_radians,
               '"yaw":%.2f,' % self.yaw,
-              '"throttle":%.2f,' % throttle,
               '"steering":%.2f,' % steering_angle,
+              '"throttle":%.2f,' % throttle,
               '"action":%d,' % self.action_taken,
               '"reward":%.2f,' % self.reward,
               '"total":%.2f,' % self.reward_in_episode,
