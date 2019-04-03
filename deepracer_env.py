@@ -246,19 +246,19 @@ class DeepRacerEnv(gym.Env):
         # steering angle is in radians in the reward function
         # assumes your action space maximum steering angle is 30 and you have a steering granularity of at least 5.
         # We will penalize any steering action that requires more than 15 degrees, absolute.
-        if abs(steering) < math.radians(5):
-            reward *= 1.3
-        elif abs(steering) > math.radians(15):
-            reward *= 0.5
+        # if abs(steering) > math.radians(15):
+        #     reward *= 0.5
+        # elif abs(steering) < math.radians(5):
+        #     reward *= 1.3
 
         # penalize reward for the car taking slow actions
         # throttle is in m/s
         # the below assumes your action space has a maximum speed of 5 m/s and speed granularity of 3
         # we penalize any throttle less than 2m/s
-        if throttle > 3.0:
-            reward *= 1.3
-        elif throttle < 2.0:
+        if throttle < 2.0:
             reward *= 0.5
+        # elif throttle > 4.0:
+        #     reward *= 1.3
 
         return float(reward)
 
