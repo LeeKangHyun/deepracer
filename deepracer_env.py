@@ -102,8 +102,10 @@ class DeepRacerEnv(gym.Env):
     def reset(self):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
-        print('Total Reward Reward=%.2f' % self.reward_in_episode,
+
+        print('Total Reward=%.2f' % self.reward_in_episode,
               'Total Steps=%.2f' % self.steps)
+
         self.send_reward_to_cloudwatch(self.reward_in_episode)
 
         self.reward_in_episode = 0
@@ -235,11 +237,11 @@ class DeepRacerEnv(gym.Env):
 
         distance_rate = distance_from_center / (track_width * 0.5)
 
-        if distance_rate <= 0.2:
+        if distance_rate <= 0.1:
             reward = 1.0
-        elif distance_rate <= 0.6:
+        elif distance_rate <= 0.3:
             reward = 0.5
-        elif distance_rate <= 0.9:
+        elif distance_rate <= 0.5:
             reward = 0.1
 
         # penalize reward if the car is steering way too much
@@ -322,6 +324,8 @@ class DeepRacerEnv(gym.Env):
 
             if in_allow == True:
                 reward += 0.7
+            else:
+                reward -= 0.3
 
             # smooth
             # if self.action_taken == self.prev_action:
