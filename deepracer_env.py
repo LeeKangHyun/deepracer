@@ -103,8 +103,9 @@ class DeepRacerEnv(gym.Env):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
 
-        print('Total Reward=%.2f' % self.reward_in_episode,
-              'Total Steps=%.2f' % self.steps)
+        print('Episodes=%d' % self.episodes,
+              'Total Steps=%d' % self.steps,
+              'Total Reward=%.2f' % self.reward_in_episode)
 
         self.send_reward_to_cloudwatch(self.reward_in_episode)
 
@@ -324,8 +325,9 @@ class DeepRacerEnv(gym.Env):
 
             self.prev_action = self.action_taken
 
-        print('Step No=%.2f' % self.steps,
-              'Step Reward=%.2f' % reward)
+        print('Episodes=%d' % self.episodes,
+              'This Steps=%d' % self.steps,
+              'This Reward=%.2f' % reward)
 
         self.reward_in_episode += reward
         self.reward = reward
