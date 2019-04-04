@@ -340,6 +340,7 @@ class DeepRacerEnv(gym.Env):
               '"distance":%.2f,' % self.distance_from_center,
               '"rad":%.2f,' % suggest_radians,
               '"yaw":%.2f,' % self.yaw,
+              '"range":"%s",' % in_range,
               '"steering":%.2f,' % steering_angle,
               '"throttle":%.2f,' % throttle,
               '"action":%d,' % self.action_taken,
@@ -494,9 +495,11 @@ class DeepRacerEnv(gym.Env):
                 coor1[0], coor4[0], coor1[1], coor4[1])
 
             if distance3 > distance4:
-                suggest = math.atan2((coor4[1] - coor1[1]), (coor4[0] - coor1[0]))
+                suggest = math.atan2(
+                    (coor4[1] - coor1[1]), (coor4[0] - coor1[0]))
             else:
-                suggest = math.atan2((coor1[1] - coor3[1]), (coor1[0] - coor3[0]))
+                suggest = math.atan2(
+                    (coor1[1] - coor3[1]), (coor1[0] - coor3[0]))
 
         return suggest
 
