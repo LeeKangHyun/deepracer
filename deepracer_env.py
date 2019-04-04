@@ -289,6 +289,7 @@ class DeepRacerEnv(gym.Env):
         self.prev_closest_waypoint_index = self.closest_waypoint_index
 
         suggest_radians = self.get_suggest_radians(self.closest_waypoint_index)
+        in_range = False
 
         done = False
         on_track = self.on_track
@@ -313,9 +314,9 @@ class DeepRacerEnv(gym.Env):
             in_range = self.is_suggest_range(suggest_radians, 0.2)
 
             if in_range == True:
-                reward += 0.7
+                reward += 0.5
             else:
-                reward -= 0.3
+                reward -= 0.2
 
             # smooth
             # if self.action_taken == self.prev_action:
