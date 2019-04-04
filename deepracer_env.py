@@ -352,7 +352,8 @@ class DeepRacerEnv(gym.Env):
               '"progress":%d,' % self.total_progress,
               '"current":%.2f,' % current_progress,
               '"on":"%s",' % self.on_track,
-              '"done":"%s"}' % self.done)
+              '"done":"%s",' % self.done,
+              '"time":"%s"}' % time.time())
 
         # aws cloudwatch insights
         # fields episodes, steps, x, y
