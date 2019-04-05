@@ -312,7 +312,7 @@ class DeepRacerEnv(gym.Env):
 
             # reward += 0.5  # reward bonus for surviving
 
-            in_range = self.is_suggest_range(suggest_radians, 0.2)
+            in_range = self.is_suggest_range(suggest_radians, math.radians(30))
 
             # if in_range == True:
             #     reward += 0.5
@@ -377,6 +377,54 @@ class DeepRacerEnv(gym.Env):
             self.track_length,
             time.time())
         print(stdout_)
+
+    def is_suggest_range(self, suggest_radians, allow_range):
+        in_range = False
+
+        if suggest_radians > (math.pi - allow_range) or suggest_radians < (math.pi * -1) + allow_range:
+            if self.yaw <= math.pi and self.yaw >= (suggest_radians - allow_range):
+                in_range = True
+            elif self.yaw >= (math.pi * -1) and self.yaw <= (suggest_radians + allow_range):
+                in_range = True
+        else:
+            if self.yaw >= (suggest_radians - allow_range) and self.yaw <= (suggest_radians + allow_range):
+                in_range = True
+
+        return in_range
+
+    def get_suggest_radians(self, index):
+        coor1 = self.waypoints[index]
+
+        if index == 0:
+            coor2 = self.waypoints[1]
+
+            suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+
+        elif index == (len(self.waypoints) - 1):
+            coor2 = self.waypoints[0]
+
+            suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+
+        else:
+            coor3 = self.waypoints[index - 1]
+            coor4 = self.waypoints[index + 1]
+
+            distance3 = self.calculate_distance(
+                coor1[0], coor3[0], coor1[1], coor3[1])
+            distance4 = self.calculate_distance(
+                coor1[0], coor4[0], coor1[1], coor4[1])
+
+            if distance3 > distance4:
+                suggest = math.atan2(
+                    (coor4[1] - coor1[1]), (coor4[0] - coor1[0]))
+            else:
+                suggest = math.atan2(
+                    (coor1[1] - coor3[1]), (coor1[0] - coor3[0]))
+
+        return suggest
+
+    def calculate_distance(self, x1, x2, y1, y2):
+        return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
 
     def send_reward_to_cloudwatch(self, reward):
         session = boto3.session.Session()
@@ -461,54 +509,6 @@ class DeepRacerEnv(gym.Env):
 
             vertices[40] = [1.30, 0.70]
             vertices[41] = [1.40, 0.60]
-
-    def is_suggest_range(self, suggest_radians, allow_range):
-        in_range = False
-
-        if suggest_radians > (math.pi - allow_range) or suggest_radians < (math.pi * -1) + allow_range:
-            if self.yaw <= math.pi and self.yaw >= (suggest_radians - allow_range):
-                in_range = True
-            elif self.yaw >= (math.pi * -1) and self.yaw <= (suggest_radians + allow_range):
-                in_range = True
-        else:
-            if self.yaw >= (suggest_radians - allow_range) and self.yaw <= (suggest_radians + allow_range):
-                in_range = True
-
-        return in_range
-
-    def get_suggest_radians(self, index):
-        coor1 = self.waypoints[index]
-
-        if index == 0:
-            coor2 = self.waypoints[1]
-
-            suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-
-        elif index == (len(self.waypoints) - 1):
-            coor2 = self.waypoints[0]
-
-            suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-
-        else:
-            coor3 = self.waypoints[index - 1]
-            coor4 = self.waypoints[index + 1]
-
-            distance3 = self.calculate_distance(
-                coor1[0], coor3[0], coor1[1], coor3[1])
-            distance4 = self.calculate_distance(
-                coor1[0], coor4[0], coor1[1], coor4[1])
-
-            if distance3 > distance4:
-                suggest = math.atan2(
-                    (coor4[1] - coor1[1]), (coor4[0] - coor1[0]))
-            else:
-                suggest = math.atan2(
-                    (coor1[1] - coor3[1]), (coor1[0] - coor3[0]))
-
-        return suggest
-
-    def calculate_distance(self, x1, x2, y1, y2):
-        return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
 
     def get_closest_waypoint(self):
         res = 0
