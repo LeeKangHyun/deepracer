@@ -57,6 +57,6 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 
 ```
 fields episodes, steps, x, y, distance, reward, rad, yaw, range, steering, throttle, waypoint, total, time
-| filter log == 'NALBAM_LOG'
+| filter log == 'NALBAM_LOG'and waypoint > 40
 | order by time desc
 ```
