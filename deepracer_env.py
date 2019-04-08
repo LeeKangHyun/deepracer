@@ -289,7 +289,7 @@ class DeepRacerEnv(gym.Env):
         self.prev_progress = self.total_progress
         self.prev_closest_waypoint_index = self.closest_waypoint_index
 
-        suggest_radians = self.get_suggest_radians(self.closest_waypoint_index)
+        suggest_radians = self.get_suggest_radians(list(self.waypoints), self.closest_waypoint_index)
         in_range = False
 
         done = False
@@ -341,7 +341,7 @@ class DeepRacerEnv(gym.Env):
               '"y":%.2f,' % self.y,
               '"waypoint":%d,' % self.closest_waypoint_index,
               '"distance":%.2f,' % self.distance_from_center,
-              '"rad":%.2f,' % suggest_radians,
+              '"suggest":%.2f,' % suggest_radians,
               '"yaw":%.2f,' % self.yaw,
               '"range":"%s",' % in_range,
               '"steering":%.2f,' % steering_angle,
@@ -392,22 +392,22 @@ class DeepRacerEnv(gym.Env):
 
         return in_range
 
-    def get_suggest_radians(self, index):
-        coor1 = self.waypoints[index]
+    def get_suggest_radians(self, waypoints, index):
+        coor1 = waypoints[index]
 
         if index == 0:
-            coor2 = self.waypoints[1]
+            coor2 = waypoints[1]
 
             suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
-        elif index == (len(self.waypoints) - 1):
-            coor2 = self.waypoints[0]
+        elif index == (len(waypoints) - 1):
+            coor2 = waypoints[0]
 
             suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
         else:
-            coor3 = self.waypoints[index - 1]
-            coor4 = self.waypoints[index + 1]
+            coor3 = waypoints[index - 1]
+            coor4 = waypoints[index + 1]
 
             distance3 = self.calculate_distance(
                 coor1[0], coor3[0], coor1[1], coor3[1])
