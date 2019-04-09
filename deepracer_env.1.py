@@ -298,17 +298,24 @@ class DeepRacerEnv(gym.Env):
 
         done = False
         on_track = self.on_track
+
         if on_track != 1:
             reward = CRASHED
             done = True
-        # elif total_progress >= FINISH_LINE:  # reached max waypoints
-        #    print("Congratulations! You finished the race!")
+
+        # elif self.steps > 100 and self.total_progress >= FINISH_LINE:  # reached max waypoints
+        #     print("Congratulations! You finished the race!")
+
+        #     reward = 100
+        #     done = True
+
         #    if self.steps == 0:
         #        reward = 0.0
         #        done = False
         #    else:
         #        reward = FINISHED / self.steps
         #        done = True
+
         else:
             reward = self.reward_function(on_track, self.x, self.y, self.distance_from_center, self.yaw,
                                           self.total_progress, self.steps, throttle, steering_angle, self.road_width,
@@ -492,7 +499,7 @@ class DeepRacerEnv(gym.Env):
             vertices[26] = [2.08, 4.94]
             vertices[27] = [1.67, 4.875]
             vertices[28] = [1.33, 4.69]
-            vertices[29] = [0.92, 4.06]
+            vertices[29] = [1.00, 4.06]
 
             vertices[30] = [1.17, 3.185]
             vertices[31] = [1.50, 1.94]
@@ -556,7 +563,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         # Convert discrete to continuous
         throttle = 1.0
         throttle_multiplier = 0.8
-        throttle = throttle*throttle_multiplier
+        throttle = throttle * throttle_multiplier
         steering_angle = 0.8
 
         self.throttle, self.steering_angle = self.default_6_actions(
@@ -581,7 +588,8 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
             steering_angle = -0.2
         elif action == 5:  # slow straight
             steering_angle = 0
-            throttle = throttle/2
+            throttle = throttle / 2
+
         else:  # should not be here
             raise ValueError("Invalid action")
 
@@ -625,6 +633,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         elif action == 4:  # straight
             steering_angle = 0
             throttle = throttle_
+
         elif action == 5:  # move left
             steering_angle = 1 * steering_angle_
             throttle = throttle_ * 0.5
