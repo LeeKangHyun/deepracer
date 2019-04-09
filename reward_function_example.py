@@ -1,42 +1,4 @@
 
-def reward_function(params):
-    import time
-
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
-
-    reward = 0.001
-
-    distance_rate = distance_from_center / (track_width * 0.5)
-
-    if distance_rate <= 0.1:
-        reward = 1.0
-    elif distance_rate <= 0.3:
-        reward = 0.5
-    elif distance_rate <= 0.5:
-        reward = 0.1
-
-    suggest = 0
-    in_range = True
-
-    print('{"log":"NALBAM_LOG",',
-            '"steps":%d,' % params['steps'],
-            '"x":%.2f,' % params['x'],
-            '"y":%.2f,' % params['y'],
-            '"waypoint":%d,' % params['closest_waypoint'],
-            '"distance":%.2f,' % params['distance_from_center'],
-            '"yaw":%.2f,' % params['car_orientation'],
-            '"steering":%.2f,' % params['steering_angle'],
-            '"throttle":%.2f,' % params['throttle'],
-            '"progress":%d,' % params['progress'],
-            '"reward":%.2f,' % reward,
-            '"suggest":%.2f,' % suggest,
-            '"range":"%s",' % in_range,
-            '"time":"%s"}' % time.time())
-
-    return float(reward)
-
-
 def reward_function_example1(params):
     '''
     Example of rewarding the agent to follow center line
@@ -63,6 +25,7 @@ def reward_function_example1(params):
 
     return float(reward)
 
+
 def reward_function_example2(params):
     '''
     Example of rewarding the agent to stay inside the two borders of the track
@@ -84,6 +47,7 @@ def reward_function_example2(params):
     # Always return a float value
     return float(reward)
 
+
 def reward_function_example3(params):
     '''
     Example of penalize steering, which helps mitigate zig-zag behaviors
@@ -92,7 +56,8 @@ def reward_function_example3(params):
     # Read input parameters
     distance_from_center = params['distance_from_center']
     track_width = params['track_width']
-    steering = abs(params['steering_angle']) # Only need the absolute steering angle
+    # Only need the absolute steering angle
+    steering = abs(params['steering_angle'])
 
     # Calculate 3 marks that are farther and father away from the center line
     marker_1 = 0.1 * track_width

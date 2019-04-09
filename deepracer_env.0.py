@@ -289,7 +289,8 @@ class DeepRacerEnv(gym.Env):
         self.prev_progress = self.total_progress
         self.prev_closest_waypoint_index = self.closest_waypoint_index
 
-        suggest_radians = self.get_suggest_radians(list(self.waypoints), self.closest_waypoint_index)
+        suggest_radians = self.get_suggest_radians(
+            list(self.waypoints), self.closest_waypoint_index)
         in_range = False
 
         done = False
@@ -461,54 +462,46 @@ class DeepRacerEnv(gym.Env):
             vertices[1] = [1.08, -0.05]
 
         else:
-            self.waypoints = vertices = np.zeros((42, 2))
+            self.waypoints = vertices = np.zeros((35, 2))
             self.road_width = 0.44
-            vertices[0] = [1.50, 0.58]
-            vertices[1] = [2.50, 0.58]
-            vertices[2] = [3.50, 0.58]
-            vertices[3] = [4.50, 0.58]
-            vertices[4] = [5.50, 0.58]
-            vertices[5] = [5.60, 0.60]
-            vertices[6] = [5.70, 0.65]
-            vertices[7] = [5.80, 0.70]
-            vertices[8] = [5.90, 0.80]
-            vertices[9] = [6.00, 0.90]
+            vertices[0] = [2.50, 0.75]
+            vertices[1] = [3.33, 0.75]
+            vertices[2] = [4.17, 0.75]
+            vertices[3] = [5.00, 0.75]
+            vertices[4] = [5.83, 0.75]
+            vertices[5] = [6.67, 0.75]
+            vertices[6] = [7.50, 0.75]
+            vertices[7] = [8.33, 0.75]
+            vertices[8] = [9.17, 0.75]
+            vertices[9] = [9.75, 0.94]
 
-            vertices[10] = [6.08, 1.10]
-            vertices[11] = [6.10, 1.20]
-            vertices[12] = [6.10, 1.30]
-            vertices[13] = [6.10, 1.40]
-            vertices[14] = [6.07, 1.50]
-            vertices[15] = [6.05, 1.60]
-            vertices[16] = [6.00, 1.70]
-            vertices[17] = [5.90, 1.80]
-            vertices[18] = [5.75, 1.90]
-            vertices[19] = [5.60, 2.00]
+            vertices[10] = [10.0, 1.50]
+            vertices[11] = [10.0, 1.875]
+            vertices[12] = [9.92, 2.125]
+            vertices[13] = [9.58, 2.375]
+            vertices[14] = [9.17, 2.50]
+            vertices[15] = [8.33, 2.50]
+            vertices[16] = [7.50, 2.50]
+            vertices[17] = [7.08, 2.56]
+            vertices[18] = [6.67, 2.625]
+            vertices[19] = [5.83, 3.44]
 
-            vertices[20] = [5.10, 2.00]
-            vertices[21] = [4.60, 2.00]
-            vertices[22] = [4.20, 2.00]
-            vertices[23] = [4.10, 2.05]
-            vertices[24] = [4.00, 2.10]
-            vertices[25] = [3.90, 2.15]
-            vertices[26] = [2.70, 3.80]
-            vertices[27] = [2.60, 3.90]
-            vertices[28] = [2.40, 4.00]
-            vertices[29] = [2.30, 4.00]
+            vertices[20] = [5.00, 4.375]
+            vertices[21] = [4.67, 4.69]
+            vertices[22] = [4.33, 4.875]
+            vertices[23] = [4.00, 5.00]
+            vertices[24] = [3.33, 5.00]
+            vertices[25] = [2.50, 4.95]
+            vertices[26] = [2.08, 4.94]
+            vertices[27] = [1.67, 4.875]
+            vertices[28] = [1.33, 4.69]
+            vertices[29] = [0.92, 4.06]
 
-            vertices[30] = [1.20, 3.95]
-            vertices[31] = [1.10, 3.92]
-            vertices[32] = [1.00, 3.88]
-            vertices[33] = [0.80, 3.72]
-            vertices[34] = [0.60, 3.40]
-            vertices[35] = [0.58, 3.30]
-            vertices[36] = [0.57, 3.20]
-            vertices[37] = [1.00, 1.00]
-            vertices[38] = [1.10, 0.90]
-            vertices[39] = [1.20, 0.80]
-
-            vertices[40] = [1.30, 0.70]
-            vertices[41] = [1.40, 0.60]
+            vertices[30] = [1.17, 3.185]
+            vertices[31] = [1.50, 1.94]
+            vertices[32] = [1.60, 1.50]
+            vertices[33] = [1.83, 1.125]
+            vertices[34] = [2.17, 0.885]
 
     def get_closest_waypoint(self):
         res = 0
