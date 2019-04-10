@@ -1,3 +1,4 @@
+# reward_function examples
 
 def reward_function_example1(params):
     '''
