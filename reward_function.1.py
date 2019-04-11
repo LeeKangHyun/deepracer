@@ -18,6 +18,7 @@ def reward_function(params):
         reward = 0.1
 
     params['log_key'] = 'MATDORI_STEP1'
+    params['reward'] = reward
     print(json.dumps(params))
 
     return float(reward)
