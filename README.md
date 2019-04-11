@@ -56,7 +56,7 @@ def reward_function (on_track, x, y, distance_from_center, car_orientation, prog
 ## NALBAM_LOG
 
 ```
-fields steps, progress, all_wheels_on_track, x, y, distance_from_center, reward, in_range, suggest, yaw, heading, steering_angle, speed, track_width, closest_waypoints.0, closest_waypoints.1, is_left_of_center, is_reversed
+fields steps, progress, all_wheels_on_track, x, y, distance_from_center, reward, in_range, suggest, heading, steering_angle, speed, track_width, closest_waypoints, is_left_of_center, is_reversed
 | filter log_key == 'MATDORI_LOG'
 | order by @timestamp desc
 ```

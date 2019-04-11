@@ -37,13 +37,19 @@ def reward_function(params):
     coor1 = waypoints[closest_waypoints[0]]
     coor2 = waypoints[closest_waypoints[1]]
     suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-    in_range = is_range(yaw, suggest, math.radians(30))
+    allow = math.radians(30)
+    in_range = is_range(yaw, suggest, allow)
+
+    if in_range:
+        reward += 0.5
+    else:
+        reward -= 0.2
 
     params['log_key'] = 'MATDORI_LOG'
-    params['reward'] = reward
+    params['yaw'] = yaw
     params['suggest'] = suggest
     params['in_range'] = in_range
-    params['yaw'] = yaw
+    params['reward'] = reward
     print(json.dumps(params))
 
     return float(reward)
