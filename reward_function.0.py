@@ -33,13 +33,14 @@ def reward_function(params):
     elif distance_rate <= 0.4:
         reward = 0.1
 
-    yaw = math.radians(heading)
     coor1 = waypoints[closest_waypoints[0]]
     coor2 = waypoints[closest_waypoints[1]]
     suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-    allow = math.radians(30)
-    in_range = is_range(yaw, suggest, allow)
 
+    yaw = math.radians(heading)
+    allow = math.radians(15)
+
+    in_range = is_range(yaw, suggest, allow)
     if in_range:
         reward += 0.5
     else:
