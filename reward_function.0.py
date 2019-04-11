@@ -22,29 +22,29 @@ def reward_function(params):
     closest_waypoints = params['closest_waypoints']
     waypoints = params['waypoints']
 
-    reward = 0.001
-
     distance_rate = distance_from_center / track_width
-
-    if distance_rate <= 0.1:
-        reward = 1.0
-    elif distance_rate <= 0.2:
-        reward = 0.5
-    elif distance_rate <= 0.4:
-        reward = 0.1
 
     coor1 = waypoints[closest_waypoints[0]]
     coor2 = waypoints[closest_waypoints[1]]
     suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-
     yaw = math.radians(heading)
     allow = math.radians(15)
-
     in_range = is_range(yaw, suggest, allow)
-    if in_range:
-        reward += 0.5
-    else:
-        reward -= 0.2
+
+    reward = 0.001
+
+    if distance_rate <= 0.1:
+        reward = 1.0
+
+        if in_range:
+            reward += 0.3
+        else:
+            reward -= 0.2
+
+    elif distance_rate <= 0.2:
+        reward = 0.5
+    elif distance_rate <= 0.4:
+        reward = 0.1
 
     params['log_key'] = 'MATDORI_LOG'
     params['yaw'] = yaw

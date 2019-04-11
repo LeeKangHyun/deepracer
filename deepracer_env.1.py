@@ -383,6 +383,13 @@ class DeepRacerEnv(gym.Env):
             time.time())
         print(stdout_)
 
+    def slack(self, message):
+        import json
+        import requests
+        url = 'https://hooks.slack.com/services/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'
+        data = json.dumps(message)
+        requests.post(url, json={'text': data}, headers={'Content-Type': 'application/json'})
+
     def is_suggest_range(self, suggest_radians, allow_range):
         in_range = False
 

@@ -22,28 +22,45 @@ password: '01067684010'
 
 ## python
 
-```
+```bash
 sudo pip3 install --upgrade gym
 sudo pip3 install --upgrade boto3
 sudo pip3 install --upgrade Image
 ```
 
-## MATDORI_LOG
+## insight
 
 ```
-fields steps, progress, all_wheels_on_track, x, y, distance_from_center, reward, in_range, suggest, yaw, heading, steering_angle, speed, track_width, closest_waypoints, is_left_of_center, is_reversed
-| filter log_key == 'MATDORI_LOG'
+fields steps, progress, reward, in_range, suggest, yaw, steering_angle, speed, x, y, distance_from_center, track_width, closest_waypoints, is_left_of_center, is_reversed
+| filter log_key == 'MATDORI_LOG' and reward > 0.9
 | order by @timestamp desc
 ```
 
-```
-fields episodes, steps, x, y, distance, reward, suggest, yaw, range, steering, throttle, waypoint, total, time
-| filter log == 'NALBAM_LOG' and waypoint > 40
-| order by time desc
-```
+## log format
 
 ```json
 {
+    "log_key": "MATDORI_LOG",
+    "suggest": 0.015538820272533966,
+    "all_wheels_on_track": true,
+    "steps": 29,
+    "reward": 1,
+    "is_left_of_center": true,
+    "distance_from_center": 0.0024424468839990814,
+    "yaw": 3.575091705418814,
+    "heading": 3.277254368403172,
+    "track_width": 0.5946831350683731,
+    "in_range": true,
+    "speed": 0.26666666666666666,
+    "x": 6.243344359197838,
+    "steering_angle": -29.999999999999996,
+    "y": 0.6938616423316626,
+    "is_reversed": false,
+    "progress": 3.8631962605984587,
+    "closest_waypoints": [
+        9,
+        10
+    ],
     "waypoints": [
         [
             2.909995283569139,
@@ -329,26 +346,6 @@ fields episodes, steps, x, y, distance, reward, suggest, yaw, range, steering, t
             2.909995283569139,
             0.6831924746239328
         ]
-    ],
-    "suggest": 0.015538820272533966,
-    "all_wheels_on_track": true,
-    "steps": 29,
-    "reward": 1,
-    "is_left_of_center": true,
-    "distance_from_center": 0.0024424468839990814,
-    "heading": 3.277254368403172,
-    "track_width": 0.5946831350683731,
-    "in_range": true,
-    "speed": 0.26666666666666666,
-    "x": 6.243344359197838,
-    "steering_angle": -29.999999999999996,
-    "y": 0.6938616423316626,
-    "is_reversed": false,
-    "progress": 3.8631962605984587,
-    "closest_waypoints": [
-        9,
-        10
-    ],
-    "log_key": "MATDORI_LOG"
+    ]
 }
 ```
