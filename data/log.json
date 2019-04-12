@@ -1,4 +1,25 @@
 {
+    "log_key": "mat5-2",
+    "steps": 16,
+    "progress": 6.307147527229756,
+    "reward": 1.3,
+    "in_range": true,
+    "suggest": 0.0003575091705419665,
+    "yaw": 0.05393028610091477,
+    "heading": 3.089977781515461,
+    "steering_angle": -20,
+    "speed": 1.6666666666666665,
+    "distance_from_center": 0.014033269512055566,
+    "track_width": 0.6015342835135944,
+    "y": 0.6698735674525852,
+    "x": 4.908162787932534,
+    "all_wheels_on_track": true,
+    "is_left_of_center": false,
+    "is_reversed": false,
+    "closest_waypoints": [
+        6,
+        7
+    ],
     "waypoints": [
         [
             2.909995283569139,
