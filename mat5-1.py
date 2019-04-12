@@ -1,4 +1,4 @@
-# reward_function 0
+# reward_function 1
 
 
 def reward_function(params):
@@ -37,17 +37,17 @@ def reward_function(params):
     if distance_rate <= 0.1:
         reward = 1.0
 
-        if in_range:
-            reward += 0.3
-        else:
-            reward -= 0.2
+        # if in_range:
+        #     reward += 0.3
+        # else:
+        #     reward -= 0.2
 
     elif distance_rate <= 0.2:
         reward = 0.5
     elif distance_rate <= 0.4:
         reward = 0.1
 
-    params['log_key'] = 'MATDORI_LOG'
+    params['log_key'] = 'mat5-1'
     params['yaw'] = yaw
     params['suggest'] = suggest
     params['in_range'] = in_range

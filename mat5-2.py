@@ -47,7 +47,7 @@ def reward_function(params):
     elif distance_rate <= 0.4:
         reward = 0.1
 
-    params['log_key'] = 'MATDORI_5-2'
+    params['log_key'] = 'mat5-2'
     params['yaw'] = yaw
     params['suggest'] = suggest
     params['in_range'] = in_range

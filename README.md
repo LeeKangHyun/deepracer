@@ -32,7 +32,7 @@ sudo pip3 install --upgrade Image
 
 ```
 fields steps, progress, reward, in_range, suggest, yaw, steering_angle, speed, x, y, distance_from_center, track_width, closest_waypoints, is_left_of_center, is_reversed
-| filter log_key == 'MATDORI_LOG' and reward > 0.9
+| filter log_key == 'MATDORI_5-2' and reward > 0.9
 | order by @timestamp desc
 ```
 
