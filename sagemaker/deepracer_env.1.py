@@ -249,7 +249,7 @@ class DeepRacerEnv(gym.Env):
             reward = 0.1
 
         # penalize reward if the car is steering way too much
-        if abs(steering) > math.radians(30):
+        if abs(steering) > math.radians(15):
             reward *= 0.5
 
         # penalize reward for the car taking slow actions
@@ -363,7 +363,7 @@ class DeepRacerEnv(gym.Env):
               '"action":%d,' % self.action_taken,
               '"reward":%.2f,' % self.reward,
               '"total":%.2f,' % self.reward_in_episode,
-              '"progress":%d,' % self.total_progress,
+              '"progress":%.2f,' % self.total_progress,
               '"current":%.2f,' % current_progress,
               '"on":"%s",' % self.on_track,
               '"done":"%s",' % self.done,
