@@ -289,7 +289,7 @@ class DeepRacerEnv(gym.Env):
         self.prev_progress = self.total_progress
         self.prev_closest_waypoint_index = self.closest_waypoint_index
 
-        suggest_radians = self.get_suggest_radians(
+        angle_radians = self.get_angle_radians(
             list(self.waypoints), self.closest_waypoint_index)
         in_range = False
 
@@ -313,7 +313,7 @@ class DeepRacerEnv(gym.Env):
 
             # reward += 0.5  # reward bonus for surviving
 
-            in_range = self.is_suggest_range(suggest_radians, math.radians(30))
+            in_range = self.is_angle_range(angle_radians, math.radians(30))
 
             # if in_range == True:
             #     reward += 0.5
@@ -342,7 +342,7 @@ class DeepRacerEnv(gym.Env):
               '"y":%.2f,' % self.y,
               '"waypoint":%d,' % self.closest_waypoint_index,
               '"distance":%.2f,' % self.distance_from_center,
-              '"suggest":%.2f,' % suggest_radians,
+              '"angle":%.2f,' % angle_radians,
               '"yaw":%.2f,' % self.yaw,
               '"range":"%s",' % in_range,
               '"steering":%.2f,' % steering_angle,
@@ -379,32 +379,32 @@ class DeepRacerEnv(gym.Env):
             time.time())
         print(stdout_)
 
-    def is_suggest_range(self, suggest_radians, allow_range):
+    def is_angle_range(self, angle_radians, allow_range):
         in_range = False
 
-        if suggest_radians > (math.pi - allow_range) or suggest_radians < (math.pi * -1) + allow_range:
-            if self.yaw <= math.pi and self.yaw >= (suggest_radians - allow_range):
+        if angle_radians > (math.pi - allow_range) or angle_radians < (math.pi * -1) + allow_range:
+            if self.yaw <= math.pi and self.yaw >= (angle_radians - allow_range):
                 in_range = True
-            elif self.yaw >= (math.pi * -1) and self.yaw <= (suggest_radians + allow_range):
+            elif self.yaw >= (math.pi * -1) and self.yaw <= (angle_radians + allow_range):
                 in_range = True
         else:
-            if self.yaw >= (suggest_radians - allow_range) and self.yaw <= (suggest_radians + allow_range):
+            if self.yaw >= (angle_radians - allow_range) and self.yaw <= (angle_radians + allow_range):
                 in_range = True
 
         return in_range
 
-    def get_suggest_radians(self, waypoints, index):
+    def get_angle_radians(self, waypoints, index):
         coor1 = waypoints[index]
 
         if index == 0:
             coor2 = waypoints[1]
 
-            suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+            angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
         elif index == (len(waypoints) - 1):
             coor2 = waypoints[0]
 
-            suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+            angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
         else:
             coor3 = waypoints[index - 1]
@@ -416,13 +416,13 @@ class DeepRacerEnv(gym.Env):
                 coor1[0], coor4[0], coor1[1], coor4[1])
 
             if distance3 > distance4:
-                suggest = math.atan2(
+                angle = math.atan2(
                     (coor4[1] - coor1[1]), (coor4[0] - coor1[0]))
             else:
-                suggest = math.atan2(
+                angle = math.atan2(
                     (coor1[1] - coor3[1]), (coor1[0] - coor3[0]))
 
-        return suggest
+        return angle
 
     def calculate_distance(self, x1, x2, y1, y2):
         return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
@@ -462,46 +462,79 @@ class DeepRacerEnv(gym.Env):
             vertices[1] = [1.08, -0.05]
 
         else:
-            self.waypoints = vertices = np.zeros((35, 2))
+            self.waypoints = vertices = np.zeros((70, 2))
             self.road_width = 0.44
-            vertices[0] = [2.50, 0.75]
-            vertices[1] = [3.33, 0.75]
-            vertices[2] = [4.17, 0.75]
-            vertices[3] = [5.00, 0.75]
-            vertices[4] = [5.83, 0.75]
-            vertices[5] = [6.67, 0.75]
-            vertices[6] = [7.50, 0.75]
-            vertices[7] = [8.33, 0.75]
-            vertices[8] = [9.17, 0.75]
-            vertices[9] = [9.75, 0.94]
 
-            vertices[10] = [10.0, 1.50]
-            vertices[11] = [10.0, 1.875]
-            vertices[12] = [9.92, 2.125]
-            vertices[13] = [9.58, 2.375]
-            vertices[14] = [9.17, 2.50]
-            vertices[15] = [8.33, 2.50]
-            vertices[16] = [7.50, 2.50]
-            vertices[17] = [7.08, 2.56]
-            vertices[18] = [6.67, 2.625]
-            vertices[19] = [5.83, 3.44]
-
-            vertices[20] = [5.00, 4.375]
-            vertices[21] = [4.67, 4.69]
-            vertices[22] = [4.33, 4.875]
-            vertices[23] = [4.00, 5.00]
-            vertices[24] = [3.33, 5.00]
-            vertices[25] = [2.50, 4.95]
-            vertices[26] = [2.08, 4.94]
-            vertices[27] = [1.67, 4.875]
-            vertices[28] = [1.33, 4.69]
-            vertices[29] = [0.92, 4.06]
-
-            vertices[30] = [1.17, 3.185]
-            vertices[31] = [1.50, 1.94]
-            vertices[32] = [1.60, 1.50]
-            vertices[33] = [1.83, 1.125]
-            vertices[34] = [2.17, 0.885]
+            vertices[0] = [2.91000, 0.68319]
+            vertices[1] = [3.32000, 0.68334]
+            vertices[2] = [3.42000, 0.68337]
+            vertices[3] = [3.63000, 0.68345]
+            vertices[4] = [4.19000, 0.68365]
+            vertices[5] = [4.50000, 0.68376]
+            vertices[6] = [4.55000, 0.68378]
+            vertices[7] = [5.32000, 0.68405]
+            vertices[8] = [5.42000, 0.68409]
+            vertices[9] = [5.78000, 0.68422]
+            vertices[10] = [6.28975, 0.69214]
+            vertices[11] = [6.46091, 0.71231]
+            vertices[12] = [6.51370, 0.72103]
+            vertices[13] = [6.70429, 0.79960]
+            vertices[14] = [6.83628, 0.88170]
+            vertices[15] = [6.99166, 1.00627]
+            vertices[16] = [7.11421, 1.16932]
+            vertices[17] = [7.16583, 1.26343]
+            vertices[18] = [7.28002, 1.76283]
+            vertices[19] = [7.27289, 1.81324]
+            vertices[20] = [7.26596, 1.86226]
+            vertices[21] = [7.10457, 2.30149]
+            vertices[22] = [7.01175, 2.41926]
+            vertices[23] = [6.72727, 2.64749]
+            vertices[24] = [6.53692, 2.72664]
+            vertices[25] = [6.07980, 2.77336]
+            vertices[26] = [5.91981, 2.77201]
+            vertices[27] = [5.71983, 2.77031]
+            vertices[28] = [5.67000, 2.76989]
+            vertices[29] = [5.20003, 2.76591]
+            vertices[30] = [5.04988, 2.76464]
+            vertices[31] = [5.00203, 2.76898]
+            vertices[32] = [4.94271, 2.77533]
+            vertices[33] = [4.56134, 2.89832]
+            vertices[34] = [4.25853, 3.16696]
+            vertices[35] = [4.09273, 3.37037]
+            vertices[36] = [4.00112, 3.48276]
+            vertices[37] = [3.77400, 3.76141]
+            vertices[38] = [3.68239, 3.87380]
+            vertices[39] = [3.54906, 4.03738]
+            vertices[40] = [3.27585, 4.33330]
+            vertices[41] = [3.19115, 4.38568]
+            vertices[42] = [3.09549, 4.43592]
+            vertices[43] = [2.95497, 4.48441]
+            vertices[44] = [2.80898, 4.50004]
+            vertices[45] = [2.81100, 4.49983]
+            vertices[46] = [2.50033, 4.49872]
+            vertices[47] = [2.24938, 4.49143]
+            vertices[48] = [1.99018, 4.48390]
+            vertices[49] = [1.73952, 4.47662]
+            vertices[50] = [1.18712, 4.39179]
+            vertices[51] = [1.10544, 4.34023]
+            vertices[52] = [0.73162, 3.81966]
+            vertices[53] = [0.70805, 3.52960]
+            vertices[54] = [0.87473, 2.72512]
+            vertices[55] = [0.88631, 2.66924]
+            vertices[56] = [0.91810, 2.51582]
+            vertices[57] = [0.93804, 2.41959]
+            vertices[58] = [1.02121, 2.01818]
+            vertices[59] = [1.04306, 1.91271]
+            vertices[60] = [1.09363, 1.66868]
+            vertices[61] = [1.21972, 1.16989]
+            vertices[62] = [1.24046, 1.11821]
+            vertices[63] = [1.28661, 1.02702]
+            vertices[64] = [1.31953, 0.98959]
+            vertices[65] = [1.38974, 0.90977]
+            vertices[66] = [1.45639, 0.84353]
+            vertices[67] = [1.49964, 0.81936]
+            vertices[68] = [2.04000, 0.68288]
+            vertices[69] = [2.75000, 0.68314]
 
     def get_closest_waypoint(self):
         res = 0

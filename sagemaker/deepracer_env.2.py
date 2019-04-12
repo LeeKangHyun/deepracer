@@ -99,8 +99,12 @@ class DeepRacerEnv(gym.Env):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
 
-        print('Total Reward Reward=%.2f' % self.reward_in_episode,
-              'Total Steps=%.2f' % self.steps)
+        # print('Total Reward Reward=%.2f' % self.reward_in_episode,
+        #       'Total Steps=%.2f' % self.steps)
+
+        print('Episodes=%d' % self.episodes,
+              'Total Steps=%d' % self.steps,
+              'Total Reward=%.2f' % self.reward_in_episode)
 
         self.send_reward_to_cloudwatch(self.reward_in_episode)
 
@@ -152,8 +156,8 @@ class DeepRacerEnv(gym.Env):
             modelState.pose.position.x = -1.44
             modelState.pose.position.y = -0.06
         elif self.world_name.startswith(HARD_TRACK_WORLD):
-            modelState.pose.position.x = 1.75
-            modelState.pose.position.y = 0.6
+            modelState.pose.position.x = 2.911
+            modelState.pose.position.y = 0.683
 
             def toQuaternion(pitch, roll, yaw):
                 cy = np.cos(yaw * 0.5)
@@ -257,15 +261,15 @@ class DeepRacerEnv(gym.Env):
                 else:
                     return [c-1, c]
 
-        def is_range(yaw, suggest, allow):
+        def is_range(yaw, angle, allow):
             in_range = False
-            if suggest > (math.pi - allow) or suggest < (math.pi * -1) + allow:
-                if yaw <= math.pi and yaw >= (suggest - allow):
+            if angle > (math.pi - allow) or angle < (math.pi * -1) + allow:
+                if yaw <= math.pi and yaw >= (angle - allow):
                     in_range = True
-                elif yaw >= (math.pi * -1) and yaw <= (suggest + allow):
+                elif yaw >= (math.pi * -1) and yaw <= (angle + allow):
                     in_range = True
             else:
-                if yaw >= (suggest - allow) and yaw <= (suggest + allow):
+                if yaw >= (angle - allow) and yaw <= (angle + allow):
                     in_range = True
             return in_range
 
@@ -283,25 +287,29 @@ class DeepRacerEnv(gym.Env):
             'steps' : steps,
             'speed' : throttle,
             'steering_angle' : steering,
-            'track_width' : track_width,
-            'waypoints' : waypoints,
-            'closest_waypoints' : closest_waypoints
+            'track_width' : track_width
+            # 'closest_waypoints' : closest_waypoints,
+            # 'waypoints' : waypoints
         }
 
+        MAX_ANGLE = 10
+        MIN_SPEED = 5 * 0.5
+
+        speed = params['speed']
         heading = params['heading']
         track_width = params['track_width']
         distance_from_center = params['distance_from_center']
-        closest_waypoints = params['closest_waypoints']
-        waypoints = params['waypoints']
+        # closest_waypoints = params['closest_waypoints']
+        # waypoints = params['waypoints']
 
         distance_rate = distance_from_center / track_width
 
         coor1 = waypoints[closest_waypoints[0]]
         coor2 = waypoints[closest_waypoints[1]]
-        suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+        angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
         yaw = math.radians(heading)
-        allow = math.radians(15)
-        in_range = is_range(yaw, suggest, allow)
+        allow = math.radians(MAX_ANGLE)
+        in_range = is_range(yaw, angle, allow)
 
         reward = 0.001
 
@@ -318,9 +326,12 @@ class DeepRacerEnv(gym.Env):
         elif distance_rate <= 0.4:
             reward = 0.1
 
+        if speed < MIN_SPEED:
+            reward *= 0.5
+
         params['log_key'] = 'mat5'
         params['yaw'] = yaw
-        params['suggest'] = suggest
+        params['angle'] = angle
         params['in_range'] = in_range
         params['reward'] = reward
         print(json.dumps(params))
@@ -383,10 +394,15 @@ class DeepRacerEnv(gym.Env):
             #smooth
             #if self.action_taken == self.prev_action:
             #    reward += 0.5
+
             self.prev_action = self.action_taken
 
-        print('Step No=%.2f' % self.steps,
-              'Step Reward=%.2f' % reward)
+        # print('Step No=%.2f' % self.steps,
+        #       'Step Reward=%.2f' % reward)
+
+        print('Episodes=%d' % self.episodes,
+              'This Steps=%d' % self.steps,
+              'This Reward=%.2f' % reward)
 
         self.reward_in_episode += reward
         self.reward = reward
@@ -446,80 +462,79 @@ class DeepRacerEnv(gym.Env):
             vertices[1][0] =  1.08;   vertices[1][1] = -0.05;
 
         else:
-            self.waypoints = vertices = np.zeros((71, 2))
+            self.waypoints = vertices = np.zeros((70, 2))
             self.road_width = 0.44
 
-            vertices[0] = [2.909995283569139,0.6831924746239328]
-            vertices[1] = [3.3199952311658905,0.6833390533713652]
-            vertices[2] = [3.41999521838461,0.6833748042853732]
-            vertices[3] = [3.6300023417267235,0.6834498837610459]
-            vertices[4] = [4.189995119968753,0.6836500863232341]
-            vertices[5] = [4.500002230529587,0.6837609167129147]
-            vertices[6] = [4.549995073956144,0.6837787896136626]
-            vertices[7] = [5.320002125723089,0.6840540742077795]
-            vertices[8] = [5.420002112941809,0.6840898251217875]
-            vertices[9] = [5.7800020669292005,0.684218528412216]
-            vertices[10] = [6.289747858140073,0.6921400142174]
-            vertices[11] = [6.460906484698166,0.7123063542781353]
-            vertices[12] = [6.5136980596947165,0.7210294115664316]
-            vertices[13] = [6.704287871536597,0.799598672280553]
-            vertices[14] = [6.836281775656231,0.8817004790362547]
-            vertices[15] = [6.991663362669656,1.0062653214908401]
-            vertices[16] = [7.1142074641408275,1.1693225137564909]
-            vertices[17] = [7.165830682349035,1.263426756737598]
-            vertices[18] = [7.280019741788613,1.7628308313393968]
-            vertices[19] = [7.272892208655982,1.8132370038722583]
-            vertices[20] = [7.265960701310593,1.8622568749360433]
-            vertices[21] = [7.1045747673751585,2.3014874894475916]
-            vertices[22] = [7.011749008840918,2.419260292916218]
-            vertices[23] = [6.727273712845888,2.6474924751765463]
-            vertices[24] = [6.536921216759571,2.7266447610626687]
-            vertices[25] = [6.079802178702642,2.773360773339069]
-            vertices[26] = [5.919813651266964,2.772005974951175]
-            vertices[27] = [5.719827991972368,2.7703124769663074]
-            vertices[28] = [5.670000926947205,2.7698905365406308]
-            vertices[29] = [5.200034627604903,2.765910816276192]
-            vertices[30] = [5.049876033335467,2.7646392587170006]
-            vertices[31] = [5.002030872389276,2.768980714618128]
-            vertices[32] = [4.942709994269048,2.775327848322301]
-            vertices[33] = [4.561340171137485,2.898322513024676]
-            vertices[34] = [4.258533108743229,3.166955220685885]
-            vertices[35] = [4.092728535429521,3.3703748558215287]
-            vertices[36] = [4.001121969780925,3.482763638518189]
-            vertices[37] = [3.774000078716213,3.761411273431655]
-            vertices[38] = [3.6823935130676184,3.8738000561283137]
-            vertices[39] = [3.5490587458571623,4.037383660336441]
-            vertices[40] = [3.2758532950668884,4.333295323360169]
-            vertices[41] = [3.1911463583891155,4.385684825652305]
-            vertices[42] = [3.0954945192403103,4.435922305057415]
-            vertices[43] = [2.9549738926202442,4.484413606024224]
-            vertices[44] = [2.8089822299540046,4.500038654567632]
-            vertices[45] = [2.8110045575773057,4.499832029419236]
-            vertices[46] = [2.5003276964136627,4.498718163592657]
-            vertices[47] = [2.249377566090162,4.491428972830993]
-            vertices[48] = [1.990177178741659,4.483900142037221]
-            vertices[49] = [1.7395172672798365,4.476619381080485]
-            vertices[50] = [1.1871156114665855,4.391792930201858]
-            vertices[51] = [1.1054389398706574,4.3402307341807065]
-            vertices[52] = [0.7316196323127645,3.819658838269335]
-            vertices[53] = [0.7080468873794841,3.5295953182618844]
-            vertices[54] = [0.8747319412102282,2.7251244177375193]
-            vertices[55] = [0.8863119620897287,2.6692358445815714]
-            vertices[56] = [0.9180990438541362,2.5158220758940644]
-            vertices[57] = [0.9380374746317692,2.4195933679559642]
-            vertices[58] = [1.0212099341560652,2.0181787127447155]
-            vertices[59] = [1.043063552869095,1.912706746772055]
-            vertices[60] = [1.0936256517149223,1.6686792454688633]
-            vertices[61] = [1.219724413480236,1.169889412099395]
-            vertices[62] = [1.2404620134668318,1.1182110370035536]
-            vertices[63] = [1.286611404297767,1.0270193376917442]
-            vertices[64] = [1.3195344250237366,0.9895904728963364]
-            vertices[65] = [1.3897426105955222,0.9097735962139227]
-            vertices[66] = [1.4563853812178036,0.8435308547287804]
-            vertices[67] = [1.4996428710531535,0.8193608401945228]
-            vertices[68] = [2.0400025449490777,0.6828814442283201]
-            vertices[69] = [2.7500024542019887,0.6831352757177762]
-            vertices[70] = [2.909995283569139,0.6831924746239328]
+            vertices[0] = [2.91000, 0.68319]
+            vertices[1] = [3.32000, 0.68334]
+            vertices[2] = [3.42000, 0.68337]
+            vertices[3] = [3.63000, 0.68345]
+            vertices[4] = [4.19000, 0.68365]
+            vertices[5] = [4.50000, 0.68376]
+            vertices[6] = [4.55000, 0.68378]
+            vertices[7] = [5.32000, 0.68405]
+            vertices[8] = [5.42000, 0.68409]
+            vertices[9] = [5.78000, 0.68422]
+            vertices[10] = [6.28975, 0.69214]
+            vertices[11] = [6.46091, 0.71231]
+            vertices[12] = [6.51370, 0.72103]
+            vertices[13] = [6.70429, 0.79960]
+            vertices[14] = [6.83628, 0.88170]
+            vertices[15] = [6.99166, 1.00627]
+            vertices[16] = [7.11421, 1.16932]
+            vertices[17] = [7.16583, 1.26343]
+            vertices[18] = [7.28002, 1.76283]
+            vertices[19] = [7.27289, 1.81324]
+            vertices[20] = [7.26596, 1.86226]
+            vertices[21] = [7.10457, 2.30149]
+            vertices[22] = [7.01175, 2.41926]
+            vertices[23] = [6.72727, 2.64749]
+            vertices[24] = [6.53692, 2.72664]
+            vertices[25] = [6.07980, 2.77336]
+            vertices[26] = [5.91981, 2.77201]
+            vertices[27] = [5.71983, 2.77031]
+            vertices[28] = [5.67000, 2.76989]
+            vertices[29] = [5.20003, 2.76591]
+            vertices[30] = [5.04988, 2.76464]
+            vertices[31] = [5.00203, 2.76898]
+            vertices[32] = [4.94271, 2.77533]
+            vertices[33] = [4.56134, 2.89832]
+            vertices[34] = [4.25853, 3.16696]
+            vertices[35] = [4.09273, 3.37037]
+            vertices[36] = [4.00112, 3.48276]
+            vertices[37] = [3.77400, 3.76141]
+            vertices[38] = [3.68239, 3.87380]
+            vertices[39] = [3.54906, 4.03738]
+            vertices[40] = [3.27585, 4.33330]
+            vertices[41] = [3.19115, 4.38568]
+            vertices[42] = [3.09549, 4.43592]
+            vertices[43] = [2.95497, 4.48441]
+            vertices[44] = [2.80898, 4.50004]
+            vertices[45] = [2.81100, 4.49983]
+            vertices[46] = [2.50033, 4.49872]
+            vertices[47] = [2.24938, 4.49143]
+            vertices[48] = [1.99018, 4.48390]
+            vertices[49] = [1.73952, 4.47662]
+            vertices[50] = [1.18712, 4.39179]
+            vertices[51] = [1.10544, 4.34023]
+            vertices[52] = [0.73162, 3.81966]
+            vertices[53] = [0.70805, 3.52960]
+            vertices[54] = [0.87473, 2.72512]
+            vertices[55] = [0.88631, 2.66924]
+            vertices[56] = [0.91810, 2.51582]
+            vertices[57] = [0.93804, 2.41959]
+            vertices[58] = [1.02121, 2.01818]
+            vertices[59] = [1.04306, 1.91271]
+            vertices[60] = [1.09363, 1.66868]
+            vertices[61] = [1.21972, 1.16989]
+            vertices[62] = [1.24046, 1.11821]
+            vertices[63] = [1.28661, 1.02702]
+            vertices[64] = [1.31953, 0.98959]
+            vertices[65] = [1.38974, 0.90977]
+            vertices[66] = [1.45639, 0.84353]
+            vertices[67] = [1.49964, 0.81936]
+            vertices[68] = [2.04000, 0.68288]
+            vertices[69] = [2.75000, 0.68314]
 
     def get_closest_waypoint(self):
         res = 0
@@ -566,17 +581,17 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
     def __init__(self):
         DeepRacerEnv.__init__(self)
 
-        self.action_space = spaces.Discrete(6)
+        self.action_space = spaces.Discrete(15)
 
     def step(self, action):
 
         # Convert discrete to continuous
-        throttle = 1.0
+        throttle = 5.0
         throttle_multiplier = 0.8
         throttle = throttle * throttle_multiplier
         steering_angle = 0.8
 
-        self.throttle, self.steering_angle = self.default_6_actions(throttle, steering_angle, action)
+        self.throttle, self.steering_angle = self.two_steering_three_throttle_15_states(throttle, steering_angle, action)
 
         self.action_taken = action
 
