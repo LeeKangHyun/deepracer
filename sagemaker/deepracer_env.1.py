@@ -321,7 +321,7 @@ class DeepRacerEnv(gym.Env):
                                           self.total_progress, self.steps, throttle, steering_angle, self.road_width,
                                           list(self.waypoints), self.get_closest_waypoint())
 
-            in_range = self.is_suggest_range(suggest_radians, math.radians(30))
+            in_range = self.is_suggest_range(suggest_radians, math.radians(15))
 
             # reward += 0.5  # reward bonus for surviving
 
