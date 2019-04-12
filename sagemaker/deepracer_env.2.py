@@ -46,6 +46,7 @@ SLEEP_AFTER_RESET_TIME_IN_SECOND = 0.5
 SLEEP_BETWEEN_ACTION_AND_REWARD_CALCULATION_TIME_IN_SECOND = 0.1
 SLEEP_WAITING_FOR_IMAGE_TIME_IN_SECOND = 0.01
 
+
 ### Gym Env ###
 class DeepRacerEnv(gym.Env):
     def __init__(self):
@@ -97,8 +98,10 @@ class DeepRacerEnv(gym.Env):
     def reset(self):
         if node_type == SAGEMAKER_TRAINING_WORKER:
             return self.observation_space.sample()
+
         print('Total Reward Reward=%.2f' % self.reward_in_episode,
               'Total Steps=%.2f' % self.steps)
+
         self.send_reward_to_cloudwatch(self.reward_in_episode)
 
         self.reward_in_episode = 0
@@ -224,13 +227,113 @@ class DeepRacerEnv(gym.Env):
 
     def reward_function(self, on_track, x, y, distance_from_center, car_orientation, progress, steps,
                         throttle, steering, track_width, waypoints, closest_waypoints):
-        if distance_from_center >= 0.0 and distance_from_center <= 0.02:
-            return 1.0
-        elif distance_from_center >= 0.02 and distance_from_center <= 0.03:
-            return 0.3
-        elif distance_from_center >= 0.03 and distance_from_center <= 0.05:
-            return 0.1
-        return 1e-3  # like crashed
+        import json
+        import math
+
+        def calculate_distance(x1, x2, y1, y2):
+            return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
+
+        def get_closest_waypoints(w, c, x, y):
+            z = len(w) - 1
+            if c == 0:
+                p1 = calculate_distance(w[z][0], x, w[z][1], y)
+                p2 = calculate_distance(w[1][0], x, w[1][1], y)
+                if p1 > p2:
+                    return [c, 1]
+                else:
+                    return [z, c]
+            elif c == z:
+                p1 = calculate_distance(w[z-1][0], x, w[z-1][1], y)
+                p2 = calculate_distance(w[0][0], x, w[0][1], y)
+                if p1 > p2:
+                    return [c, 0]
+                else:
+                    return [z-1, c]
+            else:
+                p1 = calculate_distance(w[c-1][0], x, w[c-1][1], y)
+                p2 = calculate_distance(w[c+1][0], x, w[c+1][1], y)
+                if p1 > p2:
+                    return [c, c+1]
+                else:
+                    return [c-1, c]
+
+        def is_range(yaw, suggest, allow):
+            in_range = False
+            if suggest > (math.pi - allow) or suggest < (math.pi * -1) + allow:
+                if yaw <= math.pi and yaw >= (suggest - allow):
+                    in_range = True
+                elif yaw >= (math.pi * -1) and yaw <= (suggest + allow):
+                    in_range = True
+            else:
+                if yaw >= (suggest - allow) and yaw <= (suggest + allow):
+                    in_range = True
+            return in_range
+
+        closest_waypoints = get_closest_waypoints(waypoints, closest_waypoints, x, y)
+        heading = math.cos(car_orientation)
+        params = {
+            'all_wheels_on_track' : on_track,
+            'x' : x,
+            'y' : y,
+            'distance_from_center' : distance_from_center,
+            'is_left_of_center' : False,
+            'is_reversed' : False,
+            'heading' : heading,
+            'progress' : progress,
+            'steps' : steps,
+            'speed' : throttle,
+            'steering_angle' : steering,
+            'track_width' : track_width,
+            'waypoints' : waypoints,
+            'closest_waypoints' : closest_waypoints
+        }
+
+        heading = params['heading']
+        track_width = params['track_width']
+        distance_from_center = params['distance_from_center']
+        closest_waypoints = params['closest_waypoints']
+        waypoints = params['waypoints']
+
+        distance_rate = distance_from_center / track_width
+
+        coor1 = waypoints[closest_waypoints[0]]
+        coor2 = waypoints[closest_waypoints[1]]
+        suggest = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+        yaw = math.radians(heading)
+        allow = math.radians(15)
+        in_range = is_range(yaw, suggest, allow)
+
+        reward = 0.001
+
+        if distance_rate <= 0.1:
+            reward = 1.0
+
+            if in_range:
+                reward += 0.3
+            else:
+                reward -= 0.2
+
+        elif distance_rate <= 0.2:
+            reward = 0.5
+        elif distance_rate <= 0.4:
+            reward = 0.1
+
+        params['log_key'] = 'mat5'
+        params['yaw'] = yaw
+        params['suggest'] = suggest
+        params['in_range'] = in_range
+        params['reward'] = reward
+        print(json.dumps(params))
+
+        return float(reward)
+
+        # if distance_from_center >= 0.0 and distance_from_center <= 0.02:
+        #     return 1.0
+        # elif distance_from_center >= 0.02 and distance_from_center <= 0.03:
+        #     return 0.3
+        # elif distance_from_center >= 0.03 and distance_from_center <= 0.05:
+        #     return 0.1
+        # return 1e-3  # like crashed
 
     def infer_reward_state(self, steering_angle, throttle):
         # Wait till we have a image from the camera
@@ -244,7 +347,6 @@ class DeepRacerEnv(gym.Env):
         # resize image ans perform anti-aliasing
         image = image.resize(TRAINING_IMAGE_SIZE, resample=2).convert("RGB")
         state = np.array(image)
-
 
         #total_progress = self.progress - self.progress_at_beginning_of_race
         #self.prev_progress = total_progress
@@ -336,44 +438,88 @@ class DeepRacerEnv(gym.Env):
             vertices[5][0] = -1.25; vertices[5][1] = -2.30;
             vertices[6][0] = -1.67; vertices[6][1] = -1.64;
             vertices[7][0] = -1.73; vertices[7][1] = 1.63;
+
         elif self.world_name.startswith(EASY_TRACK_WORLD):
             self.waypoints = vertices = np.zeros((2, 2))
             self.road_width = 0.90
             vertices[0][0] = -1.08;   vertices[0][1] = -0.05;
             vertices[1][0] =  1.08;   vertices[1][1] = -0.05;
+
         else:
-            self.waypoints = vertices = np.zeros((30, 2))
+            self.waypoints = vertices = np.zeros((71, 2))
             self.road_width = 0.44
-            vertices[0][0] = 1.5;     vertices[0][1] = 0.58;
-            vertices[1][0] = 5.5;     vertices[1][1] = 0.58;
-            vertices[2][0] = 5.6;     vertices[2][1] = 0.6;
-            vertices[3][0] = 5.7;     vertices[3][1] = 0.65;
-            vertices[4][0] = 5.8;     vertices[4][1] = 0.7;
-            vertices[5][0] = 5.9;     vertices[5][1] = 0.8;
-            vertices[6][0] = 6.0;     vertices[6][1] = 0.9;
-            vertices[7][0] = 6.08;    vertices[7][1] = 1.1;
-            vertices[8][0] = 6.1;     vertices[8][1] = 1.2;
-            vertices[9][0] = 6.1;     vertices[9][1] = 1.3;
-            vertices[10][0] = 6.1;    vertices[10][1] = 1.4;
-            vertices[11][0] = 6.07;   vertices[11][1] = 1.5;
-            vertices[12][0] = 6.05;   vertices[12][1] = 1.6;
-            vertices[13][0] = 6;      vertices[13][1] = 1.7;
-            vertices[14][0] = 5.9;    vertices[14][1] = 1.8;
-            vertices[15][0] = 5.75;   vertices[15][1] = 1.9;
-            vertices[16][0] = 5.6;    vertices[16][1] = 2.0;
-            vertices[17][0] = 4.2;    vertices[17][1] = 2.02;
-            vertices[18][0] = 4;      vertices[18][1] = 2.1;
-            vertices[19][0] = 2.6;    vertices[19][1] = 3.92;
-            vertices[20][0] = 2.4;    vertices[20][1] = 4;
-            vertices[21][0] = 1.2;    vertices[21][1] = 3.95;
-            vertices[22][0] = 1.1;    vertices[22][1] = 3.92;
-            vertices[23][0] = 1;      vertices[23][1] = 3.88;
-            vertices[24][0] = 0.8;    vertices[24][1] = 3.72;
-            vertices[25][0] = 0.6;    vertices[25][1] = 3.4;
-            vertices[26][0] = 0.58;   vertices[26][1] = 3.3;
-            vertices[27][0] = 0.57;   vertices[27][1] = 3.2;
-            vertices[28][0] = 1;      vertices[28][1] = 1;
-            vertices[29][0] = 1.25;   vertices[29][1] = 0.7;
+
+            vertices[0] = [2.909995283569139,0.6831924746239328]
+            vertices[1] = [3.3199952311658905,0.6833390533713652]
+            vertices[2] = [3.41999521838461,0.6833748042853732]
+            vertices[3] = [3.6300023417267235,0.6834498837610459]
+            vertices[4] = [4.189995119968753,0.6836500863232341]
+            vertices[5] = [4.500002230529587,0.6837609167129147]
+            vertices[6] = [4.549995073956144,0.6837787896136626]
+            vertices[7] = [5.320002125723089,0.6840540742077795]
+            vertices[8] = [5.420002112941809,0.6840898251217875]
+            vertices[9] = [5.7800020669292005,0.684218528412216]
+            vertices[10] = [6.289747858140073,0.6921400142174]
+            vertices[11] = [6.460906484698166,0.7123063542781353]
+            vertices[12] = [6.5136980596947165,0.7210294115664316]
+            vertices[13] = [6.704287871536597,0.799598672280553]
+            vertices[14] = [6.836281775656231,0.8817004790362547]
+            vertices[15] = [6.991663362669656,1.0062653214908401]
+            vertices[16] = [7.1142074641408275,1.1693225137564909]
+            vertices[17] = [7.165830682349035,1.263426756737598]
+            vertices[18] = [7.280019741788613,1.7628308313393968]
+            vertices[19] = [7.272892208655982,1.8132370038722583]
+            vertices[20] = [7.265960701310593,1.8622568749360433]
+            vertices[21] = [7.1045747673751585,2.3014874894475916]
+            vertices[22] = [7.011749008840918,2.419260292916218]
+            vertices[23] = [6.727273712845888,2.6474924751765463]
+            vertices[24] = [6.536921216759571,2.7266447610626687]
+            vertices[25] = [6.079802178702642,2.773360773339069]
+            vertices[26] = [5.919813651266964,2.772005974951175]
+            vertices[27] = [5.719827991972368,2.7703124769663074]
+            vertices[28] = [5.670000926947205,2.7698905365406308]
+            vertices[29] = [5.200034627604903,2.765910816276192]
+            vertices[30] = [5.049876033335467,2.7646392587170006]
+            vertices[31] = [5.002030872389276,2.768980714618128]
+            vertices[32] = [4.942709994269048,2.775327848322301]
+            vertices[33] = [4.561340171137485,2.898322513024676]
+            vertices[34] = [4.258533108743229,3.166955220685885]
+            vertices[35] = [4.092728535429521,3.3703748558215287]
+            vertices[36] = [4.001121969780925,3.482763638518189]
+            vertices[37] = [3.774000078716213,3.761411273431655]
+            vertices[38] = [3.6823935130676184,3.8738000561283137]
+            vertices[39] = [3.5490587458571623,4.037383660336441]
+            vertices[40] = [3.2758532950668884,4.333295323360169]
+            vertices[41] = [3.1911463583891155,4.385684825652305]
+            vertices[42] = [3.0954945192403103,4.435922305057415]
+            vertices[43] = [2.9549738926202442,4.484413606024224]
+            vertices[44] = [2.8089822299540046,4.500038654567632]
+            vertices[45] = [2.8110045575773057,4.499832029419236]
+            vertices[46] = [2.5003276964136627,4.498718163592657]
+            vertices[47] = [2.249377566090162,4.491428972830993]
+            vertices[48] = [1.990177178741659,4.483900142037221]
+            vertices[49] = [1.7395172672798365,4.476619381080485]
+            vertices[50] = [1.1871156114665855,4.391792930201858]
+            vertices[51] = [1.1054389398706574,4.3402307341807065]
+            vertices[52] = [0.7316196323127645,3.819658838269335]
+            vertices[53] = [0.7080468873794841,3.5295953182618844]
+            vertices[54] = [0.8747319412102282,2.7251244177375193]
+            vertices[55] = [0.8863119620897287,2.6692358445815714]
+            vertices[56] = [0.9180990438541362,2.5158220758940644]
+            vertices[57] = [0.9380374746317692,2.4195933679559642]
+            vertices[58] = [1.0212099341560652,2.0181787127447155]
+            vertices[59] = [1.043063552869095,1.912706746772055]
+            vertices[60] = [1.0936256517149223,1.6686792454688633]
+            vertices[61] = [1.219724413480236,1.169889412099395]
+            vertices[62] = [1.2404620134668318,1.1182110370035536]
+            vertices[63] = [1.286611404297767,1.0270193376917442]
+            vertices[64] = [1.3195344250237366,0.9895904728963364]
+            vertices[65] = [1.3897426105955222,0.9097735962139227]
+            vertices[66] = [1.4563853812178036,0.8435308547287804]
+            vertices[67] = [1.4996428710531535,0.8193608401945228]
+            vertices[68] = [2.0400025449490777,0.6828814442283201]
+            vertices[69] = [2.7500024542019887,0.6831352757177762]
+            vertices[70] = [2.909995283569139,0.6831924746239328]
 
     def get_closest_waypoint(self):
         res = 0
@@ -427,7 +573,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         # Convert discrete to continuous
         throttle = 1.0
         throttle_multiplier = 0.8
-        throttle = throttle*throttle_multiplier
+        throttle = throttle * throttle_multiplier
         steering_angle = 0.8
 
         self.throttle, self.steering_angle = self.default_6_actions(throttle, steering_angle, action)
@@ -451,7 +597,8 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
             steering_angle = -0.2
         elif action == 5:  # slow straight
             steering_angle = 0
-            throttle = throttle/2
+            throttle = throttle / 2
+
         else:  # should not be here
             raise ValueError("Invalid action")
 
@@ -479,7 +626,6 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
 
         return throttle, steering_angle
 
-
     def two_steering_two_throttle_10_states(self,throttle_, steering_angle_, action):
         if action == 0:  # move left
             steering_angle = 1 * steering_angle_
@@ -496,6 +642,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
         elif action == 4:  # straight
             steering_angle = 0
             throttle = throttle_
+
         elif action == 5:  # move left
             steering_angle = 1 * steering_angle_
             throttle = throttle_ * 0.5
@@ -517,7 +664,6 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
 
         return throttle, steering_angle
 
-
     def two_steering_three_throttle_15_states(self,throttle_, steering_angle_, action):
 
         # Convert discrete to continuous
@@ -537,7 +683,6 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
             steering_angle = 0
             throttle = throttle_
 
-
         elif action == 5:  # move left
             steering_angle = steering_angle_
             throttle = 0.5 * throttle_
@@ -552,7 +697,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
             throttle = 0.5 * throttle_
         elif action == 9:  # slow straight
             steering_angle = 0
-            throttle = throttle_ *0.5
+            throttle = throttle_ * 0.5
 
         elif action == 10:  # move left
             steering_angle = 1 * steering_angle_
