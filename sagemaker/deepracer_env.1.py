@@ -323,6 +323,11 @@ class DeepRacerEnv(gym.Env):
 
             in_range = self.is_suggest_range(suggest_radians, math.radians(15))
 
+            if in_range == True:
+                reward += 0.3
+            else:
+                reward -= 0.2
+
             # reward += 0.5  # reward bonus for surviving
 
             # smooth
