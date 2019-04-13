@@ -31,9 +31,9 @@ TRAINING_IMAGE_SIZE = (160, 120)
 FINISH_LINE = 100
 
 # NALBAM CONFIG
-MAX_SPEED = 3.0
+MAX_SPEED = 3
 MIN_SPEED = MAX_SPEED * 0.5
-MAX_ANGLE = 10.0
+MAX_ANGLE = 10
 
 # REWARD ENUM
 CRASHED = 0
@@ -338,7 +338,7 @@ class DeepRacerEnv(gym.Env):
         if speed < MIN_SPEED:
             reward *= 0.8
 
-        params['log_key'] = 'mat5'
+        params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
         params['yaw'] = yaw
         params['angle'] = angle
         params['in_range'] = in_range

@@ -5,8 +5,9 @@ def reward_function(params):
     import json
     import math
 
+    MAX_SPEED = 5
+    MIN_SPEED = MAX_SPEED * 0.5
     MAX_ANGLE = 10
-    MIN_SPEED = 5 * 0.5
 
     def is_range(yaw, angle, allow):
         in_range = False
@@ -51,10 +52,10 @@ def reward_function(params):
     elif distance_rate <= 0.4:
         reward = 0.1
 
-    if speed < MIN_SPEED:
-        reward *= 0.8
+    # if speed < MIN_SPEED:
+    #     reward *= 0.8
 
-    params['log_key'] = 'mat5'
+    params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
     params['yaw'] = yaw
     params['angle'] = angle
     params['in_range'] = in_range
