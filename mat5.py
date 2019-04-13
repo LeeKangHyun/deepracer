@@ -56,8 +56,11 @@ def reward_function(params):
     elif distance_rate <= 0.4:
         reward = 0.1
 
-    if CHK_SPEED and speed < MIN_SPEED:
-        reward *= 0.8
+    if CHK_SPEED:
+       if speed > MIN_SPEED:
+            reward += 0.33
+        else:
+            reward -= 0.22
 
     params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
     params['yaw'] = yaw

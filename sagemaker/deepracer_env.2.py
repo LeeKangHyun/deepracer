@@ -77,7 +77,8 @@ class DeepRacerEnv(gym.Env):
         self.closest_waypoint_index = 0
 
         # actions -> steering angle, throttle
-        self.action_space = spaces.Box(low=np.array([-1, 0]), high=np.array([+1, +1]), dtype=np.float32)
+        self.action_space = spaces.Box(low=np.array(
+            [-1, 0]), high=np.array([+1, +1]), dtype=np.float32)
 
         # given image from simulator
         self.observation_space = spaces.Box(low=0, high=255,
@@ -87,12 +88,14 @@ class DeepRacerEnv(gym.Env):
             # ROS initialization
             self.ack_publisher = rospy.Publisher('/vesc/low_level/ackermann_cmd_mux/output',
                                                  AckermannDriveStamped, queue_size=100)
-            self.racecar_service = rospy.ServiceProxy('/gazebo/set_model_state', SetModelState)
+            self.racecar_service = rospy.ServiceProxy(
+                '/gazebo/set_model_state', SetModelState)
             rospy.init_node('rl_coach', anonymous=True)
 
             # Subscribe to ROS topics and register callbacks
             rospy.Subscriber('/progress', Progress, self.callback_progress)
-            rospy.Subscriber('/camera/zed/rgb/image_rect_color', sensor_image, self.callback_image)
+            rospy.Subscriber('/camera/zed/rgb/image_rect_color',
+                             sensor_image, self.callback_image)
             self.world_name = rospy.get_param('WORLD_NAME')
             self.set_waypoints()
             self.track_length = self.calculate_track_length()
@@ -124,9 +127,9 @@ class DeepRacerEnv(gym.Env):
         self.episodes += 1
         self.prev_progress = 0
         self.total_progress = 0
-        self.action_taken = 2 #straight
-        self.prev_action = 2 #straight
-        self.prev_closest_waypoint_index = 0 #always starts from first waypoint
+        self.action_taken = 2  # straight
+        self.prev_action = 2  # straight
+        self.prev_closest_waypoint_index = 0  # always starts from first waypoint
         self.closest_waypoint_index = 0
 
         # Reset car in Gazebo
@@ -147,7 +150,8 @@ class DeepRacerEnv(gym.Env):
         modelState.pose.orientation.x = 0
         modelState.pose.orientation.y = 0
         modelState.pose.orientation.z = 0
-        modelState.pose.orientation.w = 0  # Use this to randomize the orientation of the car
+        # Use this to randomize the orientation of the car
+        modelState.pose.orientation.w = 0
         modelState.twist.linear.x = 0
         modelState.twist.linear.y = 0
         modelState.twist.linear.z = 0
@@ -180,9 +184,9 @@ class DeepRacerEnv(gym.Env):
                 z = sy * cr * cp - cy * sr * sp
                 return [x, y, z, w]
 
-            #clockwise
+            # clockwise
             quaternion = toQuaternion(roll=0.0, pitch=0.0, yaw=np.pi)
-            #anti-clockwise
+            # anti-clockwise
             quaternion = toQuaternion(roll=0.0, pitch=0.0, yaw=0.0)
             modelState.pose.orientation.x = quaternion[0]
             modelState.pose.orientation.y = quaternion[1]
@@ -190,7 +194,8 @@ class DeepRacerEnv(gym.Env):
             modelState.pose.orientation.w = quaternion[3]
 
         else:
-            raise ValueError("Unknown simulation world: {}".format(self.world_name))
+            raise ValueError(
+                "Unknown simulation world: {}".format(self.world_name))
 
         self.racecar_service(modelState)
         time.sleep(SLEEP_AFTER_RESET_TIME_IN_SECOND)
@@ -287,21 +292,22 @@ class DeepRacerEnv(gym.Env):
         #     data = json.dumps(message)
         #     requests.post(url, json={'text': data}, headers={'Content-Type': 'application/json'})
 
-        closest_waypoints = get_closest_waypoints(waypoints, closest_waypoints, x, y)
+        closest_waypoints = get_closest_waypoints(
+            waypoints, closest_waypoints, x, y)
         heading = math.cos(car_orientation)
         params = {
-            'all_wheels_on_track' : on_track,
-            'x' : x,
-            'y' : y,
-            'distance_from_center' : distance_from_center,
-            'is_left_of_center' : False,
-            'is_reversed' : False,
-            'heading' : heading,
-            'progress' : progress,
-            'steps' : steps,
-            'speed' : throttle,
-            'steering_angle' : steering,
-            'track_width' : track_width
+            'all_wheels_on_track': on_track,
+            'x': x,
+            'y': y,
+            'distance_from_center': distance_from_center,
+            'is_left_of_center': False,
+            'is_reversed': False,
+            'heading': heading,
+            'progress': progress,
+            'steps': steps,
+            'speed': throttle,
+            'steering_angle': steering,
+            'track_width': track_width
             # 'closest_waypoints' : closest_waypoints,
             # 'waypoints' : waypoints
         }
@@ -338,8 +344,11 @@ class DeepRacerEnv(gym.Env):
         elif distance_rate <= 0.4:
             reward = 0.1
 
-        if CHK_SPEED and speed < MIN_SPEED:
-            reward *= 0.8
+        if CHK_SPEED:
+            if speed > MIN_SPEED:
+                reward += 0.33
+            else:
+                reward -= 0.22
 
         params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
         params['yaw'] = yaw
@@ -371,8 +380,8 @@ class DeepRacerEnv(gym.Env):
         image = image.resize(TRAINING_IMAGE_SIZE, resample=2).convert("RGB")
         state = np.array(image)
 
-        #total_progress = self.progress - self.progress_at_beginning_of_race
-        #self.prev_progress = total_progress
+        # total_progress = self.progress - self.progress_at_beginning_of_race
+        # self.prev_progress = total_progress
 
         # calculate the closest way point
         self.closest_waypoint_index = self.get_closest_waypoint()
@@ -388,7 +397,7 @@ class DeepRacerEnv(gym.Env):
         if on_track != 1:
             reward = CRASHED
             done = True
-        #elif total_progress >= FINISH_LINE:  # reached max waypoints
+        # elif total_progress >= FINISH_LINE:  # reached max waypoints
         #    print("Congratulations! You finished the race!")
         #    if self.steps == 0:
         #        reward = 0.0
@@ -403,8 +412,8 @@ class DeepRacerEnv(gym.Env):
 
             reward += 0.5 #reward bonus for surviving
 
-            #smooth
-            #if self.action_taken == self.prev_action:
+            # smooth
+            # if self.action_taken == self.prev_action:
             #    reward += 0.5
 
             self.prev_action = self.action_taken
