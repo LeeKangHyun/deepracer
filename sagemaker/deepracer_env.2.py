@@ -30,6 +30,11 @@ if node_type == SIMULATION_WORKER:
 TRAINING_IMAGE_SIZE = (160, 120)
 FINISH_LINE = 100
 
+# NALBAM CONFIG
+MAX_SPEED = 3.0
+MIN_SPEED = MAX_SPEED * 0.5
+MAX_ANGLE = 10
+
 # REWARD ENUM
 CRASHED = 0
 NO_PROGRESS = -1
@@ -273,6 +278,13 @@ class DeepRacerEnv(gym.Env):
                     in_range = True
             return in_range
 
+        # def slack(message):
+        #     import json
+        #     import requests
+        #     url = 'https://hooks.slack.com/services/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'
+        #     data = json.dumps(message)
+        #     requests.post(url, json={'text': data}, headers={'Content-Type': 'application/json'})
+
         closest_waypoints = get_closest_waypoints(waypoints, closest_waypoints, x, y)
         heading = math.cos(car_orientation)
         params = {
@@ -291,9 +303,6 @@ class DeepRacerEnv(gym.Env):
             # 'closest_waypoints' : closest_waypoints,
             # 'waypoints' : waypoints
         }
-
-        MAX_ANGLE = 10
-        MIN_SPEED = 5 * 0.5
 
         speed = params['speed']
         heading = params['heading']
@@ -586,7 +595,7 @@ class DeepRacerDiscreteEnv(DeepRacerEnv):
     def step(self, action):
 
         # Convert discrete to continuous
-        throttle = 5.0
+        throttle = MAX_SPEED
         throttle_multiplier = 0.8
         throttle = throttle * throttle_multiplier
         steering_angle = 0.8
