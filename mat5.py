@@ -5,7 +5,7 @@ def reward_function(params):
     import json
     import math
 
-    CHK_SPEED = False
+    CHK_SPEED = True
     MAX_SPEED = 5
     MIN_SPEED = MAX_SPEED * 0.5
 
@@ -57,7 +57,7 @@ def reward_function(params):
         reward = 0.1
 
     if CHK_SPEED:
-       if speed > MIN_SPEED:
+        if speed > MIN_SPEED:
             reward += 0.33
         else:
             reward -= 0.22
