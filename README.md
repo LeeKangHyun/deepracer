@@ -32,12 +32,6 @@ sudo pip3 install --upgrade Image
 
 ```
 fields steps, progress, reward, in_range, angle, yaw, heading, steering_angle, speed, x, y, distance_from_center, closest_waypoints, is_left_of_center, is_reversed
-| filter log_key == 'mat5' and reward > 0.9
+| filter log_key == 'mat-5-10' and reward > 0.9
 | order by @timestamp desc, steps desc
-```
-
-```
-fields episodes, steps, progress, reward, range, angle, yaw, heading, steering, throttle, x, y, distance, waypoint
-| filter log == 'NALBAM_LOG'
-| order by @timestamp desc, episodes desc, steps desc
 ```
