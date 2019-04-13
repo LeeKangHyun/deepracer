@@ -38,13 +38,15 @@ agent_params.network_wrappers['main'].optimizer_epsilon = 1e-5
 agent_params.network_wrappers['main'].adam_optimizer_beta2 = 0.999
 
 agent_params.algorithm.clip_likelihood_ratio_using_epsilon = 0.2
-agent_params.algorithm.clipping_decay_schedule = LinearSchedule(1.0, 0, 1000000)
+agent_params.algorithm.clipping_decay_schedule = LinearSchedule(
+    1.0, 0, 1000000)
 agent_params.algorithm.beta_entropy = 0.01  # also try 0.001
 agent_params.algorithm.gae_lambda = 0.95
-agent_params.algorithm.discount = 0.999
+agent_params.algorithm.discount = 0.9999
 agent_params.algorithm.optimization_epochs = 10
 agent_params.algorithm.estimate_state_value_using_gae = True
-agent_params.algorithm.num_steps_between_copying_online_weights_to_target = EnvironmentEpisodes(20)
+agent_params.algorithm.num_steps_between_copying_online_weights_to_target = EnvironmentEpisodes(
+    20)
 agent_params.algorithm.num_consecutive_playing_steps = EnvironmentEpisodes(20)
 agent_params.exploration = CategoricalParameters()
 
@@ -52,9 +54,12 @@ agent_params.exploration = CategoricalParameters()
 # Environment #
 ###############
 DeepRacerInputFilter = InputFilter(is_a_reference_filter=True)
-DeepRacerInputFilter.add_observation_filter('observation', 'to_grayscale', ObservationRGBToYFilter())
-DeepRacerInputFilter.add_observation_filter('observation', 'to_uint8', ObservationToUInt8Filter(0, 255))
-DeepRacerInputFilter.add_observation_filter('observation', 'stacking', ObservationStackingFilter(1))
+DeepRacerInputFilter.add_observation_filter(
+    'observation', 'to_grayscale', ObservationRGBToYFilter())
+DeepRacerInputFilter.add_observation_filter(
+    'observation', 'to_uint8', ObservationToUInt8Filter(0, 255))
+DeepRacerInputFilter.add_observation_filter(
+    'observation', 'stacking', ObservationStackingFilter(1))
 
 env_params = GymVectorEnvironment()
 env_params.default_input_filter = DeepRacerInputFilter
