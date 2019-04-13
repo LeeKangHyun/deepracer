@@ -336,7 +336,7 @@ class DeepRacerEnv(gym.Env):
             reward = 0.1
 
         if speed < MIN_SPEED:
-            reward *= 0.5
+            reward *= 0.8
 
         params['log_key'] = 'mat5'
         params['yaw'] = yaw
