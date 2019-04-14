@@ -6,15 +6,15 @@ def reward_function(params):
     LOG_ENABLED = False
 
     CHK_SPEED = False
-    CHK_ANGLE = False
     CHK_STEER = True
+    CHK_ANGLE = False
 
     MAX_SPEED = 5
     MIN_SPEED = MAX_SPEED * 0.5
 
-    MAX_ANGLE = 15
-
     MAX_STEER = 15
+
+    MAX_ANGLE = 15
 
     def is_range(yaw, angle, allow):
         in_range = False
@@ -57,20 +57,20 @@ def reward_function(params):
     if CHK_SPEED and speed > MIN_SPEED:
         reward *= 1.5
 
-    if CHK_ANGLE and in_range:
-        reward *= 1.5
-
     if CHK_STEER and steering > MAX_STEER:
         reward *= 0.5
+
+    if CHK_ANGLE and in_range:
+        reward *= 1.5
 
     if LOG_ENABLED:
         log_key = 'mat-{}'.format(MAX_SPEED)
 
-        if CHK_ANGLE:
-            log_key += '-a{}'.format(MAX_ANGLE)
-
         if CHK_STEER:
             log_key += '-s{}'.format(MAX_STEER)
+
+        if CHK_ANGLE:
+            log_key += '-a{}'.format(MAX_ANGLE)
 
         params['log_key'] = log_key
         params['yaw'] = yaw

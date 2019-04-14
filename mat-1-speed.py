@@ -1,5 +1,12 @@
 
 def reward_function(params):
+    import json
+    import math
+
+    MAX_SPEED = 5
+    MIN_SPEED = MAX_SPEED * 0.5
+
+    speed = params['speed']
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
 
@@ -13,5 +20,12 @@ def reward_function(params):
         reward = 0.5
     elif distance_rate <= 0.4:
         reward = 0.1
+
+    if speed > MIN_SPEED:
+        reward *= 1.5
+
+    params['log_key'] = 'mat-{}'.format(MAX_SPEED)
+    params['reward'] = reward
+    print(json.dumps(params))
 
     return float(reward)

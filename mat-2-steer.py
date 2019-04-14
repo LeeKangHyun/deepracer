@@ -1,7 +1,10 @@
 
 def reward_function(params):
+    import json
+    import math
+
     MAX_SPEED = 5
-    MIN_SPEED = MAX_SPEED * 0.8
+    MIN_SPEED = MAX_SPEED * 0.5
 
     MAX_STEER = 15
 
@@ -26,5 +29,9 @@ def reward_function(params):
 
     if steering > MAX_STEER:
         reward *= 0.75
+
+    params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_STEER)
+    params['reward'] = reward
+    print(json.dumps(params))
 
     return float(reward)
