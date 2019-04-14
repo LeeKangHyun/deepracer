@@ -11,6 +11,7 @@ from gym import spaces
 from PIL import Image
 import os
 import math
+import random
 
 # Type of worker
 SIMULATION_WORKER = "SIMULATION_WORKER"
@@ -20,6 +21,7 @@ node_type = os.environ.get("NODE_TYPE", SIMULATION_WORKER)
 
 if node_type == SIMULATION_WORKER:
     import rospy
+
     from ackermann_msgs.msg import AckermannDriveStamped
     from gazebo_msgs.msg import ModelState
     from gazebo_msgs.srv import SetModelState
@@ -30,12 +32,22 @@ if node_type == SIMULATION_WORKER:
 TRAINING_IMAGE_SIZE = (160, 120)
 FINISH_LINE = 100
 
-# NALBAM CONFIG
-MAX_SPEED = 5
-MIN_SPEED = MAX_SPEED * 0.5
+## NALBAM CONFIG ##
 CHK_SPEED = True
+CHK_ANGLE = False
+
+MAX_SPEED = 3
+MIN_SPEED = MAX_SPEED * 0.5
+
 MAX_ANGLE = 10
-CHK_ANGLE = True
+
+START_POS = [[2.20, 0.58], [4.65, 2.00]]
+
+if CHK_ANGLE:
+    LOG_KEY = 'mat-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
+else:
+    LOG_KEY = 'mat-{}-{}'.format(MAX_SPEED, 0)
+## NALBAM CONFIG ##
 
 # REWARD ENUM
 CRASHED = 0
@@ -127,8 +139,8 @@ class DeepRacerEnv(gym.Env):
         self.episodes += 1
         self.prev_progress = 0
         self.total_progress = 0
-        self.action_taken = 2  # straight
-        self.prev_action = 2  # straight
+        self.action_taken = 4  # straight
+        self.prev_action = 4  # straight
         self.prev_closest_waypoint_index = 0  # always starts from first waypoint
         self.closest_waypoint_index = 0
 
@@ -137,7 +149,7 @@ class DeepRacerEnv(gym.Env):
         self.racecar_reset()
         self.steering_angle = 0.0
         self.throttle = 0.0
-        self.action_taken = 2.0
+        self.action_taken = 4.0
 
         self.infer_reward_state(0, 0)
         return self.next_state
@@ -167,8 +179,16 @@ class DeepRacerEnv(gym.Env):
             modelState.pose.position.x = -1.44
             modelState.pose.position.y = -0.06
         elif self.world_name.startswith(HARD_TRACK_WORLD):
-            modelState.pose.position.x = 2.911
-            modelState.pose.position.y = 0.683
+            wayPoints = [2, 23]
+            wayPoint = random.choice(wayPoints)
+
+            modelState.pose.position.x = self.waypoints[wayPoint][0]
+            modelState.pose.position.y = self.waypoints[wayPoint][1]
+
+            if wayPoint < 5:
+                yaw = 0.0
+            else:
+                yaw = math.pi
 
             def toQuaternion(pitch, roll, yaw):
                 cy = np.cos(yaw * 0.5)
@@ -187,7 +207,7 @@ class DeepRacerEnv(gym.Env):
             # clockwise
             quaternion = toQuaternion(roll=0.0, pitch=0.0, yaw=np.pi)
             # anti-clockwise
-            quaternion = toQuaternion(roll=0.0, pitch=0.0, yaw=0.0)
+            quaternion = toQuaternion(roll=0.0, pitch=0.0, yaw=yaw)
             modelState.pose.orientation.x = quaternion[0]
             modelState.pose.orientation.y = quaternion[1]
             modelState.pose.orientation.z = quaternion[2]
@@ -343,7 +363,7 @@ class DeepRacerEnv(gym.Env):
         if CHK_SPEED and speed < MIN_SPEED:
             reward *= 0.8
 
-        params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
+        params['log_key'] = LOG_KEY
         params['yaw'] = yaw
         params['angle'] = angle
         params['in_range'] = in_range
@@ -476,79 +496,52 @@ class DeepRacerEnv(gym.Env):
             vertices[1][0] =  1.08;   vertices[1][1] = -0.05;
 
         else:
-            self.waypoints = vertices = np.zeros((70, 2))
+            self.waypoints = vertices = np.zeros((44, 2))
             self.road_width = 0.44
-
-            vertices[0] = [2.91000, 0.68319]
-            vertices[1] = [3.32000, 0.68334]
-            vertices[2] = [3.42000, 0.68337]
-            vertices[3] = [3.63000, 0.68345]
-            vertices[4] = [4.19000, 0.68365]
-            vertices[5] = [4.50000, 0.68376]
-            vertices[6] = [4.55000, 0.68378]
-            vertices[7] = [5.32000, 0.68405]
-            vertices[8] = [5.42000, 0.68409]
-            vertices[9] = [5.78000, 0.68422]
-            vertices[10] = [6.28975, 0.69214]
-            vertices[11] = [6.46091, 0.71231]
-            vertices[12] = [6.51370, 0.72103]
-            vertices[13] = [6.70429, 0.79960]
-            vertices[14] = [6.83628, 0.88170]
-            vertices[15] = [6.99166, 1.00627]
-            vertices[16] = [7.11421, 1.16932]
-            vertices[17] = [7.16583, 1.26343]
-            vertices[18] = [7.28002, 1.76283]
-            vertices[19] = [7.27289, 1.81324]
-            vertices[20] = [7.26596, 1.86226]
-            vertices[21] = [7.10457, 2.30149]
-            vertices[22] = [7.01175, 2.41926]
-            vertices[23] = [6.72727, 2.64749]
-            vertices[24] = [6.53692, 2.72664]
-            vertices[25] = [6.07980, 2.77336]
-            vertices[26] = [5.91981, 2.77201]
-            vertices[27] = [5.71983, 2.77031]
-            vertices[28] = [5.67000, 2.76989]
-            vertices[29] = [5.20003, 2.76591]
-            vertices[30] = [5.04988, 2.76464]
-            vertices[31] = [5.00203, 2.76898]
-            vertices[32] = [4.94271, 2.77533]
-            vertices[33] = [4.56134, 2.89832]
-            vertices[34] = [4.25853, 3.16696]
-            vertices[35] = [4.09273, 3.37037]
-            vertices[36] = [4.00112, 3.48276]
-            vertices[37] = [3.77400, 3.76141]
-            vertices[38] = [3.68239, 3.87380]
-            vertices[39] = [3.54906, 4.03738]
-            vertices[40] = [3.27585, 4.33330]
-            vertices[41] = [3.19115, 4.38568]
-            vertices[42] = [3.09549, 4.43592]
-            vertices[43] = [2.95497, 4.48441]
-            vertices[44] = [2.80898, 4.50004]
-            vertices[45] = [2.81100, 4.49983]
-            vertices[46] = [2.50033, 4.49872]
-            vertices[47] = [2.24938, 4.49143]
-            vertices[48] = [1.99018, 4.48390]
-            vertices[49] = [1.73952, 4.47662]
-            vertices[50] = [1.18712, 4.39179]
-            vertices[51] = [1.10544, 4.34023]
-            vertices[52] = [0.73162, 3.81966]
-            vertices[53] = [0.70805, 3.52960]
-            vertices[54] = [0.87473, 2.72512]
-            vertices[55] = [0.88631, 2.66924]
-            vertices[56] = [0.91810, 2.51582]
-            vertices[57] = [0.93804, 2.41959]
-            vertices[58] = [1.02121, 2.01818]
-            vertices[59] = [1.04306, 1.91271]
-            vertices[60] = [1.09363, 1.66868]
-            vertices[61] = [1.21972, 1.16989]
-            vertices[62] = [1.24046, 1.11821]
-            vertices[63] = [1.28661, 1.02702]
-            vertices[64] = [1.31953, 0.98959]
-            vertices[65] = [1.38974, 0.90977]
-            vertices[66] = [1.45639, 0.84353]
-            vertices[67] = [1.49964, 0.81936]
-            vertices[68] = [2.04000, 0.68288]
-            vertices[69] = [2.75000, 0.68314]
+            vertices[0] =  [1.5, 0.58]
+            vertices[1] =  [2, 0.58]
+            vertices[2] =  [3, 0.58]
+            vertices[3] =  [4, 0.58]
+            vertices[4] =  [4.5, 0.58]
+            vertices[5] =  [5, 0.58]
+            vertices[6] =  [5.25, 0.58]
+            vertices[7] =  [5.5, 0.58]
+            vertices[8] =  [5.6, 0.6]
+            vertices[9] =  [5.7, 0.65]
+            vertices[10] =  [5.8, 0.7]
+            vertices[11] =  [5.9, 0.8]
+            vertices[12] =  [6, 0.9]
+            vertices[13] =  [6.08, 1.1]
+            vertices[14] =  [6.1, 1.2]
+            vertices[15] =  [6.1, 1.3]
+            vertices[16] =  [6.1, 1.4]
+            vertices[17] =  [6.07, 1.5]
+            vertices[18] =  [6.05, 1.6]
+            vertices[19] =  [6, 1.7]
+            vertices[20] =  [5.9, 1.8]
+            vertices[21] =  [5.75, 1.9]
+            vertices[22] =  [5.6, 2]
+            vertices[23] =  [5.45, 2]
+            vertices[24] =  [5.25, 2]
+            vertices[25] =  [5, 2]
+            vertices[26] =  [4.8, 2]
+            vertices[27] =  [4.2, 2.02]
+            vertices[28] =  [4, 2.1]
+            vertices[29] =  [3.3, 3]
+            vertices[30] =  [2.6, 3.92]
+            vertices[31] =  [2.4, 4]
+            vertices[32] =  [1.3, 4]
+            vertices[33] =  [2, 4]
+            vertices[34] =  [1.2, 3.95]
+            vertices[35] =  [1.1, 3.92]
+            vertices[36] =  [1, 3.88]
+            vertices[37] =  [0.8, 3.72]
+            vertices[38] =  [0.6, 3.4]
+            vertices[39] =  [0.58, 3.3]
+            vertices[40] =  [0.57, 3.2]
+            vertices[41] =  [0.8, 2]
+            vertices[42] =  [1, 1]
+            vertices[43] =  [1.25, 0.7]
 
     def get_closest_waypoint(self):
         res = 0
