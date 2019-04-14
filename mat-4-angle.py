@@ -8,7 +8,7 @@ def reward_function(params):
 
     MAX_STEER = 15
 
-    MAX_ANGLE = 15
+    MAX_ANGLE = 10
 
     def is_range(yaw, angle, allow):
         in_range = False
