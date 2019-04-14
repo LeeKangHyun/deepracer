@@ -3,9 +3,9 @@ def reward_function(params):
     import json
     import math
 
-    LOG_ENABLED = False
+    LOG_ENABLED = True
 
-    CHK_SPEED = False
+    CHK_SPEED = True
     CHK_STEER = True
     CHK_ANGLE = False
 
@@ -28,6 +28,8 @@ def reward_function(params):
                 in_range = True
         return in_range
 
+    reward = 0.001
+
     speed = params['speed']
     heading = params['heading']
     steering = abs(params['steering_angle'])
@@ -36,16 +38,8 @@ def reward_function(params):
     closest_waypoints = params['closest_waypoints']
     waypoints = params['waypoints']
 
+    # center
     distance_rate = distance_from_center / track_width
-
-    coor1 = waypoints[closest_waypoints[0]]
-    coor2 = waypoints[closest_waypoints[1]]
-    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-    yaw = math.radians(heading)
-    allow = math.radians(MAX_ANGLE)
-    in_range = is_range(yaw, angle, allow)
-
-    reward = 0.001
 
     if distance_rate <= 0.1:
         reward = 1.0
@@ -54,15 +48,26 @@ def reward_function(params):
     elif distance_rate <= 0.4:
         reward = 0.1
 
+    # speed
     if CHK_SPEED and speed > MIN_SPEED:
         reward *= 1.5
 
+    # steering
     if CHK_STEER and steering > MAX_STEER:
-        reward *= 0.5
+        reward *= 0.75
+
+    # angle
+    coor1 = waypoints[closest_waypoints[0]]
+    coor2 = waypoints[closest_waypoints[1]]
+    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+    yaw = math.radians(heading)
+    allow = math.radians(MAX_ANGLE)
+    in_range = is_range(yaw, angle, allow)
 
     if CHK_ANGLE and in_range:
-        reward *= 1.5
+        reward *= 1.3
 
+    # log
     if LOG_ENABLED:
         log_key = 'mat-{}'.format(MAX_SPEED)
 
