@@ -34,19 +34,30 @@ FINISH_LINE = 100
 
 ## NALBAM CONFIG ##
 CHK_SPEED = True
+CHK_STEER = True
 CHK_ANGLE = False
 
-MAX_SPEED = 3
+MAX_SPEED = 5
 MIN_SPEED = MAX_SPEED * 0.5
 
-MAX_ANGLE = 10
+MAX_STEER = 15
 
-START_POS = [[2.20, 0.58], [4.65, 2.00]]
+MAX_ANGLE = 15
+
+LOG_KEY = 'mat'
+
+if CHK_SPEED:
+    LOG_KEY += '-{}'.format(MAX_SPEED)
+else:
+    LOG_KEY += '-0'
+
+if CHK_STEER:
+    LOG_KEY += '-s{}'.format(MAX_STEER)
 
 if CHK_ANGLE:
-    LOG_KEY = 'mat-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
-else:
-    LOG_KEY = 'mat-{}-{}'.format(MAX_SPEED, 0)
+    LOG_KEY += '-a{}'.format(MAX_ANGLE)
+
+START_POS = [[2.20, 0.58], [4.65, 2.00]]
 ## NALBAM CONFIG ##
 
 # REWARD ENUM
@@ -332,6 +343,8 @@ class DeepRacerEnv(gym.Env):
             # 'waypoints' : waypoints
         }
 
+        reward = 0.001
+
         speed = params['speed']
         heading = params['heading']
         track_width = params['track_width']
@@ -339,16 +352,8 @@ class DeepRacerEnv(gym.Env):
         # closest_waypoints = params['closest_waypoints']
         # waypoints = params['waypoints']
 
+        # center
         distance_rate = distance_from_center / track_width
-
-        coor1 = waypoints[closest_waypoints[0]]
-        coor2 = waypoints[closest_waypoints[1]]
-        angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-        yaw = math.radians(heading)
-        allow = math.radians(MAX_ANGLE)
-        in_range = is_range(yaw, angle, allow)
-
-        reward = 0.001
 
         if distance_rate <= 0.1:
             reward = 1.0
@@ -357,11 +362,24 @@ class DeepRacerEnv(gym.Env):
         elif distance_rate <= 0.4:
             reward = 0.1
 
-        if CHK_ANGLE and in_range:
-            reward *= 1.2
+        # speed
+        if CHK_SPEED and speed > MIN_SPEED:
+            reward *= 1.5
 
-        if CHK_SPEED and speed < MIN_SPEED:
-            reward *= 0.8
+        # steering
+        if CHK_STEER and steering > MAX_STEER:
+            reward *= 0.75
+
+        # angle
+        coor1 = waypoints[closest_waypoints[0]]
+        coor2 = waypoints[closest_waypoints[1]]
+        angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+        yaw = math.radians(heading)
+        allow = math.radians(MAX_ANGLE)
+        in_range = is_range(yaw, angle, allow)
+
+        if CHK_ANGLE and in_range:
+            reward *= 1.3
 
         params['log_key'] = LOG_KEY
         params['yaw'] = yaw

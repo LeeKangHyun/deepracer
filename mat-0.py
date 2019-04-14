@@ -69,7 +69,12 @@ def reward_function(params):
 
     # log
     if LOG_ENABLED:
-        log_key = 'mat-{}'.format(MAX_SPEED)
+        log_key = 'mat'
+
+        if CHK_SPEED:
+            log_key += '-{}'.format(MAX_SPEED)
+        else:
+            log_key += '-0'
 
         if CHK_STEER:
             log_key += '-s{}'.format(MAX_STEER)
