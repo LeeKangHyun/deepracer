@@ -4,7 +4,7 @@ def reward_function(params):
     import math
 
     MAX_SPEED = 5
-    MIN_SPEED = MAX_SPEED * 0.5
+    MIN_SPEED = MAX_SPEED * 0.8
 
     reward = 0.001
 
