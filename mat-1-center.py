@@ -3,10 +3,10 @@ def reward_function(params):
     import json
     import math
 
-    reward = 0.001
-
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
+
+    reward = 0.001
 
     # center
     distance_rate = distance_from_center / track_width
@@ -19,8 +19,8 @@ def reward_function(params):
         reward = 0.1
 
     # log
-    params['log_key'] = 'mat-0'
-    params['reward'] = reward
-    print(json.dumps(params))
+    # params['log_key'] = 'mat-0'
+    # params['reward'] = reward
+    # print(json.dumps(params))
 
     return float(reward)

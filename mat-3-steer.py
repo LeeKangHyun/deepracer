@@ -3,18 +3,17 @@ def reward_function(params):
     import json
     import math
 
-    MAX_SPEED = 3
+    MAX_SPEED = 5
     MIN_SPEED = MAX_SPEED * 0.8
 
     MAX_STEER = 15
-
-    reward = 0.001
 
     speed = params['speed']
     steering = abs(params['steering_angle'])
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
-    # is_left_of_center = params['is_left_of_center']
+
+    reward = 0.001
 
     # center
     distance_rate = distance_from_center / track_width
@@ -35,8 +34,8 @@ def reward_function(params):
         reward *= 0.75
 
     # log
-    params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_STEER)
-    params['reward'] = reward
-    print(json.dumps(params))
+    # params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_STEER)
+    # params['reward'] = reward
+    # print(json.dumps(params))
 
     return float(reward)
