@@ -9,7 +9,7 @@ def reward_function(params):
     CHK_STEER = True
     CHK_ANGLE = False
 
-    MAX_SPEED = 5
+    MAX_SPEED = 3
     MIN_SPEED = MAX_SPEED * 0.5
 
     MAX_STEER = 15

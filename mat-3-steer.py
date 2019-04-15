@@ -3,7 +3,7 @@ def reward_function(params):
     import json
     import math
 
-    MAX_SPEED = 5
+    MAX_SPEED = 3
     MIN_SPEED = MAX_SPEED * 0.8
 
     MAX_STEER = 15
@@ -14,6 +14,7 @@ def reward_function(params):
     steering = abs(params['steering_angle'])
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
+    # is_left_of_center = params['is_left_of_center']
 
     # center
     distance_rate = distance_from_center / track_width
