@@ -33,10 +33,12 @@ def reward_function(params):
                 reward *= 1.5
             elif y > 3.5:
                 reward *= 1.5
-            elif x < 2.7 and y < 1.5:
+            elif x < 2.5 and y < 1.5:
                 reward *= 1.5
         else:
             if x > 3.5 and x < 5.5 and y > 3.5:
+                reward *= 1.5
+            elif x < 2.5 and y > 2.0 and y < 3.0:
                 reward *= 1.5
 
     # log
