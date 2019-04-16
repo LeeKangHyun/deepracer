@@ -23,12 +23,12 @@ def reward_function(params):
         return in_range
 
     speed = params['speed']
-    heading = params['heading']
     steering = abs(params['steering_angle'])
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
-    closest_waypoints = params['closest_waypoints']
+    heading = params['heading']
     waypoints = params['waypoints']
+    closest_waypoints = params['closest_waypoints']
 
     reward = 0.001
 

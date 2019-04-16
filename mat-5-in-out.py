@@ -25,25 +25,18 @@ def reward_function(params):
     x = params['x']
     y = params['y']
     speed = params['speed']
-    heading = params['heading']
     steering = abs(params['steering_angle'])
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
-    closest_waypoints = params['closest_waypoints']
+    heading = params['heading']
     waypoints = params['waypoints']
+    closest_waypoints = params['closest_waypoints']
     is_left_of_center = params['is_left_of_center']
 
     reward = 0.001
 
     # center
     distance_rate = distance_from_center / track_width
-
-    # if distance_rate < 0.1:
-    #     reward = 1.0
-    # elif distance_rate < 0.2:
-    #     reward = 0.5
-    # elif distance_rate < 0.4:
-    #     reward = 0.1
 
     if distance_rate < 0.5:
         reward = 1.0
