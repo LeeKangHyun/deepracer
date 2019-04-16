@@ -27,6 +27,7 @@ def reward_function(params):
     speed = params['speed']
     steering = abs(params['steering_angle'])
     track_width = params['track_width']
+    all_wheels_on_track = params['all_wheels_on_track']
     distance_from_center = params['distance_from_center']
     heading = params['heading']
     waypoints = params['waypoints']
@@ -35,38 +36,39 @@ def reward_function(params):
 
     reward = 0.001
 
-    # center
-    distance_rate = distance_from_center / track_width
+    if all_wheels_on_track:
+        # center
+        distance_rate = distance_from_center / track_width
 
-    if distance_rate < 0.5:
-        reward = 1.0
+        if distance_rate < 0.5:
+            reward = 1.0
 
-    # speed
-    if speed > MIN_SPEED:
-        reward *= 1.5
-
-    # steering
-    if steering > MAX_STEER:
-        reward *= 0.75
-
-    # angle
-    coor1 = waypoints[closest_waypoints[0]]
-    coor2 = waypoints[closest_waypoints[1]]
-    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-    yaw = math.radians(heading)
-    allow = math.radians(MAX_ANGLE)
-    in_range = is_range(yaw, angle, allow)
-
-    if in_range:
-        reward *= 1.3
-
-    # out-in-out
-    if is_left_of_center:
-        if x > 6.1 or x < 2.0 or y > 4.0:
+        # speed
+        if speed > MIN_SPEED:
             reward *= 1.5
-    else:
-        if x > 4.0 and x < 5.0 and y > 2.0:
-            reward *= 1.5
+
+        # steering
+        if steering > MAX_STEER:
+            reward *= 0.75
+
+        # angle
+        coor1 = waypoints[closest_waypoints[0]]
+        coor2 = waypoints[closest_waypoints[1]]
+        angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+        yaw = math.radians(heading)
+        allow = math.radians(MAX_ANGLE)
+        in_range = is_range(yaw, angle, allow)
+
+        if in_range:
+            reward *= 1.3
+
+        # out-in-out
+        if is_left_of_center:
+            if x > 6.1 or x < 2.0 or y > 4.0:
+                reward *= 1.5
+        else:
+            if x > 4.0 and x < 5.0 and y > 2.0:
+                reward *= 1.5
 
     # log
     # params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_STEER)
