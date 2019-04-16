@@ -35,9 +35,9 @@ FINISH_LINE = 100
 ## NALBAM CONFIG ##
 CHK_SPEED = True
 CHK_STEER = True
-CHK_ANGLE = False
+CHK_ANGLE = True
 
-MAX_SPEED = 5
+MAX_SPEED = 3
 MIN_SPEED = MAX_SPEED * 0.8
 
 MAX_STEER = 15
@@ -355,12 +355,15 @@ class DeepRacerEnv(gym.Env):
         # center
         distance_rate = distance_from_center / track_width
 
-        if distance_rate <= 0.1:
+        # if distance_rate <= 0.1:
+        #     reward = 1.0
+        # elif distance_rate <= 0.2:
+        #     reward = 0.5
+        # elif distance_rate <= 0.4:
+        #     reward = 0.1
+
+        if distance_rate < 0.5:
             reward = 1.0
-        elif distance_rate <= 0.2:
-            reward = 0.5
-        elif distance_rate <= 0.4:
-            reward = 0.1
 
         # speed
         if CHK_SPEED and speed > MIN_SPEED:
