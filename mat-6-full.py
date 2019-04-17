@@ -33,6 +33,7 @@ def reward_function(params):
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
     is_left_of_center = params['is_left_of_center']
+    is_reversed = params['is_reversed']
 
     reward = 0.001
 
@@ -61,6 +62,13 @@ def reward_function(params):
 
         if in_range:
             reward *= 1.3
+
+        # reverse
+        if is_reversed:
+            if is_left_of_center:
+                is_left_of_center = False
+            else:
+                is_left_of_center = True
 
         # out-in-out
         if is_left_of_center:
