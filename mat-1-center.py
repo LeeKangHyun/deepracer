@@ -9,16 +9,18 @@ def reward_function(params):
 
     reward = 0.001
 
-    if all_wheels_on_track:
-        # center
-        distance_rate = distance_from_center / track_width
+    if all_wheels_on_track == False:
+        return reward
 
-        if distance_rate <= 0.1:
-            reward = 1.0
-        elif distance_rate <= 0.2:
-            reward = 0.5
-        elif distance_rate <= 0.4:
-            reward = 0.1
+    # center
+    distance_rate = distance_from_center / track_width
+
+    if distance_rate <= 0.1:
+        reward = 1.0
+    elif distance_rate <= 0.2:
+        reward = 0.5
+    elif distance_rate <= 0.4:
+        reward = 0.1
 
     # log
     # params['log_key'] = 'mat-0'
