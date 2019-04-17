@@ -26,9 +26,11 @@ def reward_function(params):
     if distance_rate < 0.5:
         reward = 1.0
 
+    added = reward * 1.5
+
     # speed
     if speed >= MIN_SPEED:
-        reward *= 1.5
+        reward += added
 
     # reverse
     if is_reversed:
@@ -40,16 +42,16 @@ def reward_function(params):
     # out-in-out
     if is_left_of_center:
         if x > 6.5:
-            reward *= 1.5
+            reward += added
         elif y > 3.5:
-            reward *= 1.5
+            reward += added
         elif x < 2.5 and y < 1.5:
-            reward *= 1.5
+            reward += added
     else:
         if x > 3.5 and x < 5.5 and y > 3.5:
-            reward *= 1.5
+            reward += added
         elif x < 2.5 and y > 2.0 and y < 3.0:
-            reward *= 1.5
+            reward += added
 
     # log
     params['log_key'] = 'mat-in-out-{}'.format(MAX_SPEED)
