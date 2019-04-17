@@ -26,11 +26,9 @@ def reward_function(params):
     elif distance_rate <= 0.4:
         reward = 0.1
 
-    added = reward * 1.5
-
     # speed
     if speed >= MIN_SPEED:
-        reward += added
+        reward *= 1.5
 
     # log
     params['log_key'] = 'mat-speed-{}'.format(MAX_SPEED)

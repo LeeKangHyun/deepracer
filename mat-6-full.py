@@ -43,12 +43,6 @@ def reward_function(params):
     if distance_rate < 0.5:
         reward = 1.0
 
-    added = reward * 1.5
-
-    # speed
-    if speed >= MIN_SPEED:
-        reward += added
-
     # angle
     coor1 = waypoints[closest_waypoints[0]]
     coor2 = waypoints[closest_waypoints[1]]
@@ -57,29 +51,28 @@ def reward_function(params):
     allow = math.radians(MAX_ANGLE)
     in_range = is_range(yaw, angle, allow)
 
-    if in_range:
-        reward += added
+    # speed and angle
+    if speed >= MIN_SPEED and in_range:
+        # reverse
+        if is_reversed:
+            if is_left_of_center:
+                is_left_of_center = False
+            else:
+                is_left_of_center = True
 
-    # reverse
-    if is_reversed:
+        # out-in-out
         if is_left_of_center:
-            is_left_of_center = False
+            if x > 6.5:
+                reward *= 1.5
+            elif y > 3.5:
+                reward *= 1.5
+            elif x < 2.5 and y < 1.5:
+                reward *= 1.5
         else:
-            is_left_of_center = True
-
-    # out-in-out
-    if is_left_of_center:
-        if x > 6.5:
-            reward += added
-        elif y > 3.5:
-            reward += added
-        elif x < 2.5 and y < 1.5:
-            reward += added
-    else:
-        if x > 3.5 and x < 5.5 and y > 3.5:
-            reward += added
-        elif x < 2.5 and y > 2.0 and y < 3.0:
-            reward += added
+            if x > 3.5 and x < 5.5 and y > 3.5:
+                reward *= 1.5
+            elif x < 2.5 and y > 2.0 and y < 3.0:
+                reward *= 1.5
 
     # log
     params['log_key'] = 'mat-full-{}-{}'.format(MAX_SPEED, MAX_ANGLE)

@@ -29,15 +29,9 @@ def reward_function(params):
     elif distance_rate <= 0.4:
         reward = 0.1
 
-    added = reward * 1.5
-
-    # speed
-    if speed >= MIN_SPEED:
-        reward += added
-
-    # steering
-    if steering <= MAX_STEER:
-        reward += added
+    # speed and steering
+    if speed >= MIN_SPEED and steering <= MAX_STEER:
+        reward *= 1.5
 
     # log
     params['log_key'] = 'mat-steering-{}-{}'.format(MAX_SPEED, MAX_STEER)
