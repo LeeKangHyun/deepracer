@@ -27,7 +27,7 @@ def reward_function(params):
         reward = 1.0
 
     # speed
-    if speed > MIN_SPEED:
+    if speed >= MIN_SPEED:
         reward *= 1.5
 
     # reverse
@@ -52,8 +52,8 @@ def reward_function(params):
             reward *= 1.5
 
     # log
-    # params['log_key'] = 'mat-{}-{}'.format(MAX_SPEED, MAX_STEER)
-    # params['reward'] = reward
-    # print(json.dumps(params))
+    params['log_key'] = 'mat-in-out-{}'.format(MAX_SPEED)
+    params['reward'] = reward
+    print(json.dumps(params))
 
     return float(reward)

@@ -23,8 +23,8 @@ def reward_function(params):
         reward = 0.1
 
     # log
-    # params['log_key'] = 'mat-0'
-    # params['reward'] = reward
-    # print(json.dumps(params))
+    params['log_key'] = 'mat-0'
+    params['reward'] = reward
+    print(json.dumps(params))
 
     return float(reward)
