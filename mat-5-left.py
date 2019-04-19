@@ -35,22 +35,27 @@ def reward_function(params):
     episode = get_episode(progress)
 
     if all_wheels_on_track == True:
-        # center
-        distance_rate = distance_from_center / track_width
+        # speed
+        if speed >= MIN_SPEED:
+            # center
+            distance_rate = distance_from_center / track_width
 
-        if distance_rate < 0.5:
-            # speed
-            if speed >= MIN_SPEED:
-                # reverse
-                if is_reversed:
-                    if is_left_of_center:
-                        is_left_of_center = False
-                    else:
-                        is_left_of_center = True
-
-                # left
+            # reverse
+            if is_reversed:
                 if is_left_of_center:
-                    reward = 1
+                    is_left_of_center = False
+                else:
+                    is_left_of_center = True
+
+            # left
+            if is_left_of_center:
+                if distance_rate <= 0.2:
+                    reward = 1.0
+                elif distance_rate <= 0.5:
+                    reward = 0.5
+            else:
+                if distance_rate <= 0.3:
+                    reward = 0.5
 
     # log
     params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_SPEED)
