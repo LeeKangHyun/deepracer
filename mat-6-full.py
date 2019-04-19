@@ -9,7 +9,22 @@ MIN_SPEED = MAX_SPEED * 0.8
 MAX_ANGLE = 10
 
 g_episode = 0
+g_total = 0
 g_prev = 0
+
+
+def get_episode(progress):
+    global g_episode
+    global g_prev
+
+    if g_episode == 0 or g_prev > progress:
+        g_episode += 1
+        g_total = 0
+
+    g_prev = progress
+
+    return g_episode, g_total
+
 
 def is_range(yaw, angle, allow):
     in_range = False
@@ -23,16 +38,6 @@ def is_range(yaw, angle, allow):
             in_range = True
     return in_range
 
-def get_episode(progress):
-    global g_episode
-    global g_prev
-
-    if g_episode == 0 or g_prev > progress:
-        g_episode += 1
-
-    g_prev = progress
-
-    return g_episode
 
 def reward_function(params):
     x = params['x']
@@ -51,7 +56,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode = get_episode(progress)
+    episode, total = get_episode(progress)
 
     # angle
     coor1 = waypoints[closest_waypoints[0]]
@@ -89,6 +94,8 @@ def reward_function(params):
                     elif x < 2.5 and y > 2.0 and y < 3.0:
                         reward *= 1.5
 
+    total += reward
+
     # log
     params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_SPEED, MAX_ANGLE)
     params['episode'] = episode
@@ -96,6 +103,7 @@ def reward_function(params):
     params['angle'] = angle
     params['in_range'] = in_range
     params['reward'] = reward
+    params['total'] = total
     print(json.dumps(params))
 
     return float(reward)
