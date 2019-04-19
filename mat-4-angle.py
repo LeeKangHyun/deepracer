@@ -1,24 +1,36 @@
+import json
+import math
+
+MAX_SPEED = 3
+MIN_SPEED = MAX_SPEED * 0.5
+
+MAX_ANGLE = 10
+
+g_episode = 0
+g_prev = 0
+
+def is_range(yaw, angle, allow):
+    in_range = False
+    if angle > (math.pi - allow) or angle < (math.pi * -1) + allow:
+        if yaw <= math.pi and yaw >= (angle - allow):
+            in_range = True
+        elif yaw >= (math.pi * -1) and yaw <= (angle + allow):
+            in_range = True
+    else:
+        if yaw >= (angle - allow) and yaw <= (angle + allow):
+            in_range = True
+    return in_range
 
 def reward_function(params):
-    import json
-    import math
+    global g_episode
+    global g_prev
 
-    MAX_SPEED = 5
-    MIN_SPEED = MAX_SPEED * 0.8
+    progress = params['progress']
 
-    MAX_ANGLE = 10
+    if g_episode == 0 or (g_prev == 100 and progress == 0):
+        g_episode += 1
 
-    def is_range(yaw, angle, allow):
-        in_range = False
-        if angle > (math.pi - allow) or angle < (math.pi * -1) + allow:
-            if yaw <= math.pi and yaw >= (angle - allow):
-                in_range = True
-            elif yaw >= (math.pi * -1) and yaw <= (angle + allow):
-                in_range = True
-        else:
-            if yaw >= (angle - allow) and yaw <= (angle + allow):
-                in_range = True
-        return in_range
+    g_prev = progress
 
     speed = params['speed']
     track_width = params['track_width']
@@ -57,6 +69,7 @@ def reward_function(params):
 
     # log
     params['log_key'] = 'mat-angle-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
+    params['episode'] = g_episode
     params['yaw'] = yaw
     params['angle'] = angle
     params['in_range'] = in_range

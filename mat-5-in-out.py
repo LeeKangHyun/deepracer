@@ -1,10 +1,22 @@
+import json
+import math
+
+MAX_SPEED = 5
+MIN_SPEED = MAX_SPEED * 0.8
+
+g_episode = 0
+g_prev = 0
 
 def reward_function(params):
-    import json
-    import math
+    global g_episode
+    global g_prev
 
-    MAX_SPEED = 5
-    MIN_SPEED = MAX_SPEED * 0.8
+    progress = params['progress']
+
+    if g_episode == 0 or (g_prev == 100 and progress == 0):
+        g_episode += 1
+
+    g_prev = progress
 
     x = params['x']
     y = params['y']
@@ -51,6 +63,7 @@ def reward_function(params):
 
     # log
     params['log_key'] = 'mat-in-out-{}'.format(MAX_SPEED)
+    params['episode'] = g_episode
     params['reward'] = reward
     print(json.dumps(params))
 

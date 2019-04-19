@@ -1,7 +1,19 @@
+import json
+import math
+
+g_episode = 0
+g_prev = 0
 
 def reward_function(params):
-    import json
-    import math
+    global g_episode
+    global g_prev
+
+    progress = params['progress']
+
+    if g_episode == 0 or (g_prev == 100 and progress == 0):
+        g_episode += 1
+
+    g_prev = progress
 
     track_width = params['track_width']
     all_wheels_on_track = params['all_wheels_on_track']
@@ -24,6 +36,7 @@ def reward_function(params):
 
     # log
     params['log_key'] = 'mat-0'
+    params['episode'] = g_episode
     params['reward'] = reward
     print(json.dumps(params))
 
