@@ -4,7 +4,7 @@ import math
 CODE_NAME = 'steering'
 
 MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.8
+MIN_SPEED = MAX_SPEED * 0.5
 
 MAX_STEER = 15
 
@@ -52,7 +52,7 @@ def reward_function(params):
             reward = 0.1
 
         # speed and steering
-        if speed >= MIN_SPEED and steering <= MAX_STEER:
+        if speed > MIN_SPEED and steering < MAX_STEER:
             reward *= 1.5
 
     total += reward

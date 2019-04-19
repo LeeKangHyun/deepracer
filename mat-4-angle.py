@@ -75,7 +75,7 @@ def reward_function(params):
             reward = 0.1
 
         # speed and angle
-        if speed >= MIN_SPEED and in_range:
+        if speed > MIN_SPEED and in_range:
             reward *= 2
 
     total += reward

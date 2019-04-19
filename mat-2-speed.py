@@ -4,7 +4,7 @@ import math
 CODE_NAME = 'speed'
 
 MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.8
+MIN_SPEED = MAX_SPEED * 0.5
 
 g_episode = 0
 g_total = 0
@@ -49,7 +49,7 @@ def reward_function(params):
             reward = 0.1
 
         # speed
-        if speed >= MIN_SPEED:
+        if speed > MIN_SPEED:
             reward *= 1.5
 
     total += reward

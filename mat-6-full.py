@@ -4,7 +4,7 @@ import math
 CODE_NAME = 'left'
 
 MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.8
+MIN_SPEED = MAX_SPEED * 0.5
 
 MAX_ANGLE = 10
 
@@ -73,7 +73,7 @@ def reward_function(params):
 
         if distance_rate < 0.5:
             # speed and angle
-            if speed >= MIN_SPEED and in_range:
+            if speed > MIN_SPEED and in_range:
                 # reverse
                 if is_reversed:
                     if is_left_of_center:

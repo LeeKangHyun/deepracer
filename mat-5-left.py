@@ -4,7 +4,7 @@ import math
 CODE_NAME = 'left'
 
 MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.8
+MIN_SPEED = MAX_SPEED * 0.5
 
 g_episode = 0
 g_total = 0
@@ -41,7 +41,7 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # speed
-        if speed >= MIN_SPEED:
+        if speed > MIN_SPEED:
             # center
             distance_rate = distance_from_center / track_width
 

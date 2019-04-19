@@ -4,7 +4,7 @@ import math
 CODE_NAME = 'in-out'
 
 MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.8
+MIN_SPEED = MAX_SPEED * 0.5
 
 g_episode = 0
 g_total = 0
@@ -47,7 +47,7 @@ def reward_function(params):
 
         if distance_rate < 0.5:
             # speed
-            if speed >= MIN_SPEED:
+            if speed > MIN_SPEED:
                 # reverse
                 if is_reversed:
                     if is_left_of_center:
