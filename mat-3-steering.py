@@ -1,7 +1,9 @@
 import json
 import math
 
-MAX_SPEED = 5
+CODE_NAME = 'steering'
+
+MAX_SPEED = 2
 MIN_SPEED = MAX_SPEED * 0.8
 
 MAX_STEER = 15
@@ -30,28 +32,26 @@ def reward_function(params):
 
     reward = 0.001
 
-    if all_wheels_on_track == False:
-        return reward
-
     # episode
     episode = get_episode(progress)
 
-    # center
-    distance_rate = distance_from_center / track_width
+    if all_wheels_on_track == True:
+        # center
+        distance_rate = distance_from_center / track_width
 
-    if distance_rate <= 0.1:
-        reward = 1.0
-    elif distance_rate <= 0.2:
-        reward = 0.5
-    elif distance_rate <= 0.4:
-        reward = 0.1
+        if distance_rate <= 0.1:
+            reward = 1.0
+        elif distance_rate <= 0.2:
+            reward = 0.5
+        elif distance_rate <= 0.4:
+            reward = 0.1
 
-    # speed and steering
-    if speed >= MIN_SPEED and steering <= MAX_STEER:
-        reward *= 1.5
+        # speed and steering
+        if speed >= MIN_SPEED and steering <= MAX_STEER:
+            reward *= 1.5
 
     # log
-    params['log_key'] = 'mat-steering-{}-{}'.format(MAX_SPEED, MAX_STEER)
+    params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_SPEED, MAX_STEER)
     params['episode'] = episode
     params['reward'] = reward
     print(json.dumps(params))

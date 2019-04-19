@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'in-out'
+CODE_NAME = 'left'
 
 MAX_SPEED = 2
 MIN_SPEED = MAX_SPEED * 0.8
@@ -21,8 +21,6 @@ def get_episode(progress):
     return g_episode
 
 def reward_function(params):
-    x = params['x']
-    y = params['y']
     speed = params['speed']
     track_width = params['track_width']
     all_wheels_on_track = params['all_wheels_on_track']
@@ -50,19 +48,9 @@ def reward_function(params):
                     else:
                         is_left_of_center = True
 
-                # out-in-out
+                # left
                 if is_left_of_center:
-                    if x > 6.5:
-                        reward = 1
-                    elif y > 3.5:
-                        reward = 1
-                    elif x < 2.5 and y < 1.5:
-                        reward = 1
-                else:
-                    if x > 3.5 and x < 5.5 and y > 3.5:
-                        reward = 1
-                    elif x < 2.5 and y > 2.0 and y < 3.0:
-                        reward = 1
+                    reward = 1
 
     # log
     params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_SPEED)

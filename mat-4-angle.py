@@ -1,7 +1,9 @@
 import json
 import math
 
-MAX_SPEED = 3
+CODE_NAME = 'angle'
+
+MAX_SPEED = 2
 MIN_SPEED = MAX_SPEED * 0.5
 
 MAX_ANGLE = 10
@@ -44,21 +46,8 @@ def reward_function(params):
 
     reward = 0.001
 
-    if all_wheels_on_track == False:
-        return reward
-
     # episode
     episode = get_episode(progress)
-
-    # center
-    distance_rate = distance_from_center / track_width
-
-    if distance_rate <= 0.1:
-        reward = 1.0
-    elif distance_rate <= 0.2:
-        reward = 0.5
-    elif distance_rate <= 0.4:
-        reward = 0.1
 
     # angle
     coor1 = waypoints[closest_waypoints[0]]
@@ -68,12 +57,23 @@ def reward_function(params):
     allow = math.radians(MAX_ANGLE)
     in_range = is_range(yaw, angle, allow)
 
-    # speed and angle
-    if speed >= MIN_SPEED and in_range:
-        reward *= 1.5
+    if all_wheels_on_track == True:
+        # center
+        distance_rate = distance_from_center / track_width
+
+        if distance_rate <= 0.1:
+            reward = 1.0
+        elif distance_rate <= 0.2:
+            reward = 0.5
+        elif distance_rate <= 0.4:
+            reward = 0.1
+
+        # speed and angle
+        if speed >= MIN_SPEED and in_range:
+            reward *= 1.5
 
     # log
-    params['log_key'] = 'mat-angle-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
+    params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_SPEED, MAX_ANGLE)
     params['episode'] = episode
     params['yaw'] = yaw
     params['angle'] = angle
