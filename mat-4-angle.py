@@ -21,16 +21,20 @@ def is_range(yaw, angle, allow):
             in_range = True
     return in_range
 
-def reward_function(params):
+def get_episode(progress):
     global g_episode
     global g_prev
 
-    progress = params['progress']
-
-    if g_episode == 0 or (g_prev == 100 and progress == 0):
+    if g_episode == 0 or g_prev > progress:
         g_episode += 1
 
     g_prev = progress
+
+    return g_episode
+
+def reward_function(params):
+    progress = params['progress']
+    episode = get_episode(progress)
 
     speed = params['speed']
     track_width = params['track_width']
@@ -69,7 +73,7 @@ def reward_function(params):
 
     # log
     params['log_key'] = 'mat-angle-{}-{}'.format(MAX_SPEED, MAX_ANGLE)
-    params['episode'] = g_episode
+    params['episode'] = episode
     params['yaw'] = yaw
     params['angle'] = angle
     params['in_range'] = in_range

@@ -7,16 +7,20 @@ MIN_SPEED = MAX_SPEED * 0.8
 g_episode = 0
 g_prev = 0
 
-def reward_function(params):
+def get_episode(progress):
     global g_episode
     global g_prev
 
-    progress = params['progress']
-
-    if g_episode == 0 or (g_prev == 100 and progress == 0):
+    if g_episode == 0 or g_prev > progress:
         g_episode += 1
 
     g_prev = progress
+
+    return g_episode
+
+def reward_function(params):
+    progress = params['progress']
+    episode = get_episode(progress)
 
     x = params['x']
     y = params['y']
@@ -63,7 +67,7 @@ def reward_function(params):
 
     # log
     params['log_key'] = 'mat-in-out-{}'.format(MAX_SPEED)
-    params['episode'] = g_episode
+    params['episode'] = episode
     params['reward'] = reward
     print(json.dumps(params))
 

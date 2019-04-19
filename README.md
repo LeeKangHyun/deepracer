@@ -17,9 +17,9 @@ sudo pip3 install --upgrade Image
 ## insight
 
 ```
-fields steps, progress, reward, in_range, angle, yaw, heading, steering_angle, speed, x, y, distance_from_center, closest_waypoints, is_left_of_center, is_reversed
-| filter log_key == 'mat-5-10' and reward > 0.9
-| order by @timestamp desc, steps desc
+fields episode, steps, progress, reward, in_range, angle, yaw, heading, steering_angle, speed, x, y, distance_from_center, closest_waypoints, all_wheels_on_track, is_left_of_center, is_reversed
+| filter log_key == 'mat-angle-3-10'
+| order by episode desc, steps desc
 ```
 
 ## ssh
