@@ -13,6 +13,7 @@ g_prev = 0
 
 def get_episode(progress):
     global g_episode
+    global g_total
     global g_prev
 
     if g_episode == 0 or g_prev > progress:
