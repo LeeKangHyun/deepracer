@@ -33,9 +33,6 @@ def get_episode(progress):
     return g_episode
 
 def reward_function(params):
-    progress = params['progress']
-    episode = get_episode(progress)
-
     x = params['x']
     y = params['y']
     speed = params['speed']
@@ -47,11 +44,15 @@ def reward_function(params):
     closest_waypoints = params['closest_waypoints']
     is_left_of_center = params['is_left_of_center']
     is_reversed = params['is_reversed']
+    progress = params['progress']
 
     reward = 0.001
 
     if all_wheels_on_track == False:
         return reward
+
+    # episode
+    episode = get_episode(progress)
 
     # center
     distance_rate = distance_from_center / track_width

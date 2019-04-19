@@ -21,19 +21,20 @@ def get_episode(progress):
     return g_episode
 
 def reward_function(params):
-    progress = params['progress']
-    episode = get_episode(progress)
-
     speed = params['speed']
     steering = abs(params['steering_angle'])
     track_width = params['track_width']
     all_wheels_on_track = params['all_wheels_on_track']
     distance_from_center = params['distance_from_center']
+    progress = params['progress']
 
     reward = 0.001
 
     if all_wheels_on_track == False:
         return reward
+
+    # episode
+    episode = get_episode(progress)
 
     # center
     distance_rate = distance_from_center / track_width
