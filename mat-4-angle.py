@@ -27,15 +27,18 @@ def get_episode(progress):
     return g_episode, g_total
 
 
-def is_range(yaw, angle, allow):
-    diff = (yaw - angle) % (2.0 * math.pi)
+def diff_angle(yaw, guide):
+    diff = (yaw - guide) % (2.0 * math.pi)
 
     if diff >= math.pi:
         diff -= 2.0 * math.pi
 
-    if abs(diff) <= allow:
-        return True
+    return abs(diff)
 
+
+def is_range(yaw, guide, allow):
+    if diff_angle(yaw, guide) <= allow:
+        return True
     return False
 
 
@@ -57,25 +60,20 @@ def reward_function(params):
     # angle
     coor1 = waypoints[closest_waypoints[0]]
     coor2 = waypoints[closest_waypoints[1]]
-    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+    guide = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
     yaw = math.radians(heading)
-    allow = math.radians(MAX_ANGLE)
-    in_range = is_range(yaw, angle, allow)
+    diff = diff_angle(yaw, guide)
 
     if all_wheels_on_track == True:
-        # center
-        distance_rate = distance_from_center / track_width
+        # speed
+        if speed > MIN_SPEED:
+            # center
+            center_rate = 1.2 - (distance_from_center / (track_width / 2))
 
-        if distance_rate <= 0.1:
-            reward = 1.0
-        elif distance_rate <= 0.2:
-            reward = 0.5
-        elif distance_rate <= 0.4:
-            reward = 0.1
+            reward = center_rate * (diff * 10)
 
-        # speed and angle
-        if speed > MIN_SPEED and in_range:
-            reward *= 2
+            if reward < 0.01:
+                reward = 0.01
 
     total += reward
 
@@ -83,8 +81,8 @@ def reward_function(params):
     params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_SPEED, MAX_ANGLE)
     params['episode'] = episode
     params['yaw'] = yaw
-    params['angle'] = angle
-    params['in_range'] = in_range
+    params['guide'] = guide
+    params['diff'] = diff
     params['reward'] = reward
     params['total'] = total
     print(json.dumps(params))

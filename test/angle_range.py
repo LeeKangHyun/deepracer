@@ -7,10 +7,12 @@ def is_range(yaw, angle, allow):
     if diff >= math.pi:
         diff -= 2.0 * math.pi
 
-    if abs(diff) <= allow:
-        return True
+    diff = abs(diff)
 
-    return False
+    if diff <= allow:
+        return True, diff
+
+    return False, diff
 
 
 MAX_ANGLE = 10
@@ -22,5 +24,7 @@ for a in range(-180, 180):
     for b in range(-180, 180):
         yaw = math.radians(a)
         angle = math.radians(b)
-        if is_range(yaw, angle, allow):
-            print("{}\t{}\t{}\t{}".format(yaw, angle, a, b))
+        in_range, diff = is_range(yaw, angle, allow)
+
+        if in_range:
+            print("{}\t{}\t{}\t{}\t{}".format(yaw, angle, a, b, diff))
