@@ -28,16 +28,15 @@ def get_episode(progress):
 
 
 def is_range(yaw, angle, allow):
-    in_range = False
-    if angle > (math.pi - allow) or angle < (math.pi * -1) + allow:
-        if yaw <= math.pi and yaw >= (angle - allow):
-            in_range = True
-        elif yaw >= (math.pi * -1) and yaw <= (angle + allow):
-            in_range = True
-    else:
-        if yaw >= (angle - allow) and yaw <= (angle + allow):
-            in_range = True
-    return in_range
+    diff = (yaw - angle) % (2.0 * math.pi)
+
+    if diff >= math.pi:
+        diff -= 2.0 * math.pi
+
+    if abs(diff) <= allow:
+        return True
+
+    return False
 
 
 def reward_function(params):
