@@ -67,10 +67,11 @@ def reward_function(params):
     if all_wheels_on_track == True:
         # speed
         if speed > MIN_SPEED:
-            # center
-            center_rate = 1.2 - (distance_from_center / (track_width / 2))
+            # score
+            distance_score = 1.2 - (distance_from_center / (track_width / 2))
+            angle_score = 2.0 - (diff * 10)
 
-            reward = center_rate * (diff * 10)
+            reward = distance_score * angle_score
 
             if reward < 0.01:
                 reward = 0.01
