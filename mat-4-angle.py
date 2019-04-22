@@ -4,7 +4,7 @@ import math
 CODE_NAME = 'angle'
 
 MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.5
+MIN_SPEED = MAX_SPEED * 0.7
 
 MAX_ANGLE = 10
 

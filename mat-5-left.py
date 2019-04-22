@@ -4,7 +4,7 @@ import math
 CODE_NAME = 'left'
 
 MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.5
+MIN_SPEED = MAX_SPEED * 0.7
 
 g_episode = 0
 g_total = 0
@@ -54,13 +54,13 @@ def reward_function(params):
 
             # left
             if is_left_of_center:
-                if distance_rate <= 0.2:
+                if distance_rate <= 0.1:
                     reward = 1.0
-                elif distance_rate <= 0.5:
-                    reward = 0.5
-            else:
-                if distance_rate <= 0.3:
-                    reward = 0.5
+                # elif distance_rate <= 0.5:
+                #     reward = 0.5
+            # else:
+            #     if distance_rate <= 0.3:
+            #         reward = 0.5
 
     total += reward
 
