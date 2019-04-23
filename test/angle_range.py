@@ -14,7 +14,7 @@ def diff_angle(yaw, guide):
     return abs(diff)
 
 
-for a in range(-180, 180):
+for a in range(-180, 180, 2):
     print("")
     for b in range(-180, 180):
         yaw = math.radians(a)

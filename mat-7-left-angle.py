@@ -82,9 +82,6 @@ def reward_function(params):
             if is_left_of_center:
                 reward = distance_score * angle_score
 
-            if reward < 0.01:
-                reward = 0.01
-
     total += reward
 
     # log
@@ -93,7 +90,6 @@ def reward_function(params):
     params['yaw'] = yaw
     params['guide'] = guide
     params['diff'] = diff
-    params['angle_score'] = angle_score
     params['reward'] = reward
     params['total'] = total
     print(json.dumps(params))
