@@ -11,24 +11,24 @@ MAX_ANGLE = 5
 g_episode = 0
 g_total = 0
 g_prev = 0
-g_diff = 0
+g_bonus = 0
 
 
 def get_episode(progress):
     global g_episode
     global g_total
     global g_prev
-    global g_diff
+    global g_bonus
 
     if g_prev > progress:
         g_episode += 1
         g_total = 0
-        g_diff = 0
+        g_bonus = 0
     else:
         if progress == 100:
-            g_diff = 0.5
+            g_bonus = 0.5
         else:
-            g_diff = progress - g_prev
+            g_bonus = progress - g_prev
 
     g_prev = progress
 
@@ -46,7 +46,7 @@ def diff_angle(yaw, angle):
 
 def reward_function(params):
     global g_total
-    global g_diff
+    global g_bonus
 
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
@@ -91,7 +91,7 @@ def reward_function(params):
 
             # left and angle
             if is_left_of_center:
-                reward = (distance_score * angle_score) + g_diff
+                reward = (distance_score * angle_score) + g_bonus
 
     g_total += reward
 
