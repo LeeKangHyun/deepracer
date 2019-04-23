@@ -43,14 +43,17 @@ def is_range(yaw, guide, allow):
 
 
 def reward_function(params):
-    speed = params['speed']
-    track_width = params['track_width']
     all_wheels_on_track = params['all_wheels_on_track']
+    progress = params['progress']
+
+    speed = params['speed']
+
+    track_width = params['track_width']
     distance_from_center = params['distance_from_center']
-    heading = params['heading']
+
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
-    progress = params['progress']
+    heading = params['heading']
 
     reward = 0.001
 

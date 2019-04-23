@@ -26,15 +26,18 @@ def get_episode(progress):
 
 
 def reward_function(params):
-    x = params['x']
-    y = params['y']
-    speed = params['speed']
-    track_width = params['track_width']
     all_wheels_on_track = params['all_wheels_on_track']
+    progress = params['progress']
+
+    speed = params['speed']
+
+    track_width = params['track_width']
     distance_from_center = params['distance_from_center']
     is_left_of_center = params['is_left_of_center']
     is_reversed = params['is_reversed']
-    progress = params['progress']
+
+    x = params['x']
+    y = params['y']
 
     reward = 0.001
 

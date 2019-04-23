@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'speed'
+CODE_NAME = 'left'
 
 MAX_SPEED = 2
 MIN_SPEED = MAX_SPEED * 0.7
@@ -33,6 +33,8 @@ def reward_function(params):
 
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
+    is_left_of_center = params['is_left_of_center']
+    is_reversed = params['is_reversed']
 
     reward = 0.001
 
@@ -40,19 +42,27 @@ def reward_function(params):
     episode, total = get_episode(progress)
 
     if all_wheels_on_track == True:
-        # center
-        distance_rate = distance_from_center / track_width
-
-        if distance_rate <= 0.1:
-            reward = 1.0
-        elif distance_rate <= 0.2:
-            reward = 0.5
-        elif distance_rate <= 0.4:
-            reward = 0.1
-
         # speed
         if speed > MIN_SPEED:
-            reward *= 1.5
+            # center
+            distance_rate = distance_from_center / track_width
+
+            # reverse
+            if is_reversed:
+                if is_left_of_center:
+                    is_left_of_center = False
+                else:
+                    is_left_of_center = True
+
+            # left
+            if is_left_of_center:
+                if distance_rate <= 0.1:
+                    reward = 1.0
+                # elif distance_rate <= 0.5:
+                #     reward = 0.5
+            # else:
+            #     if distance_rate <= 0.3:
+            #         reward = 0.5
 
     total += reward
 

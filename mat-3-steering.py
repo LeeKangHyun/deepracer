@@ -28,12 +28,15 @@ def get_episode(progress):
 
 
 def reward_function(params):
-    speed = params['speed']
-    steering = abs(params['steering_angle'])
-    track_width = params['track_width']
     all_wheels_on_track = params['all_wheels_on_track']
-    distance_from_center = params['distance_from_center']
     progress = params['progress']
+
+    speed = params['speed']
+
+    track_width = params['track_width']
+    distance_from_center = params['distance_from_center']
+
+    steering = abs(params['steering_angle'])
 
     reward = 0.001
 

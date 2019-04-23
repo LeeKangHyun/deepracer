@@ -23,10 +23,11 @@ def get_episode(progress):
 
 
 def reward_function(params):
-    track_width = params['track_width']
     all_wheels_on_track = params['all_wheels_on_track']
-    distance_from_center = params['distance_from_center']
     progress = params['progress']
+
+    track_width = params['track_width']
+    distance_from_center = params['distance_from_center']
 
     reward = 0.001
 
