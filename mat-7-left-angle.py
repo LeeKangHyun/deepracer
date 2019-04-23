@@ -6,7 +6,7 @@ CODE_NAME = 'left-angle'
 MAX_SPEED = 2
 MIN_SPEED = MAX_SPEED * 0.7
 
-MAX_ANGLE = 10
+MAX_ANGLE = 5
 
 g_episode = 0
 g_total = 0
@@ -36,12 +36,6 @@ def diff_angle(yaw, guide):
     return abs(diff)
 
 
-def is_range(yaw, guide, allow):
-    if diff_angle(yaw, guide) <= allow:
-        return True
-    return False
-
-
 def reward_function(params):
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
@@ -67,16 +61,15 @@ def reward_function(params):
     coor2 = waypoints[closest_waypoints[1]]
     guide = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
     yaw = math.radians(heading)
+    allow = math.radians(MAX_ANGLE)
     diff = diff_angle(yaw, guide)
 
     if all_wheels_on_track == True:
         # speed
-        if speed > MIN_SPEED:
-            # center
-            distance_rate = distance_from_center / track_width
-
-            # angle
-            angle_score = 2.0 - (diff * 10)
+        if speed > MIN_SPEED and diff < allow:
+            # center rate
+            distance_score = 1.0 - (distance_from_center / (track_width / 2))
+            angle_score = 1.0 - (diff / allow)
 
             # reverse
             if is_reversed:
@@ -85,21 +78,22 @@ def reward_function(params):
                 else:
                     is_left_of_center = True
 
-            # left
+            # left and angle
             if is_left_of_center:
-                if distance_rate <= 0.1:
-                    reward = 1.0 * angle_score
-                # elif distance_rate <= 0.5:
-                #     reward = 0.5
-            # else:
-            #     if distance_rate <= 0.3:
-            #         reward = 0.5
+                reward = distance_score * angle_score
+
+            if reward < 0.01:
+                reward = 0.01
 
     total += reward
 
     # log
-    params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_SPEED)
+    params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_SPEED, MAX_ANGLE)
     params['episode'] = episode
+    params['yaw'] = yaw
+    params['guide'] = guide
+    params['diff'] = diff
+    params['angle_score'] = angle_score
     params['reward'] = reward
     params['total'] = total
     print(json.dumps(params))

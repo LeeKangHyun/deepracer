@@ -58,8 +58,8 @@ def reward_function(params):
             if is_left_of_center:
                 if distance_rate <= 0.1:
                     reward = 1.0
-                # elif distance_rate <= 0.5:
-                #     reward = 0.5
+            #     elif distance_rate <= 0.5:
+            #         reward = 0.5
             # else:
             #     if distance_rate <= 0.3:
             #         reward = 0.5

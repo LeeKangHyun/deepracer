@@ -6,7 +6,7 @@ CODE_NAME = 'angle'
 MAX_SPEED = 2
 MIN_SPEED = MAX_SPEED * 0.7
 
-MAX_ANGLE = 10
+MAX_ANGLE = 5
 
 g_episode = 0
 g_total = 0
@@ -36,12 +36,6 @@ def diff_angle(yaw, guide):
     return abs(diff)
 
 
-def is_range(yaw, guide, allow):
-    if diff_angle(yaw, guide) <= allow:
-        return True
-    return False
-
-
 def reward_function(params):
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
@@ -65,14 +59,15 @@ def reward_function(params):
     coor2 = waypoints[closest_waypoints[1]]
     guide = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
     yaw = math.radians(heading)
+    allow = math.radians(MAX_ANGLE)
     diff = diff_angle(yaw, guide)
 
     if all_wheels_on_track == True:
         # speed
-        if speed > MIN_SPEED:
+        if speed > MIN_SPEED and diff < allow:
             # score
-            distance_score = 1.2 - (distance_from_center / (track_width / 2))
-            angle_score = 2.0 - (diff * 10)
+            distance_score = 1.0 - (distance_from_center / (track_width / 2))
+            angle_score = 1.0 - (diff / allow)
 
             reward = distance_score * angle_score
 
@@ -87,6 +82,7 @@ def reward_function(params):
     params['yaw'] = yaw
     params['guide'] = guide
     params['diff'] = diff
+    params['angle_score'] = angle_score
     params['reward'] = reward
     params['total'] = total
     print(json.dumps(params))
