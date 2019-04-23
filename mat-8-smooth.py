@@ -107,7 +107,7 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # speed and steer and angle
-        if speed >= MIN_SPEED and steer <= MAX_STEER and diff <= allow:
+        if speed >= MIN_SPEED and diff <= allow:
             # score
             distance_score = 1.0 - (distance_from_center / (track_width / 2))
             angle_score = 1.0 - (diff / allow)
