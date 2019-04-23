@@ -16,16 +16,18 @@ def get_episode(progress):
     global g_total
     global g_prev
 
-    if g_episode == 0 or g_prev > progress:
+    if g_prev > progress:
         g_episode += 1
         g_total = 0
 
     g_prev = progress
 
-    return g_episode, g_total
+    return g_episode
 
 
 def reward_function(params):
+    global g_total
+
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
 
@@ -42,7 +44,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode, total = get_episode(progress)
+    episode = get_episode(progress)
 
     if all_wheels_on_track == True:
         # center
@@ -72,13 +74,13 @@ def reward_function(params):
                     elif x < 2.5 and y > 2.0 and y < 3.0:
                         reward = 1
 
-    total += reward
+    g_total += reward
 
     # log
     params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_SPEED)
     params['episode'] = episode
     params['reward'] = reward
-    params['total'] = total
+    params['total'] = g_total
     print(json.dumps(params))
 
     return float(reward)

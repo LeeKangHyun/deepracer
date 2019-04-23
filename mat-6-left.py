@@ -9,23 +9,34 @@ MIN_SPEED = MAX_SPEED * 0.7
 g_episode = 0
 g_total = 0
 g_prev = 0
+g_diff = 0
 
 
 def get_episode(progress):
     global g_episode
     global g_total
     global g_prev
+    global g_diff
 
-    if g_episode == 0 or g_prev > progress:
+    if g_prev > progress:
         g_episode += 1
         g_total = 0
+        g_diff = 0
+    else:
+        if progress == 100:
+            g_diff = 0.5
+        else:
+            g_diff = progress - g_prev
 
     g_prev = progress
 
-    return g_episode, g_total
+    return g_episode
 
 
 def reward_function(params):
+    global g_total
+    global g_diff
+
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
 
@@ -39,7 +50,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode, total = get_episode(progress)
+    episode = get_episode(progress)
 
     if all_wheels_on_track == True:
         # speed
@@ -57,20 +68,20 @@ def reward_function(params):
             # left
             if is_left_of_center:
                 if distance_rate <= 0.1:
-                    reward = 1.0
+                    reward = 1.0 + g_diff
             #     elif distance_rate <= 0.5:
             #         reward = 0.5
             # else:
             #     if distance_rate <= 0.3:
             #         reward = 0.5
 
-    total += reward
+    g_total += reward
 
     # log
     params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_SPEED)
     params['episode'] = episode
     params['reward'] = reward
-    params['total'] = total
+    params['total'] = g_total
     print(json.dumps(params))
 
     return float(reward)
