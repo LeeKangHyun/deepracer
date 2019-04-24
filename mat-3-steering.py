@@ -77,6 +77,7 @@ def reward_function(params):
     g_total += reward
 
     # log
+    params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_STEER)
     params['log_key'] = CODE_NAME
     params['episode'] = episode
     params['reward'] = reward

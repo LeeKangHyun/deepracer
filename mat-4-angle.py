@@ -3,7 +3,8 @@ import math
 
 CODE_NAME = 'angle'
 
-MAX_ANGLE = math.radians(5)
+MAX_ANGLE = 5
+RAD_ANGLE = math.radians(MAX_ANGLE)
 
 g_progress = 0
 g_episode = 0
@@ -84,17 +85,17 @@ def reward_function(params):
         min_speed = g_speed * 0.7
 
         # speed and angle
-        if speed >= min_speed and diff_angle <= MAX_ANGLE:
+        if speed >= min_speed and diff_angle <= RAD_ANGLE:
             # reward
             distance_reward = 1.1 - (distance_from_center / (track_width / 2))
-            angle_reward = 1.1 - (diff_angle / MAX_ANGLE)
+            angle_reward = 1.1 - (diff_angle / RAD_ANGLE)
 
             reward = (distance_reward * angle_reward) + g_bonus
 
     g_total += reward
 
     # log
-    params['log_key'] = CODE_NAME
+    params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_ANGLE)
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['reward'] = reward
