@@ -58,7 +58,7 @@ def get_diff_angle(coor1, coor2, heading):
 def get_diff_steering(steering):
     global g_steer
 
-    prev = 0
+    prev = -100
     diff = 0
 
     # steering list
@@ -68,7 +68,8 @@ def get_diff_steering(steering):
 
     # steering diff
     for v in g_steer:
-        diff += abs(prev - v)
+        if prev > -100:
+            diff += abs(prev - v)
         prev = v
 
     return diff
