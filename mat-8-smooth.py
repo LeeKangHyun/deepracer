@@ -3,48 +3,50 @@ import math
 
 CODE_NAME = 'smooth'
 
-MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.7
-
 MAX_ANGLE = math.radians(5)
 
 MAX_STEER = 15
 LEN_STEER = 2
 
+g_progress = 0
 g_episode = 0
+g_speed = 0
 g_total = 0
-g_prev = 0
 g_bonus = 0
-g_steering = []
+g_steer = []
 
 
-def get_episode(progress):
+def get_episode(progress, speed):
+    global g_progress
     global g_episode
+    global g_speed
     global g_total
-    global g_prev
     global g_bonus
-    global g_steering
 
-    # reset
-    if g_prev > progress:
+    if g_progress > progress:
         g_episode += 1
         g_total = 0
         g_bonus = 0
-        del g_steering[:]
+        del g_steer[:]
     else:
-        # bonus
         if progress == 100:
             g_bonus = 0.5
         else:
-            g_bonus = progress - g_prev
+            g_bonus = progress - g_progress
 
-    # prev progress
-    g_prev = progress
+    g_progress = progress
+
+    if g_speed < speed:
+        g_speed = speed
 
     return g_episode
 
 
-def diff_angle(yaw, angle):
+def get_diff_angle(coor1, coor2, heading):
+    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+
+    yaw = math.radians(heading)
+
     diff = (yaw - angle) % (2.0 * math.pi)
 
     if diff >= math.pi:
@@ -53,19 +55,19 @@ def diff_angle(yaw, angle):
     return abs(diff)
 
 
-def diff_steering(steering):
-    global g_steering
+def get_diff_steering(steering):
+    global g_steer
 
     prev = 0
     diff = 0
 
     # steering list
-    g_steering.append(steering)
-    if len(g_steering) > LEN_STEER:
-        del g_steering[0]
+    g_steer.append(steering)
+    if len(g_steer) > LEN_STEER:
+        del g_steer[0]
 
     # steering diff
-    for v in g_steering:
+    for v in g_steer:
         diff += abs(prev - v)
         prev = v
 
@@ -88,41 +90,40 @@ def reward_function(params):
 
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
+    prev_waypoint = waypoints[closest_waypoints[0]]
+    next_waypoint = waypoints[closest_waypoints[1]]
     heading = params['heading']
 
     reward = 0.001
 
     # episode
-    episode = get_episode(progress)
-
-    # diff steering
-    steer = diff_steering(steering_angle)
+    episode = get_episode(progress, speed)
 
     # diff angle
-    coor1 = waypoints[closest_waypoints[0]]
-    coor2 = waypoints[closest_waypoints[1]]
-    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-    yaw = math.radians(heading)
-    diff = diff_angle(yaw, angle)
+    diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading)
+
+    # diff steering
+    diff_steer = get_diff_steering(steering_angle)
 
     if all_wheels_on_track == True:
+        # speed
+        min_speed = g_speed * 7
+
         # speed and steer and angle
-        if speed >= MIN_SPEED and steer <= MAX_STEER and diff <= MAX_ANGLE:
+        if speed >= min_speed and diff_steer <= MAX_STEER and diff_angle <= MAX_ANGLE:
             # score
             distance_score = 1.1 - (distance_from_center / (track_width / 2))
-            angle_score = 1.1 - (diff / MAX_ANGLE)
+            angle_score = 1.1 - (diff_angle / MAX_ANGLE)
 
             reward = (distance_score * angle_score) + g_bonus
 
     g_total += reward
 
     # log
-    params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_SPEED)
+    params['log_key'] = CODE_NAME
     params['episode'] = episode
-    params['angle'] = angle
-    params['yaw'] = yaw
-    params['diff'] = diff
-    params['steer'] = steer
+    params['diff_angle'] = diff_angle
+    params['diff_steer'] = diff_steer
     params['reward'] = reward
     params['total'] = g_total
     print(json.dumps(params))

@@ -3,24 +3,36 @@ import math
 
 CODE_NAME = 'in-out'
 
-MAX_SPEED = 2
-MIN_SPEED = MAX_SPEED * 0.7
-
+g_progress = 0
 g_episode = 0
+g_speed = 0
 g_total = 0
-g_prev = 0
+g_bonus = 0
+g_steer = []
 
 
-def get_episode(progress):
+def get_episode(progress, speed):
+    global g_progress
     global g_episode
+    global g_speed
     global g_total
-    global g_prev
+    global g_bonus
 
-    if g_prev > progress:
+    if g_progress > progress:
         g_episode += 1
         g_total = 0
+        g_bonus = 0
+        del g_steer[:]
+    else:
+        if progress == 100:
+            g_bonus = 0.5
+        else:
+            g_bonus = progress - g_progress
 
-    g_prev = progress
+    g_progress = progress
+
+    if g_speed < speed:
+        g_speed = speed
 
     return g_episode
 
@@ -44,7 +56,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode = get_episode(progress)
+    episode = get_episode(progress, speed)
 
     if all_wheels_on_track == True:
         # center
@@ -52,7 +64,9 @@ def reward_function(params):
 
         if distance_rate < 0.5:
             # speed
-            if speed > MIN_SPEED:
+            min_speed = g_speed * 7
+
+            if speed > min_speed:
                 # reverse
                 if is_reversed:
                     if is_left_of_center:
@@ -77,7 +91,7 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_SPEED)
+    params['log_key'] = CODE_NAME
     params['episode'] = episode
     params['reward'] = reward
     params['total'] = g_total
