@@ -61,12 +61,12 @@ def diff_steering(steering):
     # steering list
     g_steering.append(steering)
     if len(g_steering) > 10:
-        g_steering.remove(0)
+        del g_steering[0]
 
     # steering diff
-    for steering in g_steering:
-        diff += abs(prev - steering)
-        prev = steering
+    for v in g_steering:
+        diff += abs(prev - v)
+        prev = v
 
     return diff
 
