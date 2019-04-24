@@ -87,8 +87,8 @@ def reward_function(params):
         # speed and angle
         if speed >= min_speed and diff_angle <= MAX_ANGLE:
             # center rate
-            distance_score = 1.1 - (distance_from_center / (track_width / 2))
-            angle_score = 1.1 - (diff_angle / MAX_ANGLE)
+            distance_reward = 1.1 - (distance_from_center / (track_width / 2))
+            angle_reward = 1.1 - (diff_angle / MAX_ANGLE)
 
             # reverse
             if is_reversed:
@@ -99,7 +99,7 @@ def reward_function(params):
 
             # left and angle
             if is_left_of_center:
-                reward = (distance_score * angle_score) + g_bonus
+                reward = (distance_reward * angle_reward) + g_bonus
 
     g_total += reward
 

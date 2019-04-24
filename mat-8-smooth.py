@@ -118,11 +118,11 @@ def reward_function(params):
 
         # speed and steer and angle
         if speed >= min_speed and diff_steer <= MAX_STEER and diff_angle <= MAX_ANGLE:
-            # score
-            distance_score = 1.1 - (distance_from_center / (track_width / 2))
-            angle_score = 1.1 - (diff_angle / MAX_ANGLE)
+            # reward
+            distance_reward = 1.1 - (distance_from_center / (track_width / 2))
+            angle_reward = 1.1 - (diff_angle / MAX_ANGLE)
 
-            reward = (distance_score * angle_score) + g_bonus
+            reward = (distance_reward * angle_reward) + g_bonus
 
     g_total += reward
 
