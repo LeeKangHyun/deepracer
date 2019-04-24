@@ -23,28 +23,34 @@ def get_episode(progress, speed):
     global g_total
     global g_bonus
 
+    # reset
     if g_progress > progress:
         g_episode += 1
         g_total = 0
         g_bonus = 0
         del g_steer[:]
     else:
+        # bonus
         if progress == 100:
             g_bonus = 0.5
         else:
             g_bonus = progress - g_progress
 
-    g_progress = progress
-
+    # max speed
     if g_speed < speed:
         g_speed = speed
+
+    # prev progress
+    g_progress = progress
 
     return g_episode
 
 
 def get_diff_angle(coor1, coor2, heading):
+    # guide
     angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
+    # car yaw
     yaw = math.radians(heading)
 
     diff = (yaw - angle) % (2.0 * math.pi)
@@ -108,7 +114,7 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # speed
-        min_speed = g_speed * 7
+        min_speed = g_speed * 0.7
 
         # speed and steer and angle
         if speed >= min_speed and diff_steer <= MAX_STEER and diff_angle <= MAX_ANGLE:

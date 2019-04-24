@@ -58,7 +58,7 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # speed
-        min_speed = g_speed * 7
+        min_speed = g_speed * 0.7
 
         if speed > min_speed:
             # center
