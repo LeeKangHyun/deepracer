@@ -6,9 +6,10 @@ CODE_NAME = 'smooth'
 MAX_SPEED = 2
 MIN_SPEED = MAX_SPEED * 0.7
 
-MAX_ANGLE = 5
+MAX_ANGLE = math.radians(5)
 
-MAX_STEER = 30
+MAX_STEER = 15
+LEN_STEER = 2
 
 g_episode = 0
 g_total = 0
@@ -29,7 +30,7 @@ def get_episode(progress):
         g_episode += 1
         g_total = 0
         g_bonus = 0
-        g_steering = []
+        del g_steering[:]
     else:
         # bonus
         if progress == 100:
@@ -60,7 +61,7 @@ def diff_steering(steering):
 
     # steering list
     g_steering.append(steering)
-    if len(g_steering) > 10:
+    if len(g_steering) > LEN_STEER:
         del g_steering[0]
 
     # steering diff
@@ -102,15 +103,14 @@ def reward_function(params):
     coor2 = waypoints[closest_waypoints[1]]
     angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
     yaw = math.radians(heading)
-    allow = math.radians(MAX_ANGLE)
     diff = diff_angle(yaw, angle)
 
     if all_wheels_on_track == True:
         # speed and steer and angle
-        if speed >= MIN_SPEED and diff <= allow:
+        if speed >= MIN_SPEED and steer <= MAX_STEER and diff <= MAX_ANGLE:
             # score
-            distance_score = 1.0 - (distance_from_center / (track_width / 2))
-            angle_score = 1.0 - (diff / allow)
+            distance_score = 1.1 - (distance_from_center / (track_width / 2))
+            angle_score = 1.1 - (diff / MAX_ANGLE)
 
             reward = (distance_score * angle_score) + g_bonus
 
