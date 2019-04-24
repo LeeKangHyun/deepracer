@@ -47,12 +47,13 @@ def get_episode(progress, speed):
     return g_episode
 
 
-def get_diff_angle(coor1, coor2, heading):
+def get_diff_angle(coor1, coor2, heading, steering):
     # guide
     angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
     # car yaw
-    yaw = math.radians(heading)
+    # yaw = math.radians(heading)
+    yaw = math.radians(heading + steering)
 
     diff = (yaw - angle) % (2.0 * math.pi)
 
@@ -108,7 +109,7 @@ def reward_function(params):
     episode = get_episode(progress, speed)
 
     # diff angle
-    diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading)
+    diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading, steering_angle)
 
     # diff steering
     diff_steer = get_diff_steering(steering_angle)
