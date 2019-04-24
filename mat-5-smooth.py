@@ -5,7 +5,7 @@ CODE_NAME = 'smooth'
 
 MAX_ANGLE = math.radians(5)
 
-MAX_STEER = 30
+MAX_STEER = 15
 LEN_STEER = 2
 
 g_progress = 0
