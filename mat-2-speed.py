@@ -63,9 +63,12 @@ def reward_function(params):
         elif distance_rate <= 0.4:
             reward = 0.1
 
+        # bonus
+        bonus = reward * 0.5
+
         # speed
         if speed > g_min_speed:
-            reward *= 1.5
+            reward += bonus
 
     g_total += reward
 

@@ -67,9 +67,16 @@ def reward_function(params):
         elif distance_rate <= 0.4:
             reward = 0.1
 
-        # speed and steering
-        if speed > g_min_speed and steering < MAX_STEER:
-            reward *= 1.5
+        # bonus
+        bonus = reward * 0.5
+
+        # speed
+        if speed >= g_min_speed:
+            reward += bonus
+
+        # steering
+        if steering < MAX_STEER:
+            reward += bonus
 
     g_total += reward
 

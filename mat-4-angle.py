@@ -87,13 +87,16 @@ def reward_function(params):
         # distance
         reward = 1.2 - (distance_from_center / (track_width / 2))
 
+        # bonus
+        bonus = reward * 0.5
+
         # speed
         if speed >= g_min_speed:
-            reward += 0.5
+            reward += bonus
 
         # diff angle
         if diff_angle <= RAD_ANGLE:
-            reward += 0.5
+            reward += bonus
 
     g_total += reward
 
