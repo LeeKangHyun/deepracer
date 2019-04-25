@@ -80,7 +80,8 @@ def reward_function(params):
     episode = get_episode(progress, speed)
 
     # diff angle
-    diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading, steering_angle)
+    diff_angle = get_diff_angle(
+        prev_waypoint, next_waypoint, heading, steering_angle)
 
     if all_wheels_on_track == True:
         # speed and angle

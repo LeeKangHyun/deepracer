@@ -104,7 +104,8 @@ def reward_function(params):
     episode = get_episode(progress, speed)
 
     # diff angle
-    diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading, steering_angle)
+    diff_angle = get_diff_angle(
+        prev_waypoint, next_waypoint, heading, steering_angle)
 
     # diff steering
     diff_steer = get_diff_steering(steering_angle)
@@ -115,19 +116,19 @@ def reward_function(params):
 
         # speed
         if speed >= g_min_speed:
-            reward *= 1.5
+            reward += 0.5
 
-        # angle
+        # diff angle
         if diff_angle <= RAD_ANGLE:
-            reward *= 1.5
+            reward += 0.5
 
-        # steering
+        # diff steering
         if diff_steer <= MAX_STEER:
-            reward *= 1.5
+            reward += 0.5
 
         # straight
         if steering_angle <= MIN_STEER:
-            reward *= 1.5
+            reward += 0.5
 
     g_total += reward
 
