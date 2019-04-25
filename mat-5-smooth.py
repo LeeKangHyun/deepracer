@@ -6,7 +6,7 @@ CODE_NAME = 'smooth'
 MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
-MAX_STEER = 15
+MAX_STEER = 20
 LEN_STEER = 2
 
 g_progress = 0
@@ -33,7 +33,7 @@ def get_episode(progress, speed):
     else:
         # bonus
         if progress == 100:
-            g_bonus = 0.5
+            g_bonus = 0.8
         else:
             g_bonus = progress - g_progress
 
@@ -134,6 +134,7 @@ def reward_function(params):
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
     params['reward'] = reward
+    params['bonus'] = g_bonus
     params['total'] = g_total
     print(json.dumps(params))
 

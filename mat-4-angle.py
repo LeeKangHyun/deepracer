@@ -30,7 +30,7 @@ def get_episode(progress, speed):
     else:
         # bonus
         if progress == 100:
-            g_bonus = 0.5
+            g_bonus = 0.8
         else:
             g_bonus = progress - g_progress
 
@@ -108,6 +108,7 @@ def reward_function(params):
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['reward'] = reward
+    params['bonus'] = g_bonus
     params['total'] = g_total
     print(json.dumps(params))
 
