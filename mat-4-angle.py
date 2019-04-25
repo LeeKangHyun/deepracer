@@ -6,37 +6,31 @@ CODE_NAME = 'angle'
 MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
-g_progress = 0
 g_episode = 0
-g_speed = 0
-g_total = 0
-g_bonus = 0
+g_progress = float(0)
+g_max_speed = float(0)
+g_min_speed = float(0)
+g_total = float(0)
 g_steer = []
 
 
 def get_episode(progress, speed):
-    global g_progress
     global g_episode
-    global g_speed
+    global g_progress
+    global g_max_speed
+    global g_min_speed
     global g_total
-    global g_bonus
 
     # reset
     if g_progress > progress:
         g_episode += 1
-        g_total = 0
-        g_bonus = 0
+        g_total = float(0)
         del g_steer[:]
-    else:
-        # bonus
-        if progress == 100:
-            g_bonus = 0.8
-        else:
-            g_bonus = progress - g_progress
 
-    # max speed
-    if g_speed < speed:
-        g_speed = speed
+    # speed
+    if g_max_speed < speed:
+        g_max_speed = speed
+        g_min_speed = speed * 0.7
 
     # prev progress
     g_progress = progress
@@ -61,9 +55,8 @@ def get_diff_angle(coor1, coor2, heading, steering):
 
 
 def reward_function(params):
-    global g_speed
     global g_total
-    global g_bonus
+    global g_min_speed
 
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
@@ -90,16 +83,13 @@ def reward_function(params):
     diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading, steering_angle)
 
     if all_wheels_on_track == True:
-        # speed
-        min_speed = g_speed * 0.7
-
         # speed and angle
-        if speed >= min_speed and diff_angle <= RAD_ANGLE:
+        if speed >= g_min_speed and diff_angle <= RAD_ANGLE:
             # reward
             distance_reward = 1.1 - (distance_from_center / (track_width / 2))
             angle_reward = 1.1 - (diff_angle / RAD_ANGLE)
 
-            reward = (distance_reward * angle_reward) + g_bonus
+            reward = distance_reward * angle_reward
 
     g_total += reward
 
@@ -108,7 +98,6 @@ def reward_function(params):
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['reward'] = reward
-    params['bonus'] = g_bonus
     params['total'] = g_total
     print(json.dumps(params))
 

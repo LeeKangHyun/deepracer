@@ -5,42 +5,41 @@ CODE_NAME = 'steering'
 
 MAX_STEER = 15
 
-g_progress = 0
 g_episode = 0
-g_speed = 0
-g_total = 0
-g_bonus = 0
+g_progress = float(0)
+g_max_speed = float(0)
+g_min_speed = float(0)
+g_total = float(0)
 g_steer = []
 
 
 def get_episode(progress, speed):
-    global g_progress
     global g_episode
-    global g_speed
+    global g_progress
+    global g_max_speed
+    global g_min_speed
     global g_total
-    global g_bonus
 
+    # reset
     if g_progress > progress:
         g_episode += 1
-        g_total = 0
-        g_bonus = 0
+        g_total = float(0)
         del g_steer[:]
-    else:
-        if progress == 100:
-            g_bonus = 0.5
-        else:
-            g_bonus = progress - g_progress
 
+    # speed
+    if g_max_speed < speed:
+        g_max_speed = speed
+        g_min_speed = speed * 0.7
+
+    # prev progress
     g_progress = progress
-
-    if g_speed < speed:
-        g_speed = speed
 
     return g_episode
 
 
 def reward_function(params):
     global g_total
+    global g_min_speed
 
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
@@ -68,10 +67,8 @@ def reward_function(params):
         elif distance_rate <= 0.4:
             reward = 0.1
 
-        # speed
-        min_speed = g_speed * 0.7
-
-        if speed > min_speed and steering < MAX_STEER:
+        # speed and steering
+        if speed > g_min_speed and steering < MAX_STEER:
             reward *= 1.5
 
     g_total += reward

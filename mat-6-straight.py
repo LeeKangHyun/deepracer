@@ -10,17 +10,17 @@ MIN_STEER = 5
 MAX_STEER = 20
 LEN_STEER = 2
 
-g_progress = 0.0
-g_episode = 0.0
-g_max_speed = 0.0
-g_min_speed = 0.0
-g_total = 0.0
+g_episode = 0
+g_progress = float(0)
+g_max_speed = float(0)
+g_min_speed = float(0)
+g_total = float(0)
 g_steer = []
 
 
 def get_episode(progress, speed):
-    global g_progress
     global g_episode
+    global g_progress
     global g_max_speed
     global g_min_speed
     global g_total
@@ -28,10 +28,10 @@ def get_episode(progress, speed):
     # reset
     if g_progress > progress:
         g_episode += 1
-        g_total = 0.0
+        g_total = float(0)
         del g_steer[:]
 
-    # max speed
+    # speed
     if g_max_speed < speed:
         g_max_speed = speed
         g_min_speed = speed * 0.7

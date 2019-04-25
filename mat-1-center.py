@@ -4,20 +4,33 @@ import math
 CODE_NAME = 'center'
 
 g_episode = 0
-g_total = 0
-g_prev = 0
+g_progress = float(0)
+g_max_speed = float(0)
+g_min_speed = float(0)
+g_total = float(0)
+g_steer = []
 
 
-def get_episode(progress):
+def get_episode(progress, speed):
     global g_episode
+    global g_progress
+    global g_max_speed
+    global g_min_speed
     global g_total
-    global g_prev
 
-    if g_prev > progress:
+    # reset
+    if g_progress > progress:
         g_episode += 1
-        g_total = 0
+        g_total = float(0)
+        del g_steer[:]
 
-    g_prev = progress
+    # speed
+    if g_max_speed < speed:
+        g_max_speed = speed
+        g_min_speed = speed * 0.7
+
+    # prev progress
+    g_progress = progress
 
     return g_episode
 
@@ -28,13 +41,15 @@ def reward_function(params):
     all_wheels_on_track = params['all_wheels_on_track']
     progress = params['progress']
 
+    speed = params['speed']
+
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
 
     reward = 0.001
 
     # episode
-    episode = get_episode(progress)
+    episode = get_episode(progress, speed)
 
     if all_wheels_on_track == True:
         # center
