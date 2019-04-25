@@ -110,13 +110,20 @@ def reward_function(params):
     diff_steer = get_diff_steering(steering_angle)
 
     if all_wheels_on_track == True:
-        # speed and steer and angle
-        if speed >= g_min_speed and diff_steer <= MAX_STEER and diff_angle <= RAD_ANGLE:
-            # reward
-            distance_reward = 1.1 - (distance_from_center / (track_width / 2))
-            angle_reward = 1.1 - (diff_angle / RAD_ANGLE)
+        # distance
+        reward = 1.2 - (distance_from_center / (track_width / 2))
 
-            reward = distance_reward * angle_reward
+        # speed
+        if speed >= g_min_speed:
+            reward += 0.5
+
+        # diff angle
+        if diff_angle <= RAD_ANGLE:
+            reward += 0.5
+
+        # diff steering
+        if diff_steer <= MAX_STEER:
+            reward += 0.5
 
     g_total += reward
 
