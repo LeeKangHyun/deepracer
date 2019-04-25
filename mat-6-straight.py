@@ -47,8 +47,8 @@ def get_diff_angle(coor1, coor2, heading, steering):
     angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
     # car yaw
-    yaw = math.radians(heading)
-    # yaw = math.radians(heading + steering)
+    # yaw = math.radians(heading)
+    yaw = math.radians(heading + steering)
 
     diff = (yaw - angle) % (2.0 * math.pi)
 
@@ -127,11 +127,11 @@ def reward_function(params):
 
         # diff steering
         if diff_steer <= MAX_STEER:
-            reward += bonus
+            reward += (bonus * 2)
 
         # straight
         if steering_angle <= MIN_STEER:
-            reward += bonus
+            reward += (bonus * 3)
 
     g_total += reward
 
