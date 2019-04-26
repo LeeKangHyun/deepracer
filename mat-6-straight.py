@@ -140,8 +140,27 @@ def reward_function(params):
             reward += (bonus * 2)
 
         # straight
-        if steering_angle <= MIN_STEER:
-            reward += (bonus * 3)
+        # if steering_angle <= MIN_STEER:
+        #     reward += (bonus * 3)
+        straight_index = [[0,10],[24,32],[33,40],[43,50],[53,62],[68,69]]
+        for from_, to_ in straight_index:
+            if next_waypoint in list(range(from_, to_)):
+                if steering_angle <= MIN_STEER:
+                    reward += (bonus * 2)
+
+        # left
+        left_index = [[10,24],[40,43],[50,53],[62,68]]
+        for from_, to_ in straight_index:
+            if left_index in list(range(from_, to_)):
+                if steering_angle > 0:
+                    reward += (bonus * 2)
+
+        # right
+        right_index = [[32,33]]
+        for from_, to_ in straight_index:
+            if right_index in list(range(from_, to_)):
+                if steering_angle < 0:
+                    reward += (bonus * 2)
 
     g_total += reward
 
