@@ -112,7 +112,17 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # distance
-        reward = 1.2 - (distance_from_center / (track_width / 2))
+        # reward = 1.2 - (distance_from_center / (track_width / 2))
+
+        # center
+        distance_rate = distance_from_center / track_width
+
+        if distance_rate <= 0.1:
+            reward = 1.0
+        elif distance_rate <= 0.2:
+            reward = 0.5
+        elif distance_rate <= 0.4:
+            reward = 0.1
 
         # bonus
         bonus = reward * 0.5
