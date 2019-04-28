@@ -3,10 +3,10 @@ import math
 
 CODE_NAME = 'smooth'
 
-MAX_ANGLE = 5
+MAX_ANGLE = 3
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
-MAX_STEER = 20
+MAX_STEER = 15
 LEN_STEER = 2
 
 g_episode = 0
@@ -136,7 +136,7 @@ def reward_function(params):
 
         # diff steering
         if diff_steer <= MAX_STEER:
-            reward += bonus
+            reward += (bonus * 2)
 
     g_total += reward
 
