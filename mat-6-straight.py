@@ -7,7 +7,7 @@ MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
 MIN_STEER = 5
-MAX_STEER = 20
+MAX_STEER = 15
 LEN_STEER = 2
 
 g_episode = 0
@@ -137,7 +137,7 @@ def reward_function(params):
 
         # diff steering
         if diff_steer <= MAX_STEER:
-            reward += (bonus * 2)
+            reward += bonus
 
         # straight
         # if steering_angle <= MIN_STEER:
