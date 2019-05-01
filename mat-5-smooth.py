@@ -124,7 +124,8 @@ def reward_function(params):
         #     reward = 0.1
 
         # bonus
-        bonus = reward * 0.5
+        # bonus = reward * 0.5
+        bonus = 0.8
 
         # speed
         if speed >= g_min_speed:
