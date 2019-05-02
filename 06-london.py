@@ -141,7 +141,7 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_ANGLE, MAX_STEER)
+    params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_ANGLE, FUTURE)
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
