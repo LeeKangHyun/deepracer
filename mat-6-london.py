@@ -115,7 +115,7 @@ def reward_function(params):
 
         # speed
         if speed >= g_min_speed:
-            reward += 0.8
+            reward += 0.6
 
         # diff angle
         if diff_angle <= RAD_ANGLE:
