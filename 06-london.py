@@ -91,7 +91,8 @@ def reward_function(params):
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
 
-    steering_angle = params['steering_angle']
+    heading = params['heading']
+    steering = params['steering_angle']
 
     x = params['x']
     y = params['y']
@@ -101,8 +102,6 @@ def reward_function(params):
     closest_waypoints = params['closest_waypoints']
     # prev_waypoint = waypoints[closest_waypoints[0]]
     # next_waypoint = waypoints[closest_waypoints[1]]
-
-    heading = params['heading']
 
     # future
     future = closest_waypoints[1] + FUTURE
@@ -117,10 +116,10 @@ def reward_function(params):
 
     # diff angle
     diff_angle = get_diff_angle(
-        this_position, next_position, heading, steering_angle)
+        this_position, next_position, heading, steering)
 
     # diff steering
-    diff_steer = get_diff_steering(steering_angle)
+    diff_steer = get_diff_steering(steering)
 
     if all_wheels_on_track == True:
         # center
