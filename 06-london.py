@@ -9,7 +9,7 @@ RAD_ANGLE = math.radians(MAX_ANGLE)
 MAX_STEER = 15
 LEN_STEER = 2
 
-FUTURE = 3
+FUTURE = 2
 
 g_episode = 0
 g_progress = float(0)
