@@ -9,7 +9,7 @@ RAD_ANGLE = math.radians(MAX_ANGLE)
 MAX_STEER = 15
 LEN_STEER = 2
 
-FUTURE = 2
+FUTURE = 0.3
 
 g_episode = 0
 g_progress = float(0)
@@ -41,6 +41,29 @@ def get_episode(progress, speed):
     g_progress = progress
 
     return g_episode
+
+
+def get_distance(coor1, coor2):
+    return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
+
+
+def get_next_point(waypoints, this_point, closest, distance):
+    next_index = closest
+    next_point = []
+
+    while True:
+        next_point = waypoints[next_index]
+
+        dist = get_distance(this_point, next_point)
+
+        if dist >= distance:
+            break
+
+        next_index += 1
+        if next_index > len(waypoints):
+            next_index = next_index - len(waypoints)
+
+    return next_point
 
 
 def get_diff_angle(coor1, coor2, heading, steering):
@@ -96,7 +119,7 @@ def reward_function(params):
 
     x = params['x']
     y = params['y']
-    this_position = [x, y]
+    this_point = [x, y]
 
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
@@ -104,10 +127,8 @@ def reward_function(params):
     # next_waypoint = waypoints[closest_waypoints[1]]
 
     # future
-    future = closest_waypoints[1] + FUTURE
-    if future >= len(waypoints):
-        future = future - len(waypoints)
-    next_position = waypoints[future]
+    next_point = get_next_point(
+        waypoints, this_point, closest_waypoints[1], FUTURE)
 
     reward = 0.001
 
@@ -116,7 +137,7 @@ def reward_function(params):
 
     # diff angle
     diff_angle = get_diff_angle(
-        this_position, next_position, heading, steering)
+        this_point, next_point, heading, steering)
 
     # diff steering
     diff_steer = get_diff_steering(steering)
@@ -140,7 +161,7 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['log_key'] = '{}-{}-{}'.format(CODE_NAME, MAX_ANGLE, FUTURE)
+    params['log_key'] = CODE_NAME
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
