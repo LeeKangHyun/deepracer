@@ -3,7 +3,7 @@ import math
 
 CODE_NAME = 'london'
 
-MAX_ANGLE = 3
+MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
 MAX_STEER = 15
@@ -48,8 +48,8 @@ def get_diff_angle(coor1, coor2, heading, steering):
     angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
 
     # car yaw
-    yaw = math.radians(heading)
-    # yaw = math.radians(heading + steering)
+    # yaw = math.radians(heading)
+    yaw = math.radians(heading + steering)
 
     diff = (yaw - angle) % (2.0 * math.pi)
 
