@@ -113,19 +113,19 @@ def reward_function(params):
         # distance
         reward = 1.2 - (distance_from_center / (track_width / 2))
 
-        # center
-        # distance_rate = distance_from_center / track_width
-
-        # if distance_rate <= 0.1:
-        #     reward = 1.0
-        # elif distance_rate <= 0.2:
-        #     reward = 0.5
-        # elif distance_rate <= 0.4:
-        #     reward = 0.1
-
         # bonus
         # bonus = reward * 0.5
-        bonus = 0.8
+        bonus = 0
+
+        # center
+        distance_rate = distance_from_center / track_width
+
+        if distance_rate <= 0.1:
+            bonus = 1.0
+        elif distance_rate <= 0.2:
+            bonus = 0.5
+        elif distance_rate <= 0.4:
+            bonus = 0.1
 
         # speed
         if speed >= g_min_speed:
