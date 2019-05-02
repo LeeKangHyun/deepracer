@@ -9,7 +9,7 @@ RAD_ANGLE = math.radians(MAX_ANGLE)
 MAX_STEER = 15
 LEN_STEER = 2
 
-FUTURE = 0.3
+FUTURE = 0.5
 
 g_episode = 0
 g_progress = float(0)
@@ -55,12 +55,11 @@ def get_next_point(waypoints, this_point, closest, distance):
         next_point = waypoints[next_index]
 
         dist = get_distance(this_point, next_point)
-
         if dist >= distance:
             break
 
         next_index += 1
-        if next_index > len(waypoints):
+        if next_index >= len(waypoints):
             next_index = next_index - len(waypoints)
 
     return next_point
@@ -130,6 +129,7 @@ def reward_function(params):
     next_point = get_next_point(
         waypoints, this_point, closest_waypoints[1], FUTURE)
 
+    # default
     reward = 0.001
 
     # episode
