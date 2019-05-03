@@ -3,7 +3,7 @@ import math
 
 CODE_NAME = 'london'
 
-SIGHT = 0.55
+SIGHT = 0.3
 
 BASE_REWARD = 1.2
 
@@ -13,7 +13,7 @@ RAD_ANGLE = math.radians(MAX_ANGLE)
 MAX_STEER = 15
 LEN_STEER = 2
 
-MAX_STEPS = 300
+MAX_STEPS = 200
 
 g_episode = 0
 g_progress = float(0)
@@ -161,19 +161,23 @@ def reward_function(params):
         # center
         reward = BASE_REWARD - (distance_from_center / (track_width / 2))
 
-        # speed
-        if speed >= g_min_speed:
-            reward += (BASE_REWARD * 0.5)
-
         # diff angle
         if diff_angle <= RAD_ANGLE:
             reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
 
-        # diff steering
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+            # diff steering
+            if diff_steer <= MAX_STEER:
+                reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # bonus
+            # speed
+            if speed >= g_min_speed:
+                reward += (BASE_REWARD * 0.5)
+
+            # speed bonus
+            if steps > 0:
+                reward += (progress / steps)
+
+        # complete bonus
         if completed == True and steps < MAX_STEPS:
             reward += (MAX_STEPS - steps)
 
@@ -184,6 +188,7 @@ def reward_function(params):
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
+    params['next_point'] = next_point
     params['reward'] = reward
     params['total'] = g_total
     print(json.dumps(params))
