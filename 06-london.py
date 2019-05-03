@@ -3,7 +3,7 @@ import math
 
 CODE_NAME = 'london'
 
-SIGHT = 0.3
+SIGHT = 0.6
 
 BASE_REWARD = 1.2
 
@@ -173,7 +173,7 @@ def reward_function(params):
             if speed >= g_min_speed:
                 reward += (BASE_REWARD * 0.5)
 
-            # speed bonus
+            # steps bonus
             if steps > 0:
                 reward += (progress / steps)
 
