@@ -3,7 +3,7 @@ import math
 
 CODE_NAME = 'london'
 
-SIGHT = 0.65
+SIGHT = 0.55
 
 BASE_REWARD = 1.2
 
