@@ -125,8 +125,8 @@ def reward_function(params):
 
     speed = params['speed']
 
-    # track_width = params['track_width']
-    # distance_from_center = params['distance_from_center']
+    track_width = params['track_width']
+    distance_from_center = params['distance_from_center']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -159,7 +159,7 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # center
-        # reward = BASE_REWARD - (distance_from_center / (track_width / 2))
+        reward = BASE_REWARD - (distance_from_center / (track_width / 2))
 
         # speed
         if speed >= g_min_speed:
