@@ -184,6 +184,7 @@ def reward_function(params):
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
+    params['next_point'] = next_point
     params['reward'] = reward
     params['total'] = g_total
     print(json.dumps(params))
