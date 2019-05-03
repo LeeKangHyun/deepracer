@@ -13,6 +13,7 @@ FUTURE = 0.5
 
 g_episode = 0
 g_progress = float(0)
+g_completed = False
 g_max_speed = float(0)
 g_min_speed = float(0)
 g_total = float(0)
@@ -22,15 +23,23 @@ g_steer = []
 def get_episode(progress, speed):
     global g_episode
     global g_progress
+    global g_completed
     global g_max_speed
     global g_min_speed
     global g_total
+    global g_steer
 
     # reset
     if g_progress > progress:
         g_episode += 1
         g_total = float(0)
         del g_steer[:]
+
+    # completed
+    if g_progress < progress and progress == 100:
+        g_completed = True
+    else:
+        g_completed = False
 
     # speed
     if g_max_speed < speed:
@@ -40,7 +49,7 @@ def get_episode(progress, speed):
     # prev progress
     g_progress = progress
 
-    return g_episode
+    return g_episode, g_completed
 
 
 def get_distance(coor1, coor2):
@@ -102,11 +111,13 @@ def get_diff_steering(steering):
 
 
 def reward_function(params):
-    global g_total
     global g_min_speed
+    global g_total
+
+    step = params['step']
+    progress = params['progress']
 
     all_wheels_on_track = params['all_wheels_on_track']
-    progress = params['progress']
 
     speed = params['speed']
 
@@ -125,15 +136,15 @@ def reward_function(params):
     # prev_waypoint = waypoints[closest_waypoints[0]]
     # next_waypoint = waypoints[closest_waypoints[1]]
 
-    # future
-    next_point = get_next_point(
-        waypoints, this_point, closest_waypoints[1], FUTURE)
-
     # default
     reward = 0.001
 
     # episode
-    episode = get_episode(progress, speed)
+    episode, completed = get_episode(progress, speed)
+
+    # future
+    next_point = get_next_point(
+        waypoints, this_point, closest_waypoints[1], FUTURE)
 
     # diff angle
     diff_angle = get_diff_angle(
@@ -157,6 +168,10 @@ def reward_function(params):
         # diff steering
         if diff_steer <= MAX_STEER:
             reward += (1.2 - (diff_steer / MAX_STEER))
+
+    # bonus
+    if completed == True and step < 300:
+        reward += (300 - step)
 
     g_total += reward
 
