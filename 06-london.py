@@ -114,7 +114,7 @@ def reward_function(params):
     global g_min_speed
     global g_total
 
-    step = params['step']
+    steps = params['steps']
     progress = params['progress']
 
     all_wheels_on_track = params['all_wheels_on_track']
@@ -170,8 +170,8 @@ def reward_function(params):
             reward += (1.2 - (diff_steer / MAX_STEER))
 
     # bonus
-    if completed == True and step < 300:
-        reward += (300 - step)
+    if completed == True and steps < 300:
+        reward += (300 - steps)
 
     g_total += reward
 
