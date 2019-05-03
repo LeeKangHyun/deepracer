@@ -3,13 +3,17 @@ import math
 
 CODE_NAME = 'london'
 
+SIGHT = 0.65
+
+BASE_REWARD = 1.2
+
 MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
 MAX_STEER = 15
 LEN_STEER = 2
 
-SIGHT = 0.65
+MAX_STEPS = 300
 
 g_episode = 0
 g_progress = float(0)
@@ -155,23 +159,23 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # center
-        # reward = 1.2 - (distance_from_center / (track_width / 2))
+        # reward = BASE_REWARD - (distance_from_center / (track_width / 2))
 
         # speed
         if speed >= g_min_speed:
-            reward += 0.6
+            reward += (BASE_REWARD * 0.5)
 
         # diff angle
         if diff_angle <= RAD_ANGLE:
-            reward += (1.2 - (diff_angle / RAD_ANGLE))
+            reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
 
         # diff steering
         if diff_steer <= MAX_STEER:
-            reward += (1.2 - (diff_steer / MAX_STEER))
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
     # bonus
-    if completed == True and steps < 300:
-        reward += (300 - steps)
+    if completed == True and steps < MAX_STEPS:
+        reward += (MAX_STEPS - steps)
 
     g_total += reward
 
