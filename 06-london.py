@@ -125,8 +125,8 @@ def reward_function(params):
 
     speed = params['speed']
 
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    # track_width = params['track_width']
+    # distance_from_center = params['distance_from_center']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -159,20 +159,20 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # center
-        reward = BASE_REWARD - (distance_from_center / (track_width / 2))
+        # reward = BASE_REWARD - (distance_from_center / (track_width / 2))
 
-        if speed >= g_min_speed and diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
-            # speed
-            # if speed >= g_min_speed:
-            reward += (BASE_REWARD * 0.5)
-
+        if diff_angle <= RAD_ANGLE:
             # diff angle
             # if diff_angle <= RAD_ANGLE:
             reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
 
             # diff steering
-            # if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+            if diff_steer <= MAX_STEER:
+                reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
+            # speed
+            if speed >= g_min_speed:
+                reward += (BASE_REWARD * 0.5)
 
             # speed bonus
             reward += (progress / steps)
