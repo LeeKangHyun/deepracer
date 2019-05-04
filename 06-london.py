@@ -3,7 +3,7 @@ import math
 
 CODE_NAME = 'london'
 
-SIGHT = 0.6
+SIGHT = 0.5
 
 BASE_REWARD = 1.2
 
@@ -158,16 +158,20 @@ def reward_function(params):
     diff_steer = get_diff_steering(steering)
 
     if all_wheels_on_track == True:
-        # center
-        reward = BASE_REWARD - (distance_from_center / (track_width / 2))
+        # complete bonus
+        if completed == True and steps < MAX_STEPS:
+            # reward += (MAX_STEPS - steps)
+            reward += (steps / MAX_STEPS)
 
-        # diff angle
-        if diff_angle <= RAD_ANGLE:
+        if diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
+            # diff angle
             reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
 
             # diff steering
-            if diff_steer <= MAX_STEER:
-                reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
+            # center
+            reward = BASE_REWARD - (distance_from_center / (track_width / 2))
 
             # speed
             if speed >= g_min_speed:
@@ -176,10 +180,6 @@ def reward_function(params):
             # steps bonus
             if steps > 0:
                 reward += (progress / steps)
-
-        # complete bonus
-        if completed == True and steps < MAX_STEPS:
-            reward += (MAX_STEPS - steps)
 
     g_total += reward
 
