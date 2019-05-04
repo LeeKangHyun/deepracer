@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'london'
+CODE_NAME = 'mk9-5'
 
 SIGHT = 0.5
 
