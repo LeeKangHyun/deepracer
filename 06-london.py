@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'mk9-5'
+CODE_NAME = 'mk9-7'
 
 SIGHT = 0.5
 
@@ -10,7 +10,7 @@ BASE_REWARD = 1.2
 MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
-MAX_STEER = 10
+MAX_STEER = 15
 LEN_STEER = 5
 
 MAX_STEPS = 200
@@ -158,15 +158,14 @@ def reward_function(params):
 
     if all_wheels_on_track == True:
         # complete bonus
-        if completed == True and steps < MAX_STEPS:
-            # reward += (MAX_STEPS - steps)
-            reward += (steps / MAX_STEPS)
+        # if completed == True and steps < MAX_STEPS:
+        #     reward += (MAX_STEPS - steps)
 
         if diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
-            # diff angle
+            # angle
             reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
 
-            # diff steering
+            # steering
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
             # center
@@ -188,6 +187,7 @@ def reward_function(params):
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
     params['next_point'] = next_point
+    params['completed'] = completed
     params['reward'] = reward
     params['total'] = g_total
     print(json.dumps(params))
