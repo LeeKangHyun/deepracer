@@ -10,8 +10,8 @@ BASE_REWARD = 1.2
 MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
-MAX_STEER = 15
-LEN_STEER = 2
+MAX_STEER = 5
+LEN_STEER = 5
 
 MAX_STEPS = 200
 
@@ -19,7 +19,6 @@ g_episode = 0
 g_progress = float(0)
 g_completed = False
 g_max_speed = float(0)
-g_min_speed = float(0)
 g_total = float(0)
 g_steer = []
 
@@ -29,7 +28,6 @@ def get_episode(progress, speed):
     global g_progress
     global g_completed
     global g_max_speed
-    global g_min_speed
     global g_total
     global g_steer
 
@@ -48,7 +46,6 @@ def get_episode(progress, speed):
     # speed
     if g_max_speed < speed:
         g_max_speed = speed
-        g_min_speed = speed * 0.7
 
     # prev progress
     g_progress = progress
@@ -111,11 +108,13 @@ def get_diff_steering(steering):
             diff += abs(prev - v)
         prev = v
 
+    diff = diff / (LEN_STEER - 1)
+
     return diff
 
 
 def reward_function(params):
-    global g_min_speed
+    global g_max_speed
     global g_total
 
     steps = params['steps']
@@ -171,11 +170,11 @@ def reward_function(params):
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
             # center
-            reward = BASE_REWARD - (distance_from_center / (track_width / 2))
+            reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
 
-            # speed
-            if speed >= g_min_speed:
-                reward += (BASE_REWARD * 0.5)
+            # speed bonus
+            if g_max_speed > 0:
+                reward += (speed / g_max_speed)
 
             # steps bonus
             if steps > 0:
