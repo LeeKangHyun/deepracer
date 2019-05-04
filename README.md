@@ -22,6 +22,12 @@ fields episode, steps, progress, reward, total, diff_angle, diff_steer, heading,
 | order by episode desc, steps desc
 ```
 
+## track
+
+```bash
+cat reinvent.json | jq -r '.waypoints[] | "\(.[0]),\(.[1])"'
+```
+
 ## ssh
 
 ```bash
