@@ -1,13 +1,13 @@
 import json
 import math
 
-CODE_NAME = 'mk10'
+CODE_NAME = 'mk10-2'
 
-SIGHT = 0.6
+SIGHT = 0.65
 
 BASE_REWARD = 1.2
 
-MAX_ANGLE = 5
+MAX_ANGLE = 4.5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
 MAX_STEER = 15
