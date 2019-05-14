@@ -156,9 +156,9 @@ def reward_function(params):
     diff_steer = get_diff_steering(steering)
 
     # if all_wheels_on_track == True:
-        # complete bonus
-        # if completed == True and steps < MAX_STEPS:
-        #     reward += (MAX_STEPS - steps)
+    # complete bonus
+    # if completed == True and steps < MAX_STEPS:
+    #     reward += (MAX_STEPS - steps)
 
     if diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
         # angle
