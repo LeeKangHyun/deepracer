@@ -11,7 +11,7 @@ MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
 
 MAX_STEER = 15
-LEN_STEER = 2
+LEN_STEER = 5
 
 MAX_STEPS = 200
 
@@ -119,7 +119,7 @@ def reward_function(params):
     steps = params['steps']
     progress = params['progress']
 
-    all_wheels_on_track = params['all_wheels_on_track']
+    # all_wheels_on_track = params['all_wheels_on_track']
 
     speed = params['speed']
 
@@ -155,28 +155,28 @@ def reward_function(params):
     # diff steering
     diff_steer = get_diff_steering(steering)
 
-    if all_wheels_on_track == True:
+    # if all_wheels_on_track == True:
         # complete bonus
         # if completed == True and steps < MAX_STEPS:
         #     reward += (MAX_STEPS - steps)
 
-        if diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
-            # angle
-            reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
+    if diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
+        # angle
+        reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
 
-            # steering
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # steering
+        reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-            # center
-            reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
+        # center bonus
+        reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
 
-            # speed bonus
-            if max_speed > 0:
-                reward += (speed / max_speed)
+        # steps bonus
+        if steps > 0:
+            reward += (progress / steps)
 
-            # steps bonus
-            if steps > 0:
-                reward += (progress / steps)
+    # speed panelity
+    if speed < (max_speed * 0.9):
+        reward *= 0.3
 
     g_total += reward
 
