@@ -175,8 +175,8 @@ def reward_function(params):
             reward += (progress / steps)
 
     # speed panelity
-    # if speed < (max_speed * 0.8):
-    reward *= (speed / max_speed)
+    if speed < max_speed:
+        reward *= (speed / max_speed)
 
     g_total += reward
 
