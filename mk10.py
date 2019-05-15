@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'mk10-3'
+CODE_NAME = 'mk10-4'
 
 SIGHT = 0.6
 
