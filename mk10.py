@@ -1,5 +1,6 @@
 import json
 import math
+import time
 
 CODE_NAME = 'mk10-5'
 
@@ -20,6 +21,7 @@ g_completed = False
 g_max_speed = float(0)
 g_total = float(0)
 g_steer = []
+g_start = 0
 
 
 def get_episode(progress, speed):
@@ -34,11 +36,13 @@ def get_episode(progress, speed):
     if g_progress > progress:
         g_episode += 1
         g_total = float(0)
+        g_start = time.time()
         del g_steer[:]
 
     # completed
     if g_progress < progress and progress == 100:
         g_completed = True
+        print("--- completed --- %s seconds ---" % (time.time() - g_start))
     else:
         g_completed = False
 
