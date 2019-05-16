@@ -1,14 +1,13 @@
 import json
 import math
 
-CODE_NAME = 'mk10-4'
+CODE_NAME = 'mk10-5'
 
 SIGHT = 0.6
 
 BASE_REWARD = 1.2
 
 MAX_ANGLE = 5
-RAD_ANGLE = math.radians(MAX_ANGLE)
 
 MAX_STEER = 15
 LEN_STEER = 5
@@ -88,7 +87,7 @@ def get_diff_angle(coor1, coor2, heading, steering):
     if diff >= math.pi:
         diff -= 2.0 * math.pi
 
-    return abs(diff)
+    return math.degrees(abs(diff))
 
 
 def get_diff_steering(steering):
@@ -160,9 +159,9 @@ def reward_function(params):
     # if completed == True and steps < MAX_STEPS:
     #     reward += (MAX_STEPS - steps)
 
-    if diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
+    if diff_angle <= MAX_ANGLE and diff_steer <= MAX_STEER:
         # angle
-        reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
+        reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
         # steering
         reward += (BASE_REWARD - (diff_steer / MAX_STEER))
