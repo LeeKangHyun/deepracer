@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-CODE_NAME = 'mk11'
+CODE_NAME = 'mk11-2'
 
-# 21 / 7 / 4.2 / 1
+# 21 / 7 / 3.5 / 1
 
 SIGHT = 0.6
 
