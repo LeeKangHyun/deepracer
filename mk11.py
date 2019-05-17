@@ -4,7 +4,7 @@ import time
 
 CODE_NAME = 'mk11'
 
-# 20 / 7 / 4.3 / 1
+# 21 / 7 / 4.2 / 1
 
 SIGHT = 0.6
 
