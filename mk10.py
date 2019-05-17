@@ -31,6 +31,7 @@ def get_episode(progress, speed):
     global g_max_speed
     global g_total
     global g_steer
+    global g_start
 
     # reset
     if g_progress > progress:
@@ -42,7 +43,8 @@ def get_episode(progress, speed):
     # completed
     if g_progress < progress and progress == 100:
         g_completed = True
-        print("--- completed --- %s seconds ---" % (time.time() - g_start))
+        seconds = time.time() - g_start
+        print('--- completed --- {} seconds ---'.format(seconds))
     else:
         g_completed = False
 
