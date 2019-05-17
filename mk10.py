@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-CODE_NAME = 'mk10-5'
+CODE_NAME = 'mk10-8'
 
 SIGHT = 0.6
 
@@ -121,15 +121,15 @@ def get_diff_steering(steering):
 def reward_function(params):
     global g_total
 
-    steps = params['steps']
+    # steps = params['steps']
     progress = params['progress']
 
     # all_wheels_on_track = params['all_wheels_on_track']
 
     speed = params['speed']
 
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    # track_width = params['track_width']
+    # distance_from_center = params['distance_from_center']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -172,12 +172,12 @@ def reward_function(params):
         # steering
         reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # center bonus
-        reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
+        # # center bonus
+        # reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
 
-        # steps bonus
-        if steps > 0:
-            reward += (progress / steps)
+        # # steps bonus
+        # if steps > 0:
+        #     reward += (progress / steps)
 
     # speed panelity
     if speed < max_speed:
