@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-CODE_NAME = 'mk11-3'
+CODE_NAME = 'mk11-4'
 
 # 21 / 7 / 4.5 / 1
 
@@ -20,17 +20,15 @@ MAX_STEPS = 200
 g_episode = 0
 g_progress = float(0)
 g_completed = False
-g_max_speed = float(0)
 g_total = float(0)
 g_steer = []
 g_start = 0
 
 
-def get_episode(progress, speed):
+def get_episode(progress):
     global g_episode
     global g_progress
     global g_completed
-    global g_max_speed
     global g_total
     global g_steer
     global g_start
@@ -50,14 +48,10 @@ def get_episode(progress, speed):
     else:
         g_completed = False
 
-    # speed
-    if g_max_speed < speed:
-        g_max_speed = speed
-
     # prev progress
     g_progress = progress
 
-    return g_episode, g_max_speed, g_completed
+    return g_episode, g_completed
 
 
 def get_distance(coor1, coor2):
@@ -123,12 +117,7 @@ def get_diff_steering(steering):
 def reward_function(params):
     global g_total
 
-    # steps = params['steps']
     progress = params['progress']
-
-    # all_wheels_on_track = params['all_wheels_on_track']
-
-    speed = params['speed']
 
     track_width = params['track_width']
     distance_from_center = params['distance_from_center']
@@ -148,7 +137,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode, max_speed, completed = get_episode(progress, speed)
+    episode, completed = get_episode(progress)
 
     # point
     this_point = [x, y]
@@ -167,23 +156,15 @@ def reward_function(params):
     # if completed == True and steps < MAX_STEPS:
     #     reward += (MAX_STEPS - steps)
 
-    if diff_angle <= MAX_ANGLE and diff_steer <= MAX_STEER:
-        # angle
-        reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+    # if diff_angle <= MAX_ANGLE and diff_steer <= MAX_STEER:
+    # angle
+    reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steering
-        reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+    # steering
+    reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # center bonus
-        reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
-
-        # # steps bonus
-        # if steps > 0:
-        #     reward += (progress / steps)
-
-    # speed panelity
-    if speed < max_speed:
-        reward *= (speed / (max_speed * 2))
+    # center bonus
+    reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
 
     g_total += reward
 
