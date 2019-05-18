@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'mk11-6'
-PARAM = '21 / 7 / 4.6 / 1 / 0.6'
+NAME = 'mk11-10'
+PARAM = '21 / 7 / 4.5 / 1 / 0.6'
 
 SIGHT = 0.6
 
