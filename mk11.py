@@ -2,9 +2,8 @@ import json
 import math
 import time
 
-CODE_NAME = 'mk11-4'
-
-# 21 / 7 / 4.5 / 1
+NAME = 'mk11-4'
+PARAM = "21 / 7 / 4.5 / 1 / 0.6"
 
 SIGHT = 0.6
 
@@ -169,7 +168,8 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['log_key'] = CODE_NAME
+    params['name'] = NAME
+    params['params'] = PARAM
     params['episode'] = episode
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
