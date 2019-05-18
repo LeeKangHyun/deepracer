@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'mk11-10'
-PARAM = '21 / 7 / 4.5 / 1 / 0.6'
+NAME = 'mk11'
+PARAM = '21 / 5 / 4.5 / 1'
 
 SIGHT = 0.6
 
@@ -50,7 +50,7 @@ def get_episode(progress):
     # prev progress
     g_progress = progress
 
-    return g_episode, g_completed
+    return g_episode
 
 
 def get_distance(coor1, coor2):
@@ -136,7 +136,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode, completed = get_episode(progress)
+    episode = get_episode(progress)
 
     # point
     this_point = [x, y]
@@ -169,7 +169,6 @@ def reward_function(params):
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
     params['next_point'] = next_point
-    params['completed'] = completed
     params['reward'] = reward
     params['total'] = g_total
     print(json.dumps(params))
