@@ -2,10 +2,10 @@ import json
 import math
 import time
 
-NAME = 'mk13'
-PARAM = '18 / 5 / 5 / 1 / 0.3'
+NAME = 'mk13-1'
+PARAM = '21 / 7 / 5 / 1 / 0.5'
 
-SIGHT = 0.3
+SIGHT = 0.5
 
 BASE_REWARD = 1.2
 
@@ -45,8 +45,8 @@ def get_episode(progress, steps):
     if g_progress < progress and progress == 100:
         g_completed = True
         seconds = time.time() - g_start
-        print('- episode completed - {} - {} - {} - {}'.format(g_episode,
-                                                               seconds, steps, g_total))
+        print('- episode completed - {} - {} - {} - {} - {}'.format(NAME, g_episode,
+                                                                    seconds, steps, g_total))
     else:
         g_completed = False
 
