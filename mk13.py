@@ -25,7 +25,7 @@ g_steer = []
 g_start = 0
 
 
-def get_episode(progress):
+def get_episode(progress, steps):
     global g_episode
     global g_progress
     global g_completed
@@ -45,7 +45,8 @@ def get_episode(progress):
     if g_progress < progress and progress == 100:
         g_completed = True
         seconds = time.time() - g_start
-        print('--- episode completed -- {} -- {} seconds ---'.format(g_episode, seconds))
+        print('- episode completed - {} - {} - {} - {}'.format(g_episode,
+                                                               seconds, steps, g_total))
     else:
         g_completed = False
 
@@ -138,6 +139,7 @@ def reward_function(params):
     global g_total
     global g_waypoints
 
+    steps = params['steps']
     progress = params['progress']
 
     track_width = params['track_width']
@@ -158,7 +160,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode = get_episode(progress)
+    episode = get_episode(progress, steps)
 
     # closest waypoint
     closest = get_closest_waypoint(g_waypoints, x, y)
