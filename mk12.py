@@ -2,10 +2,10 @@ import json
 import math
 import time
 
-NAME = 'mk12-7'
-PARAM = '18 / 5 / 4.5 / 1 / 0.5'
+NAME = 'mk12-8'
+PARAM = '18 / 5 / 5 / 1 / 0.3'
 
-SIGHT = 0.5
+SIGHT = 0.3
 
 BASE_REWARD = 1.2
 
