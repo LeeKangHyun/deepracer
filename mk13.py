@@ -3,15 +3,13 @@ import math
 import time
 
 NAME = 'mk13-4'
-PARAM = '18 / 7 / 5 / 1 / 0.5'
+ACTION = '18 / 7 / 5 / 1 / 0.5 / 10'
 
 SIGHT = 0.5
 
-BASE_REWARD = 1.2
-
 MAX_ANGLE = 10
 
-MAX_STEPS = 200
+BASE_REWARD = 1.2
 
 g_episode = 0
 g_progress = float(0)
@@ -163,7 +161,7 @@ def reward_function(params):
 
     # log
     params['name'] = NAME
-    params['params'] = PARAM
+    params['params'] = ACTION
     params['episode'] = episode
     params['distance'] = distance
     params['diff_angle'] = diff_angle
