@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk12-2'
+NAME = 'mk12-3'
 PARAM = '18 / 5 / 5 / 1 / 0.62'
 
 SIGHT = 0.62
@@ -12,7 +12,7 @@ BASE_REWARD = 1.2
 MAX_ANGLE = 5
 
 MAX_STEER = 15
-LEN_STEER = 3
+LEN_STEER = 2
 
 MAX_STEPS = 200
 
