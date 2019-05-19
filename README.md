@@ -17,9 +17,17 @@ sudo pip3 install --upgrade Image
 ## insight
 
 ```
-fields episode, steps, progress, reward, total, diff_angle, diff_steer, heading, steering_angle, speed, x, y, distance_from_center, closest_waypoints, all_wheels_on_track, is_left_of_center, is_reversed
-| filter name == 'mk12-8'
+fields episode, steps, progress, reward, total, diff_angle, diff_steer, heading, steering_angle, speed, x, y, distance, time
+| filter name == 'mk13-2'
 | order by episode desc, steps desc
+
+fields episode, steps, progress, reward, total, diff_angle, diff_steer, heading, steering_angle, speed, x, y, distance, time
+| filter name == 'mk13-2' and episode == 737
+| order by steps
+
+fields episode, steps, progress, reward, total, diff_angle, diff_steer, heading, steering_angle, speed, x, y, distance, time
+| filter name == 'mk13-2' and progress == 100
+| order by total desc
 ```
 
 ## track

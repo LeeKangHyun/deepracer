@@ -2,17 +2,14 @@ import json
 import math
 import time
 
-NAME = 'mk13-2'
-PARAM = '21 / 7 / 5 / 1 / 0.5'
+NAME = 'mk13-4'
+PARAM = '18 / 7 / 5 / 1 / 0.5'
 
 SIGHT = 0.5
 
 BASE_REWARD = 1.2
 
-MAX_ANGLE = 5
-
-MAX_STEER = 15
-LEN_STEER = 2
+MAX_ANGLE = 10
 
 MAX_STEPS = 200
 
@@ -21,8 +18,8 @@ g_progress = float(0)
 g_completed = False
 g_waypoints = []
 g_total = float(0)
-g_steer = []
-g_start = 0
+g_start = float(0)
+g_time = float(0)
 
 
 def get_episode(progress, steps):
@@ -31,22 +28,22 @@ def get_episode(progress, steps):
     global g_completed
     global g_waypoints
     global g_total
-    global g_steer
     global g_start
+    global g_time
 
     # reset
     if g_progress > progress:
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
-        del g_steer[:]
+
+    g_time = time.time() - g_start
 
     # completed
     if g_progress < progress and progress == 100:
         g_completed = True
-        seconds = time.time() - g_start
         print('- episode completed - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                    seconds, steps, g_total))
+                                                                    g_time, steps, g_total))
     else:
         g_completed = False
 
@@ -79,22 +76,22 @@ def get_distance(coor1, coor2):
     return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
 
 
-def get_next_point(waypoints, this_point, closest, distance):
-    next_index = closest
-    next_point = []
+def get_next_point(waypoints, coor, closest, distance):
+    idx = closest
+    dest = []
 
     while True:
-        next_point = waypoints[next_index]
+        dest = waypoints[idx]
 
-        dist = get_distance(this_point, next_point)
+        dist = get_distance(coor, dest)
         if dist >= distance:
             break
 
-        next_index += 1
-        if next_index >= len(waypoints):
-            next_index = next_index - len(waypoints)
+        idx += 1
+        if idx >= len(waypoints):
+            idx = idx - len(waypoints)
 
-    return next_point
+    return dest
 
 
 def get_diff_angle(coor1, coor2, heading, steering):
@@ -113,31 +110,10 @@ def get_diff_angle(coor1, coor2, heading, steering):
     return math.degrees(abs(diff))
 
 
-def get_diff_steering(steering):
-    global g_steer
-
-    prev = -100
-    diff = 0
-
-    # steering list
-    g_steer.append(steering)
-    if len(g_steer) > LEN_STEER:
-        del g_steer[0]
-
-    # steering diff
-    for v in g_steer:
-        if prev > -100:
-            diff += abs(prev - v)
-        prev = v
-
-    diff = diff / (LEN_STEER - 1)
-
-    return diff
-
-
 def reward_function(params):
-    global g_total
     global g_waypoints
+    global g_total
+    global g_time
 
     steps = params['steps']
     progress = params['progress']
@@ -150,7 +126,7 @@ def reward_function(params):
 
     x = params['x']
     y = params['y']
-    this_point = [x, y]
+    location = [x, y]
 
     # waypoints = params['waypoints']
     # closest_waypoints = params['closest_waypoints']
@@ -167,17 +143,13 @@ def reward_function(params):
     closest = get_closest_waypoint(g_waypoints, x, y)
 
     # distance
-    distance = get_distance(g_waypoints[closest], this_point)
+    distance = get_distance(g_waypoints[closest], location)
 
     # point
-    next_point = get_next_point(g_waypoints, this_point, closest, SIGHT)
+    destination = get_next_point(g_waypoints, location, closest, SIGHT)
 
     # diff angle
-    diff_angle = get_diff_angle(
-        this_point, next_point, heading, steering)
-
-    # diff steering
-    diff_steer = get_diff_steering(steering)
+    diff_angle = get_diff_angle(location, destination, heading, steering)
 
     if diff_angle <= MAX_ANGLE:
         # angle
@@ -193,11 +165,12 @@ def reward_function(params):
     params['name'] = NAME
     params['params'] = PARAM
     params['episode'] = episode
+    params['distance'] = distance
     params['diff_angle'] = diff_angle
-    params['diff_steer'] = diff_steer
-    params['next_point'] = next_point
+    params['destination'] = destination
     params['reward'] = reward
     params['total'] = g_total
+    params['time'] = g_time
     print(json.dumps(params))
 
     return float(reward)
