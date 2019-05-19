@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk12-6'
+NAME = 'mk12-7'
 PARAM = '18 / 5 / 4.5 / 1 / 0.5'
 
 SIGHT = 0.5
