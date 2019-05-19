@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk13-1'
+NAME = 'mk13-2'
 PARAM = '21 / 7 / 5 / 1 / 0.5'
 
 SIGHT = 0.5
@@ -142,14 +142,15 @@ def reward_function(params):
     steps = params['steps']
     progress = params['progress']
 
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    # track_width = params['track_width']
+    # distance_from_center = params['distance_from_center']
 
     heading = params['heading']
     steering = params['steering_angle']
 
     x = params['x']
     y = params['y']
+    this_point = [x, y]
 
     # waypoints = params['waypoints']
     # closest_waypoints = params['closest_waypoints']
@@ -165,8 +166,10 @@ def reward_function(params):
     # closest waypoint
     closest = get_closest_waypoint(g_waypoints, x, y)
 
+    # distance
+    distance = get_distance(g_waypoints[closest], this_point)
+
     # point
-    this_point = [x, y]
     next_point = get_next_point(g_waypoints, this_point, closest, SIGHT)
 
     # diff angle
@@ -176,15 +179,13 @@ def reward_function(params):
     # diff steering
     diff_steer = get_diff_steering(steering)
 
-    if diff_angle <= MAX_ANGLE and diff_steer <= MAX_STEER:
+    if diff_angle <= MAX_ANGLE:
         # angle
         reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steering
-        reward += (BASE_REWARD - (diff_steer / MAX_STEER))
-
-        # center bonus
-        reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
+    # center bonus
+    # reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
+    reward += (BASE_REWARD - distance)
 
     g_total += reward
 

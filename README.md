@@ -18,7 +18,7 @@ sudo pip3 install --upgrade Image
 
 ```
 fields episode, steps, progress, reward, total, diff_angle, diff_steer, heading, steering_angle, speed, x, y, distance_from_center, closest_waypoints, all_wheels_on_track, is_left_of_center, is_reversed
-| filter name == 'mk11' and episode == 1864
+| filter name == 'mk12-8'
 | order by episode desc, steps desc
 ```
 
