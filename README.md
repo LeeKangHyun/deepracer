@@ -17,12 +17,8 @@ sudo pip3 install --upgrade Image
 ## insight
 
 ```
-fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
-| filter name == 'mk15-1'
-| order by episode desc, steps desc
-
-fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
-| filter name == 'mk15-1' and progress == 100
+fields name, episode, steps, progress, total, time
+| filter progress == 100
 | order by time
 
 fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
