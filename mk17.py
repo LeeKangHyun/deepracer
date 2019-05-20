@@ -7,6 +7,8 @@ ACTION = '18 / 7 / 5 / 1 / 0.3 / 10'
 
 SIGHT = 0.3
 
+MAX_CENTER = 0.3
+
 MAX_ANGLE = 10
 
 BASE_REWARD = 1.2
@@ -143,6 +145,10 @@ def reward_function(params):
     # distance
     distance = get_distance(g_waypoints[closest], location)
 
+    # center bonus
+    if distance < MAX_CENTER:
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
+
     # point
     destination = get_next_point(g_waypoints, location, closest, SIGHT)
 
@@ -150,12 +156,7 @@ def reward_function(params):
     diff_angle = get_diff_angle(location, destination, heading, steering)
 
     if diff_angle <= MAX_ANGLE:
-        # angle
         reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
-
-    # center bonus
-    # reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
-    reward += (BASE_REWARD - distance)
 
     g_total += reward
 
