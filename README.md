@@ -18,15 +18,15 @@ sudo pip3 install --upgrade Image
 
 ```
 fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
-| filter name == 'mk13-4'
+| filter name == 'mk15-1'
 | order by episode desc, steps desc
 
 fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
-| filter name == 'mk13-4' and progress == 100
+| filter name == 'mk15-1' and progress == 100
 | order by time
 
 fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
-| filter name == 'mk13-4' and episode == 2746
+| filter name == 'mk15-1' and episode == 3456
 | order by steps
 ```
 
