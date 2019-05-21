@@ -66,18 +66,17 @@ def get_episode(progress, steps):
 
 
 def get_closest_waypoint(waypoints, x, y):
-    res = 0
+    closest = 0
     index = 0
-    # waypoints = get_waypoints()
     min_distance = float('inf')
     for row in waypoints:
         distance = math.sqrt(
             (row[0] - x) * (row[0] - x) + (row[1] - y) * (row[1] - y))
         if distance < min_distance:
             min_distance = distance
-            res = index
-        index = index + 1
-    return res
+            closest = index
+        index += 1
+    return closest
 
 
 def get_distance(coor1, coor2):
@@ -85,12 +84,12 @@ def get_distance(coor1, coor2):
 
 
 def get_destination(waypoints, closest, sight):
-    idx = closest + sight
+    index = closest + sight
 
-    if idx > len(waypoints):
-        idx -= len(waypoints)
+    if index >= len(waypoints):
+        index = index - len(waypoints)
 
-    return waypoints[idx]
+    return waypoints[index]
 
 
 def get_diff_angle(coor1, coor2, heading, steering):
