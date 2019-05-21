@@ -207,9 +207,9 @@ def reward_function(params):
 def get_waypoints():
     # mk17-3779 : 12.08786
     waypoints = []
-    waypoints.append([4.51924, 0.94947])
-    waypoints.append([4.72065, 0.96947])
-    waypoints.append([4.90346, 0.92127])
+    waypoints.append([4.51924, 0.92652])
+    waypoints.append([4.72065, 0.92127])
+    waypoints.append([4.90346, 0.90127])
     waypoints.append([5.09590, 0.87284])
     waypoints.append([5.28353, 0.82819])
     waypoints.append([5.47253, 0.79156])
@@ -287,9 +287,9 @@ def get_waypoints():
     waypoints.append([2.32548, 0.80541])
     waypoints.append([2.52337, 0.84509])
     waypoints.append([2.74230, 0.89078])
-    waypoints.append([2.93506, 0.92652])
-    waypoints.append([3.16310, 0.95202])
-    waypoints.append([3.36451, 0.95181])
+    waypoints.append([2.93506, 0.90652])
+    waypoints.append([3.16310, 0.91652])
+    waypoints.append([3.36451, 0.92652])
     waypoints.append([3.57010, 0.92998])
     waypoints.append([3.74748, 0.92998])
     waypoints.append([3.95386, 0.92998])
