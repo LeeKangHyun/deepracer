@@ -2,14 +2,14 @@ import json
 import math
 import time
 
-NAME = 'mk19'
+NAME = 'mk19-3'
 ACTION = '18 / 7 / 5 / 1'
 
 SIGHT = 2
 
-MAX_CENTER = 0.3
+MAX_CENTER = 0.25
 
-MAX_ANGLE = 10
+MAX_ANGLE = 15
 
 MAX_STEER = 10
 LEN_STEER = 2
@@ -175,8 +175,8 @@ def reward_function(params):
     # diff angle
     diff_angle = get_diff_angle(location, destination, heading, steering)
 
-    # if diff_angle <= MAX_ANGLE:
-    #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+    if diff_angle <= MAX_ANGLE:
+        reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
     # diff steering
     diff_steer = get_diff_steering(steering)
