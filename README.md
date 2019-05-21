@@ -24,6 +24,9 @@ fields name, episode, steps, progress, total, time
 fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
 | filter name == 'mk17' and episode == 3779
 | order by steps
+
+fields episode, steps, progress, reward, total, diff_angle, heading, steering_angle, speed, x, y, distance, time
+| filter name == 'mk19'
 ```
 
 ## track

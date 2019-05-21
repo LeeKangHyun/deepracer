@@ -5,7 +5,7 @@ import time
 NAME = 'mk19'
 ACTION = '18 / 7 / 5 / 1'
 
-SIGHT = 1
+SIGHT = 2
 
 MAX_CENTER = 0.3
 
@@ -84,11 +84,11 @@ def get_distance(coor1, coor2):
     return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
 
 
-def get_next_point(waypoints, coor, closest, distance):
-    idx = closest + distance
+def get_destination(waypoints, closest, sight):
+    idx = closest + sight
 
     if idx > len(waypoints):
-        idx = idx - len(waypoints)
+        idx -= len(waypoints)
 
     return waypoints[idx]
 
@@ -171,7 +171,7 @@ def reward_function(params):
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
     # point
-    destination = get_next_point(g_waypoints, location, closest, SIGHT)
+    destination = get_destination(g_waypoints, closest, SIGHT)
 
     # diff angle
     diff_angle = get_diff_angle(location, destination, heading, steering)
