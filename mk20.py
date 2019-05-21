@@ -204,7 +204,7 @@ def reward_function(params):
 
 
 def get_waypoints():
-    # mk19-1412 : 12.16402
+    # mk19-1412 : 12.00809
     waypoints = []
     waypoints.append([0.51976, 3.59240])
     waypoints.append([0.44372, 3.45534])
