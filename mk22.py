@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk21'
+NAME = 'mk22'
 ACTION = '18 / 7 / 5 / 1'
 
 SIGHT = 2
@@ -233,11 +233,11 @@ def get_waypoints():
     waypoints.append([7.02293, 1.86446])
     waypoints.append([7.07930, 2.03980])
     waypoints.append([7.12029, 2.26710])
-    waypoints.append([7.13171, 2.46162])
-    waypoints.append([7.11546, 2.64745])
-    waypoints.append([7.07099, 2.83010])
-    waypoints.append([6.97730, 3.02196])
-    waypoints.append([6.84965, 3.19578])
+    waypoints.append([7.14171, 2.46162])
+    waypoints.append([7.13546, 2.64745])
+    waypoints.append([7.09099, 2.85010])
+    waypoints.append([6.97730, 3.05196])
+    waypoints.append([6.86965, 3.20578])
     waypoints.append([6.71540, 3.34761])
     waypoints.append([6.58204, 3.48602])
     waypoints.append([6.41950, 3.62876])
