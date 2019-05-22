@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk21-1'
+NAME = 'mk21'
 ACTION = '18 / 7 / 5 / 1'
 
 SIGHT = 2
