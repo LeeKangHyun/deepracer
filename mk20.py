@@ -5,7 +5,7 @@ import time
 NAME = 'mk20'
 ACTION = '18 / 7 / 5 / 1'
 
-SIGHT = 1
+SIGHT = 2
 
 MAX_CENTER = 0.3
 
