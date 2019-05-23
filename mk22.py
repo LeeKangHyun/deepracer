@@ -20,7 +20,7 @@ BASE_REWARD = 1.2
 
 g_episode = 0
 g_progress = float(0)
-g_completed = False
+g_steps = float(0)
 g_waypoints = []
 g_steer = []
 g_total = float(0)
@@ -31,7 +31,7 @@ g_time = float(0)
 def get_episode(progress, steps):
     global g_episode
     global g_progress
-    global g_completed
+    global g_steps
     global g_waypoints
     global g_steer
     global g_total
@@ -40,6 +40,8 @@ def get_episode(progress, steps):
 
     # reset
     if g_progress > progress:
+        print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
+                                                                g_time, g_steps, g_total))
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
@@ -49,18 +51,16 @@ def get_episode(progress, steps):
 
     # completed
     if g_progress < progress and progress == 100:
-        g_completed = True
         print('- episode completed - {} - {} - {} - {} - {}'.format(NAME, g_episode,
                                                                     g_time, steps, g_total))
-    else:
-        g_completed = False
 
     # waypoints
     if len(g_waypoints) < 1:
         g_waypoints = get_waypoints()
 
-    # prev progress
+    # prev
     g_progress = progress
+    g_steps = steps
 
     return g_episode
 
