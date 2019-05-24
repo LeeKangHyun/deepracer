@@ -190,7 +190,8 @@ def reward_function(params):
     destination = get_destination(closest, SIGHT)
 
     # diff angle
-    diff_angle = get_diff_angle(g_waypoints[closest], destination, heading, steering)
+    diff_angle = get_diff_angle(
+        g_waypoints[closest], destination, heading, steering)
 
     # if diff_angle <= MAX_ANGLE:
     #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
