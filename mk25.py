@@ -41,7 +41,7 @@ def get_episode(progress, steps):
     # reset
     if g_progress > progress:
         print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                g_time, g_steps, g_total))
+                                                                g_time, g_steps, g_progress))
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
@@ -52,7 +52,7 @@ def get_episode(progress, steps):
     # completed
     if g_progress < progress and progress == 100:
         print('- episode completed - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                    g_time, steps, g_total))
+                                                                    g_time, steps, progress))
 
     # waypoints
     if len(g_waypoints) < 1:
