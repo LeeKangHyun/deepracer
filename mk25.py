@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'mk25'
-ACTION = '21 / 7 / 5 / 1'
+NAME = 'mk25-a'
+ACTION = '18 / 7 / 5 / 1'
 
 SIGHT = 2
 
