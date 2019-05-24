@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 'mk25'
-ACTION = '18 / 7 / 5 / 1'
+ACTION = '21 / 7 / 5 / 1'
 
 SIGHT = 2
 
@@ -192,8 +192,8 @@ def reward_function(params):
     # diff angle
     diff_angle = get_diff_angle(g_waypoints[closest], destination, heading, steering)
 
-    if diff_angle <= MAX_ANGLE:
-        reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+    # if diff_angle <= MAX_ANGLE:
+    #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
     # diff steering
     diff_steer = get_diff_steering(steering)
