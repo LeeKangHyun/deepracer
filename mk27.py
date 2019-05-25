@@ -4,6 +4,7 @@ import time
 
 NAME = 'mk27'
 ACTION = '18 / 7 / 5 / 1'
+HYPER = '128 / 0.99 / 40'
 
 SIGHT = 2
 
