@@ -2,11 +2,11 @@ import json
 import math
 import time
 
-NAME = 'mk27'
+NAME = 'mk27-a'
 ACTION = '18 / 7 / 5 / 1'
 HYPER = '128 / 0.99 / 40'
 
-SIGHT = 2
+SIGHT = 1
 
 MAX_CENTER = 0.3
 
@@ -21,7 +21,7 @@ BASE_REWARD = 1.2
 
 g_episode = 0
 g_progress = float(0)
-g_steps = float(0)
+g_completed = False
 g_waypoints = []
 g_steer = []
 g_total = float(0)
@@ -32,7 +32,7 @@ g_time = float(0)
 def get_episode(progress, steps):
     global g_episode
     global g_progress
-    global g_steps
+    global g_completed
     global g_waypoints
     global g_steer
     global g_total
@@ -41,8 +41,6 @@ def get_episode(progress, steps):
 
     # reset
     if g_progress > progress:
-        print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                g_time, g_steps, g_progress))
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
@@ -52,65 +50,47 @@ def get_episode(progress, steps):
 
     # completed
     if g_progress < progress and progress == 100:
+        g_completed = True
         print('- episode completed - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                    g_time, steps, progress))
+                                                                    g_time, steps, g_total))
+    else:
+        g_completed = False
 
     # waypoints
     if len(g_waypoints) < 1:
         g_waypoints = get_waypoints()
 
-    # prev
+    # prev progress
     g_progress = progress
-    g_steps = steps
 
     return g_episode
 
 
-def get_closest_waypoint(location):
-    global g_waypoints
-
-    dist_list = []
-    for waypoint in g_waypoints:
-        dist_list.append(get_distance(waypoint, location))
-
-    index = 0
+def get_closest_waypoint(waypoints, x, y):
     closest = 0
-    min_dist = float('inf')
-
-    for dist in dist_list:
-        if dist < min_dist:
-            min_dist = dist
+    index = 0
+    min_distance = float('inf')
+    for row in waypoints:
+        distance = math.sqrt(
+            (row[0] - x) * (row[0] - x) + (row[1] - y) * (row[1] - y))
+        if distance < min_distance:
+            min_distance = distance
             closest = index
         index += 1
-
-    prev_index = closest - 1
-    if prev_index < 0:
-        prev_index = len(g_waypoints) - 1
-
-    dist1 = dist_list[prev_index]
-    dist2 = get_distance(g_waypoints[prev_index], g_waypoints[closest])
-
-    if dist1 > dist2:
-        closest = closest + 1
-        if closest >= len(g_waypoints):
-            closest = closest - len(g_waypoints)
-
-    return closest, dist_list[closest]
+    return closest
 
 
 def get_distance(coor1, coor2):
     return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
 
 
-def get_destination(closest, sight):
-    global g_waypoints
-
+def get_destination(waypoints, closest, sight):
     index = closest + sight
 
-    if index >= len(g_waypoints):
-        index = index - len(g_waypoints)
+    if index >= len(waypoints):
+        index = index - len(waypoints)
 
-    return g_waypoints[index]
+    return waypoints[index]
 
 
 def get_diff_angle(coor1, coor2, heading, steering):
@@ -159,8 +139,6 @@ def reward_function(params):
     steps = params['steps']
     progress = params['progress']
 
-    on_track = params['all_wheels_on_track']
-
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
 
@@ -183,27 +161,29 @@ def reward_function(params):
     episode = get_episode(progress, steps)
 
     # closest waypoint
-    closest, distance = get_closest_waypoint(location)
+    closest = get_closest_waypoint(g_waypoints, x, y)
+
+    # distance
+    distance = get_distance(g_waypoints[closest], location)
+
+    # center bonus
+    if distance < MAX_CENTER:
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
 
     # point
-    destination = get_destination(closest, SIGHT)
+    destination = get_destination(g_waypoints, closest, SIGHT)
 
     # diff angle
-    diff_angle = get_diff_angle(
-        g_waypoints[closest], destination, heading, steering)
+    diff_angle = get_diff_angle(location, destination, heading, steering)
+
+    # if diff_angle <= MAX_ANGLE:
+    #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
     # diff steering
     diff_steer = get_diff_steering(steering)
 
-    # center bonus
-    if on_track == True and distance < MAX_CENTER:
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
-
-        if diff_angle <= MAX_ANGLE:
-            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
-
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+    if diff_steer <= MAX_STEER:
+        reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
     # total reward
     g_total += reward
