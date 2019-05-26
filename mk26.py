@@ -2,8 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk26'
+NAME = 'mk26-i'
 ACTION = '18 / 7 / 5 / 1'
+HYPER = '128 / 0.99 / 40'
 
 SIGHT = 2
 
@@ -196,8 +197,8 @@ def reward_function(params):
     if distance < MAX_CENTER:
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        # if diff_angle <= MAX_ANGLE:
-        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        if diff_angle <= MAX_ANGLE:
+            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
