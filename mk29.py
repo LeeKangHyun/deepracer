@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk29'
+NAME = 'mk29-a'
 ACTION = '18 / 7 / 5 / 1'
 HYPER = '128 / 0.99 / 40'
 
@@ -247,10 +247,10 @@ def get_waypoints():
     waypoints = []
     waypoints.append([2.78516, 0.88389])
     waypoints.append([3.00210, 0.92191])
-    waypoints.append([3.24228, 0.95979])
-    waypoints.append([3.43895, 0.98095])
-    waypoints.append([3.64282, 0.97445])
-    waypoints.append([3.83728, 0.95332])
+    waypoints.append([3.24228, 0.93979])
+    waypoints.append([3.43895, 0.94095])
+    waypoints.append([3.64282, 0.94445])
+    waypoints.append([3.83728, 0.93332])
     waypoints.append([4.03120, 0.92461])
     waypoints.append([4.22864, 0.88846])
     waypoints.append([4.42092, 0.85040])
@@ -259,8 +259,8 @@ def get_waypoints():
     waypoints.append([5.02109, 0.72908])
     waypoints.append([5.24634, 0.70376])
     waypoints.append([5.44646, 0.70209])
-    waypoints.append([5.62823, 0.71819])
-    waypoints.append([5.83734, 0.74630])
+    waypoints.append([5.62823, 0.70819])
+    waypoints.append([5.83734, 0.71630])
     waypoints.append([6.03133, 0.78517])
     waypoints.append([6.19027, 0.87204])
     waypoints.append([6.39219, 1.02337])
@@ -281,12 +281,12 @@ def get_waypoints():
     waypoints.append([6.41950, 3.73876])
     waypoints.append([6.24180, 3.84979])
     waypoints.append([6.00841, 3.97356])
-    waypoints.append([5.78578, 4.04673])
-    waypoints.append([5.58962, 4.11950])
-    waypoints.append([5.38585, 4.18341])
-    waypoints.append([5.20490, 4.24989])
-    waypoints.append([5.00956, 4.32099])
-    waypoints.append([4.83229, 4.37635])
+    waypoints.append([5.78578, 4.07673])
+    waypoints.append([5.58962, 4.15950])
+    waypoints.append([5.38585, 4.22341])
+    waypoints.append([5.20490, 4.27989])
+    waypoints.append([5.00956, 4.34099])
+    waypoints.append([4.83229, 4.38635])
     waypoints.append([4.63737, 4.42875])
     waypoints.append([4.42915, 4.47570])
     waypoints.append([4.24614, 4.50815])
