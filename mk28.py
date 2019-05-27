@@ -6,7 +6,7 @@ NAME = 'mk28-b'
 ACTION = '18 / 7 / 5 / 1'
 HYPER = '128 / 0.99 / 40'
 
-SIGHT = 2
+SIGHT = 1
 
 MAX_CENTER = 0.3
 
@@ -189,6 +189,8 @@ def reward_function(params):
     # diff angle
     diff_angle = get_diff_angle(
         g_waypoints[closest], destination, heading, steering)
+    diff_angle2 = get_diff_angle(
+        location, g_waypoints[closest], heading, steering)
 
     # diff steering
     diff_steer = get_diff_steering(steering)
@@ -210,9 +212,11 @@ def reward_function(params):
     params['name'] = NAME
     params['params'] = ACTION
     params['episode'] = episode
+    params['closest'] = closest
     params['distance'] = distance
     params['destination'] = destination
     params['diff_angle'] = diff_angle
+    params['diff_angle2'] = diff_angle2
     params['diff_steer'] = diff_steer
     params['reward'] = reward
     params['total'] = g_total
