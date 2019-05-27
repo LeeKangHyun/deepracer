@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're11-a'
+NAME = 're11-b'
 ACTION = '18 / 7 / 4 / 1'
 HYPER = '128 / 0.999 / 40'
 
@@ -128,7 +128,7 @@ def reward_function(params):
 
     # diff angle
     diff_angle = get_diff_angle(
-        next_waypoint, prev_waypoint, heading, steering)
+        prev_waypoint, next_waypoint, heading, steering)
 
     # diff steering
     diff_steer = get_diff_steering(steering)
