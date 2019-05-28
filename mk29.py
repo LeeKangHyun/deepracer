@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk29-b'
+NAME = 'mk29-d'
 ACTION = '18 / 7 / 5 / 1'
-HYPER = '128 / 0.99 / 40'
+HYPER = '128 / 0.999 / 40'
 
 SIGHT = 1
 
@@ -39,8 +39,10 @@ def get_episode(progress, steps):
     global g_start
     global g_time
 
+    diff_progress = progress - g_progress
+
     # reset
-    if g_progress > progress:
+    if diff_progress < 0:
         print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
                                                                 g_time, g_steps, g_progress))
         g_episode += 1
@@ -63,7 +65,7 @@ def get_episode(progress, steps):
     g_progress = progress
     g_steps = steps
 
-    return g_episode
+    return g_episode, diff_progress
 
 
 def get_closest_waypoint(location):
@@ -196,7 +198,7 @@ def reward_function(params):
     reward = 0.001
 
     # episode
-    episode = get_episode(progress, steps)
+    episode, diff_progress = get_episode(progress, steps)
 
     # closest waypoint
     closest, distance = get_closest_waypoint(location)
@@ -211,15 +213,21 @@ def reward_function(params):
     # diff steering
     diff_steer = get_diff_steering(steering)
 
-    # center bonus
     if distance < MAX_CENTER:
+        # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
+        # angle bonus
         if diff_angle <= MAX_ANGLE:
             reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
+        # steer bonus
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
+        # progress bonus
+        if diff_progress > 1:
+            reward += (1 - diff_progress)
 
     # total reward
     g_total += reward
@@ -231,6 +239,7 @@ def reward_function(params):
     params['closest'] = closest
     params['distance'] = distance
     params['destination'] = destination
+    params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
     params['reward'] = reward
