@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk30-d'
+NAME = 'mk30-e'
 TRACK = 'london'
 ACTION = '18 / 7 / 5 / 1'
 HYPER = '128 / 0.99 / 40'
@@ -196,7 +196,7 @@ def reward_function(params):
     # next_waypoint = waypoints[closest_waypoints[1]]
 
     # default
-    reward = 0.0001
+    reward = 0.00001
 
     # episode
     episode, diff_progress = get_episode(progress, steps)
@@ -218,17 +218,17 @@ def reward_function(params):
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER)) * 2
 
-    # angle bonus
-    if diff_angle <= MAX_ANGLE:
-        reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        # angle bonus
+        if diff_angle <= MAX_ANGLE:
+            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-    # steer bonus
-    if diff_steer <= MAX_STEER:
-        reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-    # progress bonus
-    if diff_progress > 1:
-        reward += diff_progress
+        # # progress bonus
+        # if diff_progress > 1:
+        #     reward += diff_progress
 
     # total reward
     g_total += reward
