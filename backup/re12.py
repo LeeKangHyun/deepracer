@@ -195,7 +195,7 @@ def reward_function(params):
     # next_waypoint = waypoints[closest_waypoints[1]]
 
     # default
-    reward = 0.001
+    reward = 0.0001
 
     # episode
     episode, diff_progress = get_episode(progress, steps)
