@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'mk30'
-TRACK = 'london'
+NAME = 'mk30-re'
+TRACK = 'reinvent'
 ACTION = '18 / 7 / 5 / 1'
 HYPER = '128 / 0.99 / 40'
 
@@ -228,7 +228,7 @@ def reward_function(params):
 
         # progress bonus
         if diff_progress > 1:
-            reward += (1 - diff_progress)
+            reward += diff_progress
 
     # total reward
     g_total += reward
@@ -343,7 +343,7 @@ def get_waypoints(track):
         waypoints.append([2.35673, 0.80025])
         waypoints.append([2.55503, 0.84813])
 
-    elif track == 'reinvent':
+    elif track == 'reinvent' or track == 're':
         # re11 : 13.89231
         waypoints.append([6.55431, 2.74437])
         waypoints.append([6.40536, 2.77149])
