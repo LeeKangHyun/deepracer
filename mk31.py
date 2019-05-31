@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk31-a'
+NAME = 'mk31-b'
 TRACK = 'london'
-ACTION = '30 / 7 / 5 / 1'
+ACTION = '18 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
 SIGHT = 1
@@ -182,6 +182,7 @@ def reward_function(params):
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
+    all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -213,27 +214,32 @@ def reward_function(params):
 
     # diff steering
     diff_steer = get_diff_steering(steering)
+    abs_steer = abs(steering)
 
-    if distance < MAX_CENTER:
+    if all_wheels_on_track and distance < MAX_CENTER:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.5):
             reward *= 1.5
 
-            if distance < (MAX_CENTER * 0.2):
-                reward *= 1.5
+            # if distance < (MAX_CENTER * 0.2):
+            #     reward *= 1.5
 
-                if distance < (MAX_CENTER * 0.1):
-                    reward *= 1.5
+            #     if distance < (MAX_CENTER * 0.1):
+            #         reward *= 1.5
 
-        # angle bonus
-        if diff_angle <= MAX_ANGLE:
-            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        # # angle bonus
+        # if diff_angle <= MAX_ANGLE:
+        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
         # # steer bonus
         # if diff_steer <= MAX_STEER:
         #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
+        # steer panelity
+        if abs_steer > MAX_STEER:
+            reward *= 0.7
 
         # # progress bonus
         # if diff_progress > 1:
@@ -252,6 +258,7 @@ def reward_function(params):
     params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
+    params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
     params['time'] = g_time
