@@ -221,11 +221,11 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.5):
             reward *= 1.5
 
-        if distance < (MAX_CENTER * 0.2):
-            reward *= 1.5
+            if distance < (MAX_CENTER * 0.2):
+                reward *= 1.5
 
-        if distance < (MAX_CENTER * 0.1):
-            reward *= 1.5
+                if distance < (MAX_CENTER * 0.1):
+                    reward *= 1.5
 
         # angle bonus
         if diff_angle <= MAX_ANGLE:
