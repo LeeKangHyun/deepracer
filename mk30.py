@@ -2,10 +2,10 @@ import json
 import math
 import time
 
-NAME = 'mk30-e'
+NAME = 'mk30-f'
 TRACK = 'london'
 ACTION = '18 / 7 / 5 / 1'
-HYPER = '128 / 0.99 / 40'
+HYPER = '512 / 0.999 / 40'
 
 SIGHT = 1
 
