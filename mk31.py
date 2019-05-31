@@ -5,7 +5,7 @@ import time
 NAME = 'mk31'
 TRACK = 'london'
 ACTION = '18 / 7 / 5 / 1'
-HYPER = '512 / 0.999 / 40'
+HYPER = '128 / 0.999 / 40'
 
 SIGHT = 1
 
