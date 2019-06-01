@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk11-c'
+NAME = 'mk11-d'
 ACTION = '30 / 7 / 4 / 1'
 HYPER = '128 / 0.999 / 40'
 
@@ -37,6 +37,8 @@ def get_episode(progress, steps):
     global g_start
     global g_time
 
+    diff_progress = progress - g_progress
+
     # reset
     if g_progress > progress:
         print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
@@ -57,7 +59,7 @@ def get_episode(progress, steps):
     g_progress = progress
     g_steps = steps
 
-    return g_episode
+    return g_episode, diff_progress
 
 
 def get_distance(coor1, coor2):
@@ -122,10 +124,10 @@ def reward_function(params):
     next_waypoint = waypoints[closest_waypoints[1]]
 
     # default
-    reward = 0.001
+    reward = 0.00001
 
     # episode
-    episode = get_episode(progress, steps)
+    episode, diff_progress = get_episode(progress, steps)
 
     # diff angle
     diff_angle = get_diff_angle(
@@ -152,7 +154,11 @@ def reward_function(params):
 
         # steer panelity
         if abs_steer > MAX_STEER:
-            reward *= 0.7
+            reward *= 0.5
+
+        # # progress bonus
+        # if diff_progress > 1:
+        #     reward += diff_progress
 
     # total reward
     g_total += reward
@@ -164,6 +170,7 @@ def reward_function(params):
     params['closest'] = closest_waypoints[1]
     params['distance'] = distance_from_center
     # params['destination'] = destination
+    params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
     params['abs_steer'] = abs_steer
