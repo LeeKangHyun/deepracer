@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 'mk31-b'
-TRACK = 'london'
+TRACK = 'reinvent'
 ACTION = '18 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
@@ -220,14 +220,8 @@ def reward_function(params):
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        if distance < (MAX_CENTER * 0.5):
+        if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
-
-            # if distance < (MAX_CENTER * 0.2):
-            #     reward *= 1.5
-
-            #     if distance < (MAX_CENTER * 0.1):
-            #         reward *= 1.5
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
