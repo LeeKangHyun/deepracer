@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk31-b'
+NAME = 'mk31-c'
 TRACK = 'reinvent'
-ACTION = '18 / 7 / 5 / 1'
+ACTION = '30 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
 SIGHT = 1
