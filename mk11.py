@@ -2,11 +2,11 @@ import json
 import math
 import time
 
-NAME = 'mk11-f'
-ACTION = '30 / 7 / 5 / 1'
+NAME = 'mk11-g'
+ACTION = '24 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
-SIGHT = 2
+SIGHT = 8
 
 MAX_CENTER = 0.3
 
@@ -145,9 +145,9 @@ def reward_function(params):
         if distance_from_center < (MAX_CENTER * 0.3):
             reward *= 1.5
 
-        # # angle bonus
-        # if diff_angle <= MAX_ANGLE:
-        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        # angle bonus
+        if diff_angle <= MAX_ANGLE:
+            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
         # steer bonus
         if diff_steer <= MAX_STEER:
