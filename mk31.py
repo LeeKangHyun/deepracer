@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk31-e'
+NAME = 'mk31-d'
 TRACK = 'reinvent'
-ACTION = '30 / 7 / 5 / 1'
+ACTION = '21 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
 SIGHT = 2
@@ -223,9 +223,6 @@ def reward_function(params):
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
-
-            if distance < (MAX_CENTER * 0.1):
-                reward *= 1.5
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
