@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'mk11-d'
-ACTION = '30 / 7 / 4 / 1'
+NAME = 'mk11-e'
+ACTION = '30 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
 SIGHT = 2
@@ -137,8 +137,9 @@ def reward_function(params):
     diff_steer = get_diff_steering(steering)
     abs_steer = abs(steering)
 
-    # center bonus
+    # reward
     if all_wheels_on_track and distance_from_center < MAX_CENTER:
+        # center bonus
         reward += (BASE_REWARD - (distance_from_center / MAX_CENTER))
 
         if distance_from_center < (MAX_CENTER * 0.3):
@@ -156,9 +157,9 @@ def reward_function(params):
         if abs_steer > MAX_STEER:
             reward *= 0.5
 
-        # # progress bonus
-        # if diff_progress > 1:
-        #     reward += diff_progress
+        # progress bonus
+        if diff_progress > 1:
+            reward += diff_progress
 
     # total reward
     g_total += reward
