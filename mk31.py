@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk31-c'
+NAME = 'mk31-d'
 TRACK = 'reinvent'
-ACTION = '18 / 7 / 5 / 1'
+ACTION = '21 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
 SIGHT = 2
@@ -228,13 +228,13 @@ def reward_function(params):
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # # steer bonus
-        # if diff_steer <= MAX_STEER:
-        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # steer bonus
+        if diff_steer <= MAX_STEER:
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # steer panelity
-        if abs_steer > MAX_STEER:
-            reward *= 0.5
+        # # steer panelity
+        # if abs_steer > MAX_STEER:
+        #     reward *= 0.5
 
         # progress bonus
         if diff_progress > 1:
