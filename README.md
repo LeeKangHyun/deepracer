@@ -22,7 +22,7 @@ fields name, episode, steps, progress, total, time
 | order by time
 
 fields steps, progress, x, y, reward, total, diff_angle, diff_steer, closest, distance, time
-| filter name == 'mk11-c' and episode == 2571
+| filter name == 'mk11-d' and episode == 2466
 | order by steps
 ```
 
@@ -38,10 +38,12 @@ cat reinvent.json | jq -r '.waypoints[] | "\(.[0]),\(.[1])"'
 sudo ufw allow 22/tcp
 ```
 
-## wifi
+## npy
 
-```
-# wifi-creds.txt
-ssid: 'nalbam-bs'
-password: '01067684010'
+```python
+import numpy as np
+
+x = np.load('/Users/nalbam/work/src/github.com/nalbam/aws-deepracer-workshops/log-analysis/tracks/reinvent_base.npy')
+
+np.savetxt('/Users/nalbam/work/src/github.com/nalbam/aws-deepracer-workshops/log-analysis/tracks/reinvent_base.csv', x, delimiter=',')
 ```
