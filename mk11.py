@@ -3,8 +3,8 @@ import math
 import time
 
 NAME = 'mk11-e'
-ACTION = '24 / 7 / 5 / 1'
-HYPER = '128 / 0.999 / 40'
+ACTION = '27 / 7 / 5 / 1'
+HYPER = '256 / 0.999 / 40'
 
 SIGHT = 6
 
