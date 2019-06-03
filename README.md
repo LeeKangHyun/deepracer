@@ -22,7 +22,7 @@ fields name, episode, steps, progress, total, time
 | order by time
 
 fields steps, progress, x, y, reward, total, steering_angle, diff_steer, closest, distance, time
-| filter name == 'mk31-d' and episode == 91
+| filter name == 'mk31-f' and episode == 1186
 | order by steps
 ```
 
