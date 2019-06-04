@@ -2,13 +2,13 @@ import json
 import math
 import time
 
-NAME = 'ku01-a'
+NAME = 'ku01-b'
 ACTION = '30 / 7 / 5 / 1'
 HYPER = '256 / 0.999 / 40'
 
-SIGHT = 3
+SIGHT = 5
 
-MAX_CENTER = 0.3
+MAX_CENTER = 0.25
 
 MAX_ANGLE = 10
 
