@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk31-f'
+NAME = 're31-f'
 ACTION = '24 / 7 / 5 / 1'
 HYPER = '128 / 0.999 / 40'
 
