@@ -3,10 +3,10 @@ import math
 import time
 
 NAME = 'ku01'
-ACTION = '30 / 7 / 7 / 1'
+ACTION = '30 / 7 / 3 / 1'
 HYPER = '256 / 0.999 / 40'
 
-SIGHT = 6
+SIGHT = 3
 
 MAX_CENTER = 0.3
 
