@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 're12'
-ACTION = '18 / 7 / 4 / 1'
-HYPER = '128 / 0.99 / 40'
+NAME = 'mk30-f'
+ACTION = '18 / 7 / 5 / 1'
+HYPER = '512 / 0.999 / 40'
 
 SIGHT = 1
 
@@ -195,7 +195,7 @@ def reward_function(params):
     # next_waypoint = waypoints[closest_waypoints[1]]
 
     # default
-    reward = 0.0001
+    reward = 0.00001
 
     # episode
     episode, diff_progress = get_episode(progress, steps)
@@ -215,19 +215,19 @@ def reward_function(params):
 
     if distance < MAX_CENTER:
         # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        reward += (BASE_REWARD - (distance / MAX_CENTER)) * 2
 
         # angle bonus
         if diff_angle <= MAX_ANGLE:
             reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # progress bonus
-        if diff_progress > 1:
-            reward += (1 - diff_progress)
+        # # progress bonus
+        # if diff_progress > 1:
+        #     reward += diff_progress
 
     # total reward
     g_total += reward
@@ -251,8 +251,9 @@ def reward_function(params):
 
 
 def get_waypoints():
-    # re11 : 13.89231
     waypoints = []
+
+    # re11 : 13.89231
     waypoints.append([6.55431, 2.74437])
     waypoints.append([6.40536, 2.77149])
     waypoints.append([6.28100, 2.79411])
@@ -361,4 +362,5 @@ def get_waypoints():
     waypoints.append([7.05932, 2.44780])
     waypoints.append([6.93903, 2.55755])
     waypoints.append([6.74297, 2.68606])
+
     return waypoints
