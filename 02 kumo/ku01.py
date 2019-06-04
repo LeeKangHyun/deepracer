@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'mk11-ku'
-ACTION = '30 / 7 / 5 / 1'
+NAME = 'ku01'
+ACTION = '30 / 7 / 7 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 6
