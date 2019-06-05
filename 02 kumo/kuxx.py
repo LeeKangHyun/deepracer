@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'kuxx'
+NAME = 'kuxx-r'
 ACTION = '30 / 7 / 5 / 1'
 HYPER = '256 / 0.999 / 40'
 
@@ -61,7 +61,7 @@ def reward_function(params):
     # episode
     episode, diff_progress = get_episode(progress, steps)
 
-    if steering > 25:
+    if steering < -25:
         reward += 10
 
     # total reward

@@ -24,6 +24,10 @@ fields name, episode, steps, progress, total, time
 fields steps, progress, x, y, reward, total, steering_angle, diff_steer, closest, distance, time
 | filter name == 'ku01' and episode == 931
 | order by steps
+
+fields steps, progress, x, y, reward, total, steering_angle, diff_progress, time, @timestamp
+| filter name == 'kuxx'
+| sort @timestamp desc
 ```
 
 ## track
