@@ -2,18 +2,20 @@ import json
 import math
 import time
 
-NAME = 'ku01-b'
-ACTION = '30 / 7 / 5 / 1'
+NAME = 'ku01-c'
+ACTION = '30 / 7 / 7 / 2'
 HYPER = '256 / 0.999 / 40'
 
-SIGHT = 5
+SIGHT = 3
 
-MAX_CENTER = 0.25
+MAX_CENTER = 0.3
 
 MAX_ANGLE = 10
 
 MAX_STEER = 10
 LEN_STEER = 2
+
+MAX_SPEED = 8
 
 MAX_STEPS = 100
 
@@ -117,6 +119,7 @@ def reward_function(params):
 
     heading = params['heading']
     steering = params['steering_angle']
+    speed = params['speed']
 
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
@@ -147,6 +150,10 @@ def reward_function(params):
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
+
+        # speed bonus
+        if speed > 0:
+            reward += (speed / MAX_SPEED)
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
