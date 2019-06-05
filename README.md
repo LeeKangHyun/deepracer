@@ -43,7 +43,7 @@ sudo ufw allow 22/tcp
 ```python
 import numpy as np
 
-x = np.load('/Users/nalbam/work/src/github.com/nalbam/aws-deepracer-workshops/log-analysis/tracks/reinvent_base.npy')
+x = np.load('reinvent_base.npy')
 
-np.savetxt('/Users/nalbam/work/src/github.com/nalbam/aws-deepracer-workshops/log-analysis/tracks/reinvent_base.csv', x, delimiter=',')
+np.savetxt('reinvent_base.csv', x, delimiter=',')
 ```
