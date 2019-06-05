@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 're01-a'
-ACTION = '30 / 7 / 5 / 1'
+NAME = 're01-b'
+ACTION = '30 / 7 / 5.5 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 6
