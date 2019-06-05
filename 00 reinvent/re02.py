@@ -2,11 +2,11 @@ import json
 import math
 import time
 
-NAME = 're30-f'
-ACTION = '18 / 7 / 5 / 1'
-HYPER = '512 / 0.999 / 40'
+NAME = 're02-a'
+ACTION = '30 / 7 / 6 / 1'
+HYPER = '256 / 0.999 / 40'
 
-SIGHT = 1
+SIGHT = 2
 
 MAX_CENTER = 0.3
 
@@ -181,6 +181,7 @@ def reward_function(params):
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
+    all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -212,22 +213,31 @@ def reward_function(params):
 
     # diff steering
     diff_steer = get_diff_steering(steering)
+    abs_steer = abs(steering)
 
-    if distance < MAX_CENTER:
+    # reward
+    if all_wheels_on_track and distance < MAX_CENTER:
         # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER)) * 2
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        # angle bonus
-        if diff_angle <= MAX_ANGLE:
-            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        if distance < (MAX_CENTER * 0.3):
+            reward *= 1.5
 
-        # # steer bonus
-        # if diff_steer <= MAX_STEER:
-        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # angle bonus
+        # if diff_angle <= MAX_ANGLE:
+        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # # progress bonus
-        # if diff_progress > 1:
-        #     reward += diff_progress
+        # steer bonus
+        if diff_steer <= MAX_STEER:
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
+        # # steer panelity
+        # if abs_steer > MAX_STEER:
+        #     reward *= 0.5
+
+        # progress bonus
+        if diff_progress > 1:
+            reward += diff_progress
 
     # total reward
     g_total += reward
@@ -242,6 +252,7 @@ def reward_function(params):
     params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
+    params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
     params['time'] = g_time
@@ -253,114 +264,91 @@ def reward_function(params):
 def get_waypoints():
     waypoints = []
 
-    # re11 : 13.89231
-    waypoints.append([6.55431, 2.74437])
-    waypoints.append([6.40536, 2.77149])
-    waypoints.append([6.28100, 2.79411])
-    waypoints.append([6.13500, 2.80435])
-    waypoints.append([5.98250, 2.80790])
-    waypoints.append([5.82778, 2.81186])
-    waypoints.append([5.67529, 2.81878])
-    waypoints.append([5.51936, 2.82989])
-    waypoints.append([5.36509, 2.84597])
-    waypoints.append([5.20990, 2.87237])
-    waypoints.append([5.05897, 2.90557])
-    waypoints.append([4.91032, 2.94398])
-    waypoints.append([4.76643, 2.99096])
-    waypoints.append([4.62528, 3.04961])
-    waypoints.append([4.48936, 3.11745])
-    waypoints.append([4.36077, 3.19971])
-    waypoints.append([4.23983, 3.29632])
-    waypoints.append([4.12682, 3.40541])
-    waypoints.append([4.01926, 3.52476])
-    waypoints.append([3.91881, 3.63991])
-    waypoints.append([3.81614, 3.75384])
-    waypoints.append([3.70513, 3.86216])
-    waypoints.append([3.58988, 3.96208])
-    waypoints.append([3.47000, 4.05710])
-    waypoints.append([3.34126, 4.13924])
-    waypoints.append([3.20319, 4.21064])
-    waypoints.append([3.06255, 4.26940])
-    waypoints.append([2.91745, 4.31395])
-    waypoints.append([2.76772, 4.34875])
-    waypoints.append([2.61387, 4.37665])
-    waypoints.append([2.45639, 4.39507])
-    waypoints.append([2.30006, 4.40642])
-    waypoints.append([2.15070, 4.40803])
-    waypoints.append([1.99910, 4.39320])
-    waypoints.append([1.85037, 4.36513])
-    waypoints.append([1.70198, 4.32403])
-    waypoints.append([1.56265, 4.26756])
-    waypoints.append([1.42581, 4.19456])
-    waypoints.append([1.29282, 4.10563])
-    waypoints.append([1.17370, 4.00137])
-    waypoints.append([1.07217, 3.88184])
-    waypoints.append([0.98526, 3.74915])
-    waypoints.append([0.91419, 3.60940])
-    waypoints.append([0.85940, 3.46447])
-    waypoints.append([0.81968, 3.31036])
-    waypoints.append([0.79731, 3.15712])
-    waypoints.append([0.79081, 3.00520])
-    waypoints.append([0.79978, 2.84918])
-    waypoints.append([0.82160, 2.69291])
-    waypoints.append([0.84810, 2.54074])
-    waypoints.append([0.87664, 2.38957])
-    waypoints.append([0.91036, 2.23583])
-    waypoints.append([0.94935, 2.08751])
-    waypoints.append([0.99918, 1.94274])
-    waypoints.append([1.06433, 1.80187])
-    waypoints.append([1.13882, 1.67143])
-    waypoints.append([1.22215, 1.54269])
-    waypoints.append([1.31188, 1.41843])
-    waypoints.append([1.41730, 1.30134])
-    waypoints.append([1.53341, 1.19897])
-    waypoints.append([1.66107, 1.11198])
-    waypoints.append([1.79956, 1.03832])
-    waypoints.append([1.94046, 0.98285])
-    waypoints.append([2.09564, 0.94247])
-    waypoints.append([2.25022, 0.91394])
-    waypoints.append([2.40057, 0.89116])
-    waypoints.append([2.55484, 0.87229])
-    waypoints.append([2.70756, 0.85993])
-    waypoints.append([2.85780, 0.85154])
-    waypoints.append([3.01207, 0.83862])
-    waypoints.append([3.16458, 0.81565])
-    waypoints.append([3.31630, 0.78392])
-    waypoints.append([3.46896, 0.75078])
-    waypoints.append([3.61907, 0.71746])
-    waypoints.append([3.77524, 0.67888])
-    waypoints.append([3.92655, 0.63921])
-    waypoints.append([4.07794, 0.60076])
-    waypoints.append([4.22594, 0.56572])
-    waypoints.append([4.37857, 0.53853])
-    waypoints.append([4.53220, 0.52039])
-    waypoints.append([4.68291, 0.50469])
-    waypoints.append([4.83727, 0.49064])
-    waypoints.append([4.99028, 0.47788])
-    waypoints.append([5.14339, 0.46564])
-    waypoints.append([5.29550, 0.45428])
-    waypoints.append([5.45099, 0.44288])
-    waypoints.append([5.60350, 0.43703])
-    waypoints.append([5.75543, 0.44327])
-    waypoints.append([5.91138, 0.46543])
-    waypoints.append([6.06121, 0.50508])
-    waypoints.append([6.20377, 0.55902])
-    waypoints.append([6.33930, 0.62722])
-    waypoints.append([6.47002, 0.71093])
-    waypoints.append([6.59269, 0.80277])
-    waypoints.append([6.71198, 0.90453])
-    waypoints.append([6.82726, 1.01621])
-    waypoints.append([6.92731, 1.13617])
-    waypoints.append([7.01068, 1.26432])
-    waypoints.append([7.08138, 1.40267])
-    waypoints.append([7.13829, 1.54566])
-    waypoints.append([7.18103, 1.69481])
-    waypoints.append([7.20559, 1.84697])
-    waypoints.append([7.20893, 2.00128])
-    waypoints.append([7.19046, 2.15574])
-    waypoints.append([7.15426, 2.30438])
-    waypoints.append([7.05932, 2.44780])
-    waypoints.append([6.93903, 2.55755])
-    waypoints.append([6.74297, 2.68606])
+    waypoints.append([4.05040, 3.46011])
+    waypoints.append([3.91680, 3.54621])
+    waypoints.append([3.77500, 3.65268])
+    waypoints.append([3.62537, 3.76549])
+    waypoints.append([3.46936, 3.87414])
+    waypoints.append([3.30377, 3.97037])
+    waypoints.append([3.13596, 4.06680])
+    waypoints.append([2.96436, 4.15603])
+    waypoints.append([2.79017, 4.23394])
+    waypoints.append([2.60535, 4.30952])
+    waypoints.append([2.42090, 4.37588])
+    waypoints.append([2.23250, 4.42310])
+    waypoints.append([2.03887, 4.44734])
+    waypoints.append([1.84735, 4.44545])
+    waypoints.append([1.65920, 4.41613])
+    waypoints.append([1.47665, 4.35791])
+    waypoints.append([1.30673, 4.27046])
+    waypoints.append([1.15420, 4.15500])
+    waypoints.append([1.03144, 4.02343])
+    waypoints.append([0.92930, 3.86575])
+    waypoints.append([0.85771, 3.69489])
+    waypoints.append([0.81702, 3.51776])
+    waypoints.append([0.80607, 3.33400])
+    waypoints.append([0.82629, 3.14357])
+    waypoints.append([0.87155, 2.96368])
+    waypoints.append([0.92262, 2.77979])
+    waypoints.append([0.97058, 2.58932])
+    waypoints.append([1.00736, 2.40285])
+    waypoints.append([1.05145, 2.21942])
+    waypoints.append([1.11176, 2.03351])
+    waypoints.append([1.18355, 1.85331])
+    waypoints.append([1.26750, 1.67823])
+    waypoints.append([1.36311, 1.50920])
+    waypoints.append([1.47409, 1.34860])
+    waypoints.append([1.60660, 1.20706])
+    waypoints.append([1.75582, 1.09144])
+    waypoints.append([1.92335, 1.00218])
+    waypoints.append([2.09753, 0.94558])
+    waypoints.append([2.27547, 0.91451])
+    waypoints.append([2.46721, 0.89861])
+    waypoints.append([2.65437, 0.88898])
+    waypoints.append([2.84723, 0.87977])
+    waypoints.append([3.04496, 0.87720])
+    waypoints.append([3.23391, 0.88128])
+    waypoints.append([3.43017, 0.88549])
+    waypoints.append([3.62490, 0.89055])
+    waypoints.append([3.81978, 0.89309])
+    waypoints.append([4.00881, 0.88268])
+    waypoints.append([4.19814, 0.85321])
+    waypoints.append([4.38886, 0.80465])
+    waypoints.append([4.57179, 0.74895])
+    waypoints.append([4.75122, 0.69544])
+    waypoints.append([4.93970, 0.64800])
+    waypoints.append([5.13319, 0.61416])
+    waypoints.append([5.32176, 0.57911])
+    waypoints.append([5.51408, 0.53799])
+    waypoints.append([5.70395, 0.51237])
+    waypoints.append([5.90451, 0.51206])
+    waypoints.append([6.09214, 0.54103])
+    waypoints.append([6.27644, 0.60056])
+    waypoints.append([6.44085, 0.68469])
+    waypoints.append([6.58880, 0.79277])
+    waypoints.append([6.71906, 0.92397])
+    waypoints.append([6.82822, 1.07579])
+    waypoints.append([6.91173, 1.24222])
+    waypoints.append([6.96710, 1.41692])
+    waypoints.append([6.99480, 1.60014])
+    waypoints.append([6.99595, 1.79260])
+    waypoints.append([6.96538, 1.97839])
+    waypoints.append([6.90121, 2.15825])
+    waypoints.append([6.80868, 2.31850])
+    waypoints.append([6.69190, 2.45838])
+    waypoints.append([6.55330, 2.57631])
+    waypoints.append([6.39397, 2.67275])
+    waypoints.append([6.21596, 2.74343])
+    waypoints.append([6.03452, 2.78281])
+    waypoints.append([5.83725, 2.80635])
+    waypoints.append([5.64676, 2.82937])
+    waypoints.append([5.45966, 2.85430])
+    waypoints.append([5.27022, 2.88641])
+    waypoints.append([5.07150, 2.93355])
+    waypoints.append([4.89000, 2.99874])
+    waypoints.append([4.71539, 3.07954])
+    waypoints.append([4.54636, 3.16580])
+    waypoints.append([4.37609, 3.25796])
+    waypoints.append([4.21475, 3.35582])
 
     return waypoints
