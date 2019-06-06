@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 're02-d'
-ACTION = '30 / 7 / 5 / 1'
+ACTION = '30 / 7 / 6 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 1
@@ -15,7 +15,7 @@ MAX_ANGLE = 10
 MAX_STEER = 10
 LEN_STEER = 2
 
-MAX_SPEED = 8
+MAX_SPEED = 5
 
 MAX_STEPS = 100
 
@@ -187,6 +187,7 @@ def reward_function(params):
 
     heading = params['heading']
     steering = params['steering_angle']
+    # speed = params['speed']
 
     x = params['x']
     y = params['y']
@@ -243,7 +244,7 @@ def reward_function(params):
 
         # progress bonus
         if steps > 0 and progress > 0:
-            reward += (progress / steps * 2)
+            reward += (progress / steps)
 
     # total reward
     g_total += reward

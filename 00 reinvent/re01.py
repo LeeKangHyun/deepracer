@@ -15,7 +15,7 @@ MAX_ANGLE = 10
 MAX_STEER = 10
 LEN_STEER = 2
 
-MAX_SPEED = 8
+MAX_SPEED = 5
 
 MAX_STEPS = 100
 
@@ -168,7 +168,7 @@ def reward_function(params):
 
         # progress bonus
         if steps > 0 and progress > 0:
-            reward += (progress / steps * 2)
+            reward += (progress / steps)
 
     # total reward
     g_total += reward
