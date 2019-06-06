@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 're02-d'
-ACTION = '30 / 7 / 6 / 1'
+ACTION = '30 / 7 / 5 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 1
@@ -14,6 +14,8 @@ MAX_ANGLE = 10
 
 MAX_STEER = 10
 LEN_STEER = 2
+
+MAX_SPEED = 8
 
 MAX_STEPS = 100
 
@@ -231,13 +233,17 @@ def reward_function(params):
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
+        # # speed bonus
+        # if speed > 0:
+        #     reward += (speed / MAX_SPEED)
+
         # # steer panelity
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
         # progress bonus
-        if diff_progress > 1:
-            reward += diff_progress
+        if steps > 0 and progress > 0:
+            reward += (progress / steps * 2)
 
     # total reward
     g_total += reward
@@ -264,7 +270,7 @@ def reward_function(params):
 def get_waypoints():
     waypoints = []
 
-    waypoints.append([5.39638, 2.80755])
+    waypoints.append([5.43638, 2.78755])
     waypoints.append([5.23127, 2.87217])
     waypoints.append([5.05186, 2.96391])
     waypoints.append([4.86540, 3.06448])
