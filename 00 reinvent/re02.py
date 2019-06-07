@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 're02-e'
-ACTION = '30 / 7 / 5.5 / 1'
+NAME = 're02-g'
+ACTION = '30 / 7 / 6 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 1
@@ -226,25 +226,29 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
+        # # speed bonus
+        # if speed > 0:
+        #     reward += (speed / MAX_SPEED)
+
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
-
-        # # speed bonus
-        # if speed > 0:
-        #     reward += (speed / MAX_SPEED)
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
         # progress bonus
-        if steps > 0 and progress > 0:
-            reward += (progress / steps)
+        if steps > 0 and (progress / steps) > 1:
+            reward *= (progress / steps)
+
+        # # progress bonus
+        # if diff_progress > 0:
+        #     reward *= diff_progress
 
     # total reward
     g_total += reward
