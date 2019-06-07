@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're02-g'
+NAME = 're02-h'
 ACTION = '30 / 7 / 6 / 1'
 HYPER = '256 / 0.999 / 40'
 
@@ -50,6 +50,7 @@ def get_episode(progress, steps):
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
+        diff_progress = 0
         del g_steer[:]
 
     g_time = time.time() - g_start
@@ -226,6 +227,10 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
+        # time bonus
+        if g_time > 0:
+            reward += (progress / g_time / 10)
+
         # # speed bonus
         # if speed > 0:
         #     reward += (speed / MAX_SPEED)
@@ -242,9 +247,9 @@ def reward_function(params):
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
-        # progress bonus
-        if steps > 0 and (progress / steps) > 1:
-            reward *= (progress / steps)
+        # # progress bonus
+        # if steps > 0 and (progress / steps) > 1:
+        #     reward *= (progress / steps)
 
         # # progress bonus
         # if diff_progress > 0:

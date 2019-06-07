@@ -42,12 +42,13 @@ def get_episode(progress, steps):
     diff_progress = progress - g_progress
 
     # reset
-    if g_progress > progress:
+    if diff_progress < 0:
         print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
                                                                 g_time, g_steps, g_progress))
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
+        diff_progress = 0
         del g_steer[:]
 
     g_time = time.time() - g_start
@@ -151,25 +152,33 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
-        # # angle bonus
-        # if diff_angle <= MAX_ANGLE:
-        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
-
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # time bonus
+        if g_time > 0:
+            reward += (progress / g_time / 10)
 
         # # speed bonus
         # if speed > 0:
         #     reward += (speed / MAX_SPEED)
 
+        # # angle bonus
+        # if diff_angle <= MAX_ANGLE:
+        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
         # # steer panelity
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
-        # progress bonus
-        if steps > 0 and progress > 0:
-            reward += (progress / steps)
+        # # progress bonus
+        # if steps > 0 and (progress / steps) > 1:
+        #     reward *= (progress / steps)
+
+        # # progress bonus
+        # if diff_progress > 0:
+        #     reward *= diff_progress
 
     # total reward
     g_total += reward
