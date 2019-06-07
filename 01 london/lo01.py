@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'mk11-ku'
+NAME = 'lo01-d'
 ACTION = '30 / 7 / 5 / 1'
 HYPER = '256 / 0.999 / 40'
 
@@ -15,12 +15,11 @@ MAX_ANGLE = 10
 MAX_STEER = 10
 LEN_STEER = 2
 
-MAX_STEPS = 100
+MAX_SPEED = 5
 
 BASE_REWARD = 1.2
 
 g_episode = 0
-g_steps = float(0)
 g_progress = float(0)
 g_steer = []
 g_total = float(0)
@@ -30,7 +29,6 @@ g_time = float(0)
 
 def get_episode(steps, progress):
     global g_episode
-    global g_steps
     global g_progress
     global g_steer
     global g_total
@@ -40,10 +38,10 @@ def get_episode(steps, progress):
     # reset
     if steps == 0:
         g_episode += 1
-        diff_progress = 0.00001
         g_total = float(0)
         g_start = time.time()
         del g_steer[:]
+        diff_progress = 0.00001
     else:
         diff_progress = progress - g_progress
 
@@ -52,10 +50,6 @@ def get_episode(steps, progress):
 
     # prev
     g_progress = progress
-
-    # min steps
-    if progress == 100 and g_steps > steps:
-        g_steps = steps
 
     return g_episode, diff_progress
 
@@ -146,6 +140,14 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
+        # time bonus
+        if g_time > 0:
+            reward += (progress / g_time / 10)
+
+        # # speed bonus
+        # if speed > 0:
+        #     reward += (speed / MAX_SPEED)
+
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
@@ -158,9 +160,13 @@ def reward_function(params):
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
-        # progress bonus
-        if diff_progress > 1:
-            reward += diff_progress
+        # # progress bonus
+        # if steps > 0 and (progress / steps) > 1:
+        #     reward *= (progress / steps)
+
+        # # progress bonus
+        # if diff_progress > 0:
+        #     reward *= diff_progress
 
     # total reward
     g_total += reward

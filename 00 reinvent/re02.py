@@ -20,7 +20,6 @@ MAX_SPEED = 5
 BASE_REWARD = 1.2
 
 g_episode = 0
-g_steps = float(0)
 g_progress = float(0)
 g_waypoints = []
 g_steer = []
@@ -31,7 +30,6 @@ g_time = float(0)
 
 def get_episode(steps, progress):
     global g_episode
-    global g_steps
     global g_progress
     global g_waypoints
     global g_steer
@@ -42,10 +40,10 @@ def get_episode(steps, progress):
     # reset
     if steps == 0:
         g_episode += 1
-        diff_progress = 0.00001
         g_total = float(0)
         g_start = time.time()
         del g_steer[:]
+        diff_progress = 0.00001
     else:
         diff_progress = progress - g_progress
 
@@ -58,10 +56,6 @@ def get_episode(steps, progress):
 
     # prev
     g_progress = progress
-
-    # min steps
-    if progress == 100 and g_steps > steps:
-        g_steps = steps
 
     return g_episode, diff_progress
 

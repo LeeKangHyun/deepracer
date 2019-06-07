@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk29-d'
+NAME = 'lo02-a'
 ACTION = '18 / 7 / 5 / 1'
-HYPER = '128 / 0.999 / 40'
+HYPER = '512 / 0.999 / 40'
 
 SIGHT = 1
 
@@ -15,12 +15,11 @@ MAX_ANGLE = 10
 MAX_STEER = 10
 LEN_STEER = 2
 
-MAX_STEPS = 100
+MAX_SPEED = 5
 
 BASE_REWARD = 1.2
 
 g_episode = 0
-g_steps = float(0)
 g_progress = float(0)
 g_waypoints = []
 g_steer = []
@@ -31,7 +30,6 @@ g_time = float(0)
 
 def get_episode(steps, progress):
     global g_episode
-    global g_steps
     global g_progress
     global g_waypoints
     global g_steer
@@ -42,10 +40,10 @@ def get_episode(steps, progress):
     # reset
     if steps == 0:
         g_episode += 1
-        diff_progress = 0.00001
         g_total = float(0)
         g_start = time.time()
         del g_steer[:]
+        diff_progress = 0.00001
     else:
         diff_progress = progress - g_progress
 
@@ -58,10 +56,6 @@ def get_episode(steps, progress):
 
     # prev
     g_progress = progress
-
-    # min steps
-    if progress == 100 and g_steps > steps:
-        g_steps = steps
 
     return g_episode, diff_progress
 
@@ -193,7 +187,7 @@ def reward_function(params):
     # next_waypoint = waypoints[closest_waypoints[1]]
 
     # default
-    reward = 0.001
+    reward = 0.00001
 
     # episode
     episode, diff_progress = get_episode(steps, progress)
@@ -213,19 +207,19 @@ def reward_function(params):
 
     if distance < MAX_CENTER:
         # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        reward += (BASE_REWARD - (distance / MAX_CENTER)) * 2
 
         # angle bonus
         if diff_angle <= MAX_ANGLE:
             reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # progress bonus
-        if diff_progress > 1:
-            reward += (1 - diff_progress)
+        # # progress bonus
+        # if diff_progress > 1:
+        #     reward += diff_progress
 
     # total reward
     g_total += reward
@@ -249,9 +243,10 @@ def reward_function(params):
 
 
 def get_waypoints():
+    waypoints = []
+
     # mk20-3097 : 11.92635
     # mk27-2697 : 12.06253
-    waypoints = []
     waypoints.append([2.78516, 0.88389])
     waypoints.append([3.00210, 0.92191])
     waypoints.append([3.24228, 0.93979])
@@ -337,4 +332,5 @@ def get_waypoints():
     waypoints.append([2.15829, 0.76682])
     waypoints.append([2.35673, 0.80025])
     waypoints.append([2.55503, 0.84813])
+
     return waypoints
