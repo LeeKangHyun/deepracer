@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're02-h'
+NAME = 're02-h2'
 ACTION = '30 / 7 / 6 / 1'
 HYPER = '256 / 0.999 / 40'
 
@@ -230,7 +230,7 @@ def reward_function(params):
             reward *= 1.5
 
         # time bonus
-        if g_time > 0 and g_steps >= steps:
+        if g_time > 0:
             reward += (progress / g_time / 10)
 
         # # speed bonus
