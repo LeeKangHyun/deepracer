@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're02-h'
+NAME = 're02-i'
 ACTION = '30 / 7 / 6 / 1'
 HYPER = '256 / 0.999 / 40'
 
@@ -25,34 +25,18 @@ g_waypoints = []
 g_steer = []
 g_total = float(0)
 g_start = float(0)
-g_time = float(0)
 
 
 def get_episode(steps, progress):
     global g_episode
     global g_progress
-    global g_waypoints
-    global g_steer
-    global g_total
-    global g_start
-    global g_time
 
     # reset
     if steps == 0:
         g_episode += 1
-        g_total = float(0)
-        g_start = time.time()
-        del g_steer[:]
         diff_progress = 0.00001
     else:
         diff_progress = progress - g_progress
-
-    # lab time
-    g_time = time.time() - g_start
-
-    # waypoints
-    if len(g_waypoints) < 1:
-        g_waypoints = get_waypoints()
 
     # prev
     g_progress = progress
@@ -165,8 +149,9 @@ def get_diff_steering(steering):
 
 def reward_function(params):
     global g_waypoints
+    global g_steer
     global g_total
-    global g_time
+    global g_start
 
     steps = params['steps']
     progress = params['progress']
@@ -194,6 +179,19 @@ def reward_function(params):
     # episode
     episode, diff_progress = get_episode(steps, progress)
 
+    # reset
+    if steps == 0:
+        del g_steer[:]
+        g_total = float(0)
+        g_start = time.time()
+
+    # lap rime
+    lap_time = time.time() - g_start
+
+    # waypoints
+    if len(g_waypoints) < 1:
+        g_waypoints = get_waypoints()
+
     # closest waypoint
     closest, distance = get_closest_waypoint(location)
 
@@ -216,9 +214,9 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
-        # time bonus
-        if g_time > 0:
-            reward += (progress / g_time / 10)
+        # # time bonus
+        # if lap_time > 0:
+        #     reward += (progress / lap_time * 10)
 
         # # speed bonus
         # if speed > 0:
@@ -260,7 +258,7 @@ def reward_function(params):
     params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
-    params['time'] = g_time
+    params['time'] = lap_time
     print(json.dumps(params))
 
     return float(reward)

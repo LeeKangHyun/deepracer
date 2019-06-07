@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku01-d'
-ACTION = '30 / 7 / 5 / 1'
+NAME = 'ku01-e'
+ACTION = '30 / 7 / 6 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 6
@@ -35,15 +35,14 @@ def get_episode(steps, progress):
     global g_start
     global g_time
 
+    diff_progress = progress - g_progress
+
     # reset
-    if steps == 0:
+    if diff_progress < 0:
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
         del g_steer[:]
-        diff_progress = 0.00001
-    else:
-        diff_progress = progress - g_progress
 
     # lab time
     g_time = time.time() - g_start
