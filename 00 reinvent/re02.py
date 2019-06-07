@@ -17,8 +17,6 @@ LEN_STEER = 2
 
 MAX_SPEED = 5
 
-MAX_STEPS = 100
-
 BASE_REWARD = 1.2
 
 g_episode = 0
@@ -66,7 +64,10 @@ def get_episode(progress, steps):
 
     # prev
     g_progress = progress
-    g_steps = steps
+
+    # min steps
+    if progress == 100 and g_steps > steps:
+        g_steps = steps
 
     return g_episode, diff_progress
 
@@ -176,6 +177,7 @@ def get_diff_steering(steering):
 
 def reward_function(params):
     global g_waypoints
+    global g_steps
     global g_total
     global g_time
 
@@ -228,7 +230,7 @@ def reward_function(params):
             reward *= 1.5
 
         # time bonus
-        if g_time > 0:
+        if g_time > 0 and g_steps >= steps:
             reward += (progress / g_time / 10)
 
         # # speed bonus
@@ -239,9 +241,9 @@ def reward_function(params):
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # # steer bonus
-        # if diff_steer <= MAX_STEER:
-        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # steer bonus
+        if diff_steer <= MAX_STEER:
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # # steer panelity
         # if abs_steer > MAX_STEER:

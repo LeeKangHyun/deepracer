@@ -17,8 +17,6 @@ LEN_STEER = 2
 
 MAX_SPEED = 5
 
-MAX_STEPS = 100
-
 BASE_REWARD = 1.2
 
 g_episode = 0
@@ -66,7 +64,10 @@ def get_episode(progress, steps):
 
     # prev
     g_progress = progress
-    g_steps = steps
+
+    # min steps
+    if progress == 100 and g_steps > steps:
+        g_steps = steps
 
     return g_episode, diff_progress
 
