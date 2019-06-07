@@ -4,7 +4,7 @@ import time
 
 NAME = 'lo02-a'
 ACTION = '18 / 7 / 5 / 1'
-HYPER = '512 / 0.999 / 40'
+HYPER = '256 / 0.999 / 40'
 
 SIGHT = 1
 
@@ -173,9 +173,11 @@ def reward_function(params):
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
+    all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
+    # speed = params['speed']
 
     x = params['x']
     y = params['y']
@@ -204,22 +206,43 @@ def reward_function(params):
 
     # diff steering
     diff_steer = get_diff_steering(steering)
+    abs_steer = abs(steering)
 
-    if distance < MAX_CENTER:
+    # reward
+    if all_wheels_on_track and distance < MAX_CENTER:
         # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER)) * 2
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        # angle bonus
-        if diff_angle <= MAX_ANGLE:
-            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        if distance < (MAX_CENTER * 0.3):
+            reward *= 1.5
 
-        # # steer bonus
-        # if diff_steer <= MAX_STEER:
-        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # time bonus
+        if g_time > 0:
+            reward += (progress / g_time / 10)
+
+        # # speed bonus
+        # if speed > 0:
+        #     reward += (speed / MAX_SPEED)
+
+        # # angle bonus
+        # if diff_angle <= MAX_ANGLE:
+        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+
+        # steer bonus
+        if diff_steer <= MAX_STEER:
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
+        # # steer panelity
+        # if abs_steer > MAX_STEER:
+        #     reward *= 0.5
 
         # # progress bonus
-        # if diff_progress > 1:
-        #     reward += diff_progress
+        # if steps > 0 and (progress / steps) > 1:
+        #     reward *= (progress / steps)
+
+        # # progress bonus
+        # if diff_progress > 0:
+        #     reward *= diff_progress
 
     # total reward
     g_total += reward
@@ -234,6 +257,7 @@ def reward_function(params):
     params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
+    params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
     params['time'] = g_time

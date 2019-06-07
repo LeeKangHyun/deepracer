@@ -4,6 +4,7 @@ import time
 
 NAME = 'mk25-c'
 ACTION = '18 / 7 / 5 / 1'
+HYPER = '256 / 0.999 / 40'
 
 SIGHT = 2
 
