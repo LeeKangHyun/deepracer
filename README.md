@@ -22,7 +22,7 @@ fields name, episode, steps, progress, total, time
 | order by time
 
 fields steps, progress, x, y, reward, total, diff_angle, diff_progress, closest, distance, time
-| filter name == 're02-g' and episode == 3605
+| filter name == 're02-g-2' and episode == 2086
 | order by steps
 ```
 

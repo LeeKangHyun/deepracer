@@ -7,41 +7,42 @@ ACTION = '30 / 7 / 5 / 1'
 HYPER = '256 / 0.999 / 40'
 
 g_episode = 0
-g_progress = float(0)
 g_steps = float(0)
+g_progress = float(0)
+g_steer = []
 g_total = float(0)
 g_start = float(0)
 g_time = float(0)
 
 
-def get_episode(progress, steps):
+def get_episode(steps, progress):
     global g_episode
-    global g_progress
     global g_steps
+    global g_progress
+    global g_steer
     global g_total
     global g_start
     global g_time
 
-    diff_progress = progress - g_progress
-
     # reset
-    if diff_progress < 0:
-        print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                g_time, g_steps, g_progress))
+    if steps == 0:
         g_episode += 1
+        diff_progress = 0.00001
         g_total = float(0)
         g_start = time.time()
+        del g_steer[:]
+    else:
+        diff_progress = progress - g_progress
 
+    # lab time
     g_time = time.time() - g_start
-
-    # completed
-    if g_progress < progress and progress == 100:
-        print('- episode completed - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                    g_time, steps, progress))
 
     # prev
     g_progress = progress
-    g_steps = steps
+
+    # min steps
+    if progress == 100 and g_steps > steps:
+        g_steps = steps
 
     return g_episode, diff_progress
 
@@ -59,7 +60,7 @@ def reward_function(params):
     reward = 0.00001
 
     # episode
-    episode, diff_progress = get_episode(progress, steps)
+    episode, diff_progress = get_episode(steps, progress)
 
     if steering < -25:
         reward += 10
