@@ -20,6 +20,7 @@ MAX_SPEED = 5
 BASE_REWARD = 1.2
 
 g_episode = 0
+g_max_steps = 500
 g_progress = float(0)
 g_steer = []
 g_total = float(0)
@@ -28,6 +29,7 @@ g_start = float(0)
 
 def get_episode(steps, progress):
     global g_episode
+    global g_max_steps
     global g_progress
 
     # reset
@@ -40,7 +42,10 @@ def get_episode(steps, progress):
     # prev
     g_progress = progress
 
-    return g_episode, diff_progress
+    if progress == 100 and steps < g_max_steps:
+        g_max_steps = steps
+
+    return g_episode, g_max_steps, diff_progress
 
 
 def get_distance(coor1, coor2):
@@ -109,7 +114,7 @@ def reward_function(params):
     reward = 0.00001
 
     # episode
-    episode, diff_progress = get_episode(steps, progress)
+    episode, max_steps, diff_progress = get_episode(steps, progress)
 
     # reset
     if steps == 0:
@@ -141,7 +146,7 @@ def reward_function(params):
 
         # # time bonus
         # if lap_time > 0:
-        #     reward += (progress / lap_time / 10)
+        #     reward += (progress / lap_time * 10)
 
         # # speed bonus
         # if speed > 0:
@@ -159,13 +164,13 @@ def reward_function(params):
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
-        # # progress bonus
-        # if steps > 0 and (progress / steps) > 1:
-        #     reward *= (progress / steps)
+        # progress bonus
+        if steps > 0 and steps <= max_steps:
+            reward += ((progress * 2) / steps)
 
         # # progress bonus
         # if diff_progress > 0:
-        #     reward *= diff_progress
+        #     reward += (diff_progress * 2)
 
     # total reward
     g_total += reward
