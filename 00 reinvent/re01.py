@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 're01-6'
-ACTION = '30 / 7 / 6 / 1'
+ACTION = '30 / 5 / 6 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 6
@@ -136,6 +136,11 @@ def reward_function(params):
     diff_steer = get_diff_steering(steering)
     abs_steer = abs(steering)
 
+    if steps > 0:
+        diff_steps = progress / steps
+    else:
+        diff_steps = 0
+
     # reward
     if all_wheels_on_track and distance < MAX_CENTER:
         # center bonus
@@ -165,12 +170,12 @@ def reward_function(params):
         #     reward *= 0.5
 
         # progress bonus
-        if steps > 0 and steps <= max_steps:
-            reward += ((progress * 2) / steps)
+        if diff_steps > 0 and steps <= max_steps:
+            reward += (diff_steps * 2)
 
-        # # progress bonus
-        # if diff_progress > 0:
-        #     reward += (diff_progress * 2)
+        # progress bonus
+        if diff_progress > 0 and steps <= max_steps:
+            reward += (diff_progress * 2)
 
     # total reward
     g_total += reward
@@ -185,6 +190,7 @@ def reward_function(params):
     params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
+    params['diff_steps'] = diff_steps
     params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
