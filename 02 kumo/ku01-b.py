@@ -138,7 +138,6 @@ def reward_function(params):
 
     # diff steering
     diff_steer = get_diff_steering(steering)
-    abs_steer = abs(steering)
 
     # reward
     if all_wheels_on_track and distance < MAX_CENTER:
@@ -155,10 +154,6 @@ def reward_function(params):
         # steer bonus
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
-
-        # # steer panelity
-        # if abs_steer > MAX_STEER:
-        #     reward *= 0.5
 
         # progress bonus
         if diff_progress > 1:
@@ -177,7 +172,6 @@ def reward_function(params):
     params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
     params['diff_steer'] = diff_steer
-    params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
     params['time'] = g_time
