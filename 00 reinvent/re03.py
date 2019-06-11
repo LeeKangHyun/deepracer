@@ -4,7 +4,7 @@ import time
 
 NAME = 're03-6-1'
 ACTION = '30 / 7 / 6 / 1'
-HYPER = '256 / 0.999 / 40'
+HYPER = '512 / 0.999 / 50'
 
 SIGHT = 1
 
