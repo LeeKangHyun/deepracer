@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku02-6'
+NAME = 'ku03-6'
 ACTION = '30 / 7 / 6 / 3'
 HYPER = '256 / 0.999 / 40'
 
@@ -218,7 +218,7 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track and distance < MAX_CENTER and speed > MIN_SPEED:
+    if all_wheels_on_track and distance < MAX_CENTER and speed > MIN_SPEED and steps <= max_steps:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
