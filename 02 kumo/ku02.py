@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku02-5-1-1'
+NAME = 'ku02-5-1'
 ACTION = '30 / 7 / 5.1 / 1'
 HYPER = '256 / 0.999 / 40'
 
@@ -237,9 +237,9 @@ def reward_function(params):
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # # steer bonus
-        # if diff_steer <= MAX_STEER:
-        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # steer bonus
+        if diff_steer <= MAX_STEER:
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
