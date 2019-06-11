@@ -2,9 +2,13 @@ import json
 import math
 import time
 
-NAME = 'ku03-6'
+NAME = 'ku03-6-3'
+
 ACTION = '30 / 7 / 6 / 3'
-HYPER = '256 / 0.999 / 40'
+
+# HYPER = '64 / 0.0005'
+# HYPER = '64 / 0.000001'
+# HYPER = '128 / 0.0000001'
 
 SIGHT = 1
 
@@ -218,16 +222,12 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track and distance < MAX_CENTER and speed > MIN_SPEED and steps <= max_steps:
+    if all_wheels_on_track and distance < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
-
-        # # time bonus
-        # if lap_time > 0:
-        #     reward += (progress / lap_time * 10)
 
         # speed bonus
         if speed > MAX_SPEED:
@@ -241,17 +241,21 @@ def reward_function(params):
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # steer panelity
-        # if abs_steer > MAX_STEER:
-        #     reward *= 0.5
-
         # # progress bonus
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # progress bonus
-        if diff_progress > 0 and steps <= max_steps:
-            reward += (diff_progress * 2)
+        # # progress bonus
+        # if diff_progress > 0 and steps <= max_steps:
+        #     reward += (diff_progress * 2)
+
+        # # steer panelity
+        # if abs_steer > MAX_STEER:
+        #     reward *= 0.5
+
+        # steps panelity
+        if steps > max_steps:
+            reward *= 0.5
 
     # total reward
     g_total += reward

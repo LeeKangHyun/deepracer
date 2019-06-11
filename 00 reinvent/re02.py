@@ -224,13 +224,9 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
-        # # time bonus
-        # if lap_time > 0:
-        #     reward += (progress / lap_time * 10)
-
         # # speed bonus
-        # if speed > 0:
-        #     reward += (speed / MAX_SPEED)
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:

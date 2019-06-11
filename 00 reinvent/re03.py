@@ -218,20 +218,16 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track and distance < MAX_CENTER and steps <= max_steps:
+    if all_wheels_on_track and distance < MAX_CENTER:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
-        # # time bonus
-        # if lap_time > 0:
-        #     reward += (progress / lap_time * 10)
-
         # # speed bonus
-        # if speed > 0:
-        #     reward += (speed / MAX_SPEED)
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -241,17 +237,21 @@ def reward_function(params):
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # steer panelity
-        # if abs_steer > MAX_STEER:
-        #     reward *= 0.5
-
         # # progress bonus
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # progress bonus
-        if diff_progress > 0 and steps <= max_steps:
-            reward += (diff_progress * 2)
+        # # progress bonus
+        # if diff_progress > 0 and steps <= max_steps:
+        #     reward += (diff_progress * 2)
+
+        # # steer panelity
+        # if abs_steer > MAX_STEER:
+        #     reward *= 0.5
+
+        # steps panelity
+        if steps > max_steps:
+            reward *= 0.5
 
     # total reward
     g_total += reward
