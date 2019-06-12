@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 're03-6-2'
-ACTION = '30 / 7 / 6.2 / 1'
-HYPER = '256 / 0.999 / 40'
+NAME = 're03-5-5'
+ACTION = '30 / 7 / 5.5 / 1'
+HYPER = '128 / 0.999 / 40'
 
 SIGHT = 1
 
@@ -241,17 +241,17 @@ def reward_function(params):
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # # progress bonus
-        # if diff_progress > 0 and steps <= max_steps:
-        #     reward += (diff_progress * 2)
+        # progress bonus
+        if diff_progress > 0 and steps <= max_steps:
+            reward += (diff_progress * 2)
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
-        # steps panelity
-        if steps > max_steps:
-            reward *= 0.5
+        # # steps panelity
+        # if steps > max_steps:
+        #     reward *= 0.5
 
     # total reward
     g_total += reward
