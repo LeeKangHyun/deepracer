@@ -3,12 +3,8 @@ import math
 import time
 
 NAME = 're04-8-2'
-
 ACTION = '30 / 7 / 8 / 2'
-
-# HYPER = '64 / 0.0005'
-# HYPER = '64 / 0.000001'
-# HYPER = '128 / 0.0000001'
+HYPER = '256 / 0.999 / 40'
 
 SIGHT = 1
 

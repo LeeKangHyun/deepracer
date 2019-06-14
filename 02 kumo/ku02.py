@@ -2,11 +2,11 @@ import json
 import math
 import time
 
-NAME = 'ku02-5-1'
-ACTION = '30 / 7 / 5.1 / 1'
+NAME = 'ku02-50-1'
+ACTION = '30 / 7 / 5.0 / 1'
 HYPER = '256 / 0.999 / 40'
 
-SIGHT = 1
+SIGHT = 2
 
 MAX_CENTER = 0.3
 
@@ -107,10 +107,7 @@ def get_distance(coor1, coor2):
 def get_destination(closest, sight):
     global g_waypoints
 
-    index = closest + sight
-
-    if index >= len(g_waypoints):
-        index = index - len(g_waypoints)
+    index = (closest + sight) % len(g_waypoints)
 
     return g_waypoints[index]
 
@@ -164,7 +161,7 @@ def reward_function(params):
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
-    all_wheels_on_track = params['all_wheels_on_track']
+    # all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -175,9 +172,9 @@ def reward_function(params):
     location = [x, y]
 
     # waypoints = params['waypoints']
-    # closest_waypoints = params['closest_waypoints']
-    # prev_waypoint = waypoints[closest_waypoints[0]]
-    # next_waypoint = waypoints[closest_waypoints[1]]
+    # closest = params['closest']
+    # prev_waypoint = waypoints[closest[0]]
+    # next_waypoint = waypoints[closest[1]]
 
     # default
     reward = 0.00001
@@ -218,7 +215,7 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track and distance < MAX_CENTER:
+    if distance < MAX_CENTER:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 

@@ -2,11 +2,11 @@ import json
 import math
 import time
 
-NAME = 'ku01-5'
-ACTION = '30 / 7 / 5 / 1'
+NAME = 'ku01-50-1'
+ACTION = '30 / 7 / 5.0 / 1'
 HYPER = '256 / 0.999 / 40'
 
-SIGHT = 6
+SIGHT = 5
 
 MAX_CENTER = 0.3
 
@@ -100,15 +100,16 @@ def reward_function(params):
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
-    all_wheels_on_track = params['all_wheels_on_track']
+    # all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
 
     waypoints = params['waypoints']
-    closest_waypoints = params['closest_waypoints']
-    prev_waypoint = waypoints[closest_waypoints[0]]
-    next_waypoint = waypoints[closest_waypoints[1]]
+    closest = params['closest_waypoints']
+    prev_waypoint = waypoints[closest[0]]
+    # next_waypoint = waypoints[closest[1]]
+    next_waypoint = waypoints[(closest[1] + SIGHT) % len(waypoints)]
 
     # default
     reward = 0.00001
@@ -142,7 +143,7 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track and distance < MAX_CENTER:
+    if distance < MAX_CENTER:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
@@ -153,13 +154,13 @@ def reward_function(params):
         # if speed > MAX_SPEED:
         #     reward *= 2.0
 
-        # # angle bonus
-        # if diff_angle <= MAX_ANGLE:
-        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        # angle bonus
+        if diff_angle <= MAX_ANGLE:
+            reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
@@ -180,7 +181,7 @@ def reward_function(params):
     params['name'] = NAME
     params['params'] = ACTION
     params['episode'] = episode
-    params['closest'] = closest_waypoints[1]
+    params['closest'] = closest[1]
     params['distance'] = distance
     # params['destination'] = destination
     params['diff_progress'] = diff_progress

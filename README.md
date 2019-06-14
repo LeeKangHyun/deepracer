@@ -18,7 +18,7 @@ sudo pip3 install --upgrade Image
 
 ```
 fields name, episode, steps, progress, total, time
-| filter progress == 100 and name == 're04-6-5'
+| filter progress == 100 #and name == 're04-6-5'
 | order by time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, distance, time

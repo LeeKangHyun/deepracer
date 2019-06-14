@@ -2,15 +2,11 @@ import json
 import math
 import time
 
-NAME = 'ku03-6-3'
+NAME = 'ku03-66-2'
+ACTION = '30 / 7 / 6.6 / 2'
+HYPER = '256 / 0.999 / 40'
 
-ACTION = '30 / 7 / 6 / 3'
-
-# HYPER = '64 / 0.0005'
-# HYPER = '64 / 0.000001'
-# HYPER = '128 / 0.0000001'
-
-SIGHT = 1
+SIGHT = 2
 
 MAX_CENTER = 0.3
 
@@ -111,10 +107,7 @@ def get_distance(coor1, coor2):
 def get_destination(closest, sight):
     global g_waypoints
 
-    index = closest + sight
-
-    if index >= len(g_waypoints):
-        index = index - len(g_waypoints)
+    index = (closest + sight) % len(g_waypoints)
 
     return g_waypoints[index]
 
@@ -168,7 +161,7 @@ def reward_function(params):
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
-    all_wheels_on_track = params['all_wheels_on_track']
+    # all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -179,9 +172,9 @@ def reward_function(params):
     location = [x, y]
 
     # waypoints = params['waypoints']
-    # closest_waypoints = params['closest_waypoints']
-    # prev_waypoint = waypoints[closest_waypoints[0]]
-    # next_waypoint = waypoints[closest_waypoints[1]]
+    # closest = params['closest']
+    # prev_waypoint = waypoints[closest[0]]
+    # next_waypoint = waypoints[closest[1]]
 
     # default
     reward = 0.00001
@@ -222,40 +215,40 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track and distance < MAX_CENTER and speed > MIN_SPEED:
+    if distance < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
 
-        # speed bonus
-        if speed > MAX_SPEED:
-            reward *= 2.0
-
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # # progress bonus
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # # progress bonus
-        # if diff_progress > 0 and steps <= max_steps:
-        #     reward += (diff_progress * 2)
+        # progress bonus
+        if diff_progress > 0 and steps <= max_steps:
+            reward += (diff_progress * 2)
+
+        # speed bonus
+        if speed > MAX_SPEED:
+            reward *= 2.0
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
         #     reward *= 0.5
 
-        # steps panelity
-        if steps > max_steps:
-            reward *= 0.5
+        # # steps panelity
+        # if steps > max_steps:
+        #     reward *= 0.5
 
     # total reward
     g_total += reward
