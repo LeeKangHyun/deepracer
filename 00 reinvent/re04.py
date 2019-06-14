@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 're04-6-3'
+NAME = 're04-8-2'
 
-ACTION = '30 / 7 / 6 / 3'
+ACTION = '30 / 7 / 8 / 2'
 
 # HYPER = '64 / 0.0005'
 # HYPER = '64 / 0.000001'
