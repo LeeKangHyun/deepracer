@@ -5,6 +5,7 @@
 * <https://us-west-2.console.aws.amazon.com/sagemaker/home?region=us-west-2>
 * <https://docs.aws.amazon.com/deepracer/latest/developerguide/deepracer-build-your-track.html>
 * <https://docs.aws.amazon.com/deepracer/latest/developerguide/deepracer-vehicle-factory-reset-preparation.html>
+* <https://github.com/aws-samples/aws-deepracer-workshops/blob/master/Workshops/2019-AWSSummits-AWSDeepRacerService/Lab1/Readme-Korean.md>
 
 ## python
 
@@ -22,7 +23,7 @@ fields name, episode, steps, progress, total, time
 | order by time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, distance, time
-| filter name == 're04-6-5' and episode == 833
+| filter name == 'ku03-70-2' and episode == 2614
 | order by steps
 ```
 
