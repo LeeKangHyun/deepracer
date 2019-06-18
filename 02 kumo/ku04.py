@@ -241,6 +241,10 @@ def reward_function(params):
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 3.0
+        elif y > 2.2:
+            reward *= 2.0
+        elif x < 2.0:
+            reward *= 2.0
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
