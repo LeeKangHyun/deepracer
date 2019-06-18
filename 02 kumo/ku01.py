@@ -182,6 +182,8 @@ def reward_function(params):
             reward *= 2.0
         elif x < 2.0:
             reward *= 2.0
+        elif x > 6.0 and x < 7.0 and y > 0:
+            reward *= 2.0
 
     # total reward
     g_total += reward

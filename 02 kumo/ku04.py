@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku04-80-2-3'
-ACTION = '30 / 5 / 8.0 / 2 / speed 3x'
+NAME = 'ku04-80-2-5'
+ACTION = '30 / 5 / 8.0 / 2'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 2
@@ -245,6 +245,10 @@ def reward_function(params):
             reward *= 2.0
         elif x < 2.0:
             reward *= 2.0
+        elif x > 6.0 and x < 7.0 and y > 0:
+            reward *= 2.0
+        else:
+            reward *= 0.5
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
