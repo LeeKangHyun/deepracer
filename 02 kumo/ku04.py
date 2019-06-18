@@ -8,7 +8,7 @@ HYPER = '256 / 0.999 / 40'
 
 SIGHT = 2
 
-MAX_CENTER = 0.3
+MAX_CENTER = 0.25
 
 MAX_ANGLE = 10
 
@@ -248,7 +248,7 @@ def reward_function(params):
         elif x > 6.0 and x < 7.0 and y > 0:
             reward *= 2.0
         else:
-            reward *= 0.5
+            reward *= 0.1
 
         # # steer panelity
         # if abs_steer > MAX_STEER:

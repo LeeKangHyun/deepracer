@@ -8,7 +8,7 @@ HYPER = '256 / 0.999 / 40'
 
 SIGHT = 5
 
-MAX_CENTER = 0.3
+MAX_CENTER = 0.25
 
 MAX_ANGLE = 10
 
