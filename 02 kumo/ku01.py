@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku01-80-2-3'
-ACTION = '30 / 5 / 8.0 / 2 / speed 3x'
+NAME = 'ku01-52-a'
+ACTION = '30 / 5 / 5.2 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 5
@@ -107,8 +107,8 @@ def reward_function(params):
     steering = params['steering_angle']
     speed = params['speed']
 
-    x = params['x']
-    y = params['y']
+    # x = params['x']
+    # y = params['y']
 
     waypoints = params['waypoints']
     closest = params['closest_waypoints']
@@ -163,27 +163,21 @@ def reward_function(params):
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # steer panelity
-        # if abs_steer > MAX_STEER:
-        #     reward *= 0.5
-
         # # progress bonus
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # # progress bonus
-        # if diff_progress > 0 and steps <= max_steps:
-        #     reward += (diff_progress * 2)
+        # progress bonus
+        if diff_progress > 0 and steps <= max_steps:
+            reward += (diff_progress * 2)
 
-        # speed bonus
-        if speed > MAX_SPEED:
-            reward *= 3.0
-        elif y > 2.2:
-            reward *= 2.0
-        elif x < 2.0:
-            reward *= 2.0
-        elif x > 6.0 and x < 7.0 and y > 0:
-            reward *= 2.0
+        # # steer panelity
+        # if abs_steer > MAX_STEER:
+        #     reward *= 0.5
+
+        # # steps panelity
+        # if steps > max_steps:
+        #     reward *= 0.5
 
     # total reward
     g_total += reward

@@ -2,13 +2,13 @@ import json
 import math
 import time
 
-NAME = 'ku02-50-1'
-ACTION = '30 / 7 / 5.0 / 1'
+NAME = 'ku02-76-a'
+ACTION = '30 / 5 / 7.6 / 2'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 2
 
-MAX_CENTER = 0.3
+MAX_CENTER = 0.25
 
 MAX_ANGLE = 10
 
@@ -160,12 +160,12 @@ def reward_function(params):
     progress = params['progress']
 
     # track_width = params['track_width']
-    # distance_from_center = params['distance_from_center']
-    # all_wheels_on_track = params['all_wheels_on_track']
+    distance_from_center = params['distance_from_center']
+    all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
-    # speed = params['speed']
+    speed = params['speed']
 
     x = params['x']
     y = params['y']
@@ -215,16 +215,12 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if distance < MAX_CENTER:
+    if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 1.5
-
-        # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward *= 2.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -234,10 +230,6 @@ def reward_function(params):
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # steer panelity
-        # if abs_steer > MAX_STEER:
-        #     reward *= 0.5
-
         # # progress bonus
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
@@ -245,6 +237,26 @@ def reward_function(params):
         # progress bonus
         if diff_progress > 0 and steps <= max_steps:
             reward += (diff_progress * 2)
+
+        # speed bonus
+        if speed > MAX_SPEED:
+            reward *= 3.0
+        elif y > 2.2:
+            reward *= 2.0
+        elif x < 2.0:
+            reward *= 2.0
+        elif x > 6.0 and x < 7.0 and y > 0:
+            reward *= 2.0
+        else:
+            reward *= 0.1
+
+        # # steer panelity
+        # if abs_steer > MAX_STEER:
+        #     reward *= 0.5
+
+        # # steps panelity
+        # if steps > max_steps:
+        #     reward *= 0.5
 
     # total reward
     g_total += reward
@@ -255,6 +267,7 @@ def reward_function(params):
     params['episode'] = episode
     params['closest'] = closest
     params['distance'] = distance
+    params['max_steps'] = max_steps
     params['destination'] = destination
     params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
