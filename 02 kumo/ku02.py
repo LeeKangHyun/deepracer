@@ -234,21 +234,21 @@ def reward_function(params):
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # # progress bonus
-        # if diff_progress > 0 and steps <= max_steps:
-        #     reward += (diff_progress * 2)
+        # progress bonus
+        if diff_progress > 0 and steps <= max_steps:
+            reward += (diff_progress * 2)
 
-        # speed bonus
-        if speed > MAX_SPEED:
-            reward *= 3.0
-        elif y > 2.2:
-            reward *= 2.0
-        elif x < 2.0:
-            reward *= 2.0
-        elif x > 6.0 and x < 7.0 and y > 0:
-            reward *= 2.0
-        else:
-            reward *= 0.1
+        # # speed bonus
+        # if speed > MAX_SPEED:
+        #     reward *= 3.0
+        # elif y > 2.2:
+        #     reward *= 2.0
+        # elif x < 2.0:
+        #     reward *= 2.0
+        # elif x > 6.0 and x < 7.0 and y > 0:
+        #     reward *= 2.0
+        # else:
+        #     reward *= 0.1
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
