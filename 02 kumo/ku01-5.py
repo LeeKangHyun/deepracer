@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku01-5'
-ACTION = '30 / 7 / 5 / 1'
+NAME = 'ku01-5-a'
+ACTION = '30 / 5 / 5 / 1'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 5
