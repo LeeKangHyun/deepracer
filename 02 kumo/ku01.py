@@ -153,7 +153,7 @@ def reward_function(params):
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
-            reward *= 1.5
+            reward *= 2.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -167,9 +167,9 @@ def reward_function(params):
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # progress bonus
-        if diff_progress > 0 and steps <= max_steps:
-            reward += (diff_progress * 2)
+        # # progress bonus
+        # if diff_progress > 0 and steps <= max_steps:
+        #     reward += (diff_progress * 2)
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
