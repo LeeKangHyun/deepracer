@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku03-76-a'
-ACTION = '30 / 5 / 7.6 / 2'
+NAME = 'ku03-80-b'
+ACTION = '30 / 5 / 8.0 / 3'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 2
@@ -226,21 +226,21 @@ def reward_function(params):
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # # progress bonus
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
 
-        # # progress bonus
-        # if diff_progress > 0 and steps <= max_steps:
-        #     reward += (diff_progress * 2)
+        # progress bonus
+        if diff_progress > 0 and steps <= max_steps:
+            reward += (diff_progress * 2)
 
         # speed bonus
         if speed > MAX_SPEED:
-            reward *= 3.0
+            reward *= 4.0
         elif y > 2.2:
             reward *= 2.0
         elif x < 2.0:
