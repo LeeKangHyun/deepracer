@@ -190,7 +190,7 @@ def reward_function(params):
         g_total = float(0)
         g_start = time.time()
 
-    # lap rime
+    # lap time
     lap_time = time.time() - g_start
 
     # waypoints
