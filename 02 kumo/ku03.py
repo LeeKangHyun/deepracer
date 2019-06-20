@@ -172,9 +172,10 @@ def reward_function(params):
     location = [x, y]
 
     # waypoints = params['waypoints']
-    # closest = params['closest']
-    # prev_waypoint = waypoints[closest[0]]
-    # next_waypoint = waypoints[closest[1]]
+    # closest_waypoints = params['closest_waypoints']
+    # prev_waypoint = waypoints[closest_waypoints[0]]
+    # next_waypoint = waypoints[closest_waypoints[1]]
+    # next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
 
     # default
     reward = 0.00001
