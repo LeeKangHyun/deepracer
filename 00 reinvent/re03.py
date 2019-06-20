@@ -2,13 +2,13 @@ import json
 import math
 import time
 
-NAME = 're03-5-3'
-ACTION = '30 / 7 / 5.3 / 1'
+NAME = 're03-80-a'
+ACTION = '22 / 5 / 8.0 / 2'
 HYPER = '128 / 0.999 / 40'
 
-SIGHT = 1
+SIGHT = 2
 
-MAX_CENTER = 0.3
+MAX_CENTER = 0.25
 
 MAX_ANGLE = 10
 
@@ -107,10 +107,7 @@ def get_distance(coor1, coor2):
 def get_destination(closest, sight):
     global g_waypoints
 
-    index = closest + sight
-
-    if index >= len(g_waypoints):
-        index = index - len(g_waypoints)
+    index = (closest + sight) % len(g_waypoints)
 
     return g_waypoints[index]
 
@@ -163,21 +160,21 @@ def reward_function(params):
     progress = params['progress']
 
     # track_width = params['track_width']
-    # distance_from_center = params['distance_from_center']
+    distance_from_center = params['distance_from_center']
     all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
-    # speed = params['speed']
+    speed = params['speed']
 
     x = params['x']
     y = params['y']
     location = [x, y]
 
     # waypoints = params['waypoints']
-    # closest_waypoints = params['closest_waypoints']
-    # prev_waypoint = waypoints[closest_waypoints[0]]
-    # next_waypoint = waypoints[closest_waypoints[1]]
+    # closest = params['closest']
+    # prev_waypoint = waypoints[closest[0]]
+    # next_waypoint = waypoints[closest[1]]
 
     # default
     reward = 0.00001
@@ -218,16 +215,13 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track and distance < MAX_CENTER:
+    if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        # reward += (BASE_REWARD - (distance / MAX_CENTER))
+        reward = 1
 
         if distance < (MAX_CENTER * 0.3):
-            reward *= 1.5
-
-        # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward *= 2.0
+            reward *= 2.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -244,6 +238,24 @@ def reward_function(params):
         # progress bonus
         if diff_progress > 0 and steps <= max_steps:
             reward += (diff_progress * 2)
+
+        # speed bonus
+        if speed > MAX_SPEED:
+            reward *= 2.0
+
+        # # speed bonus
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
+        # elif y > 2.2:
+        #     reward *= 2.0
+        # elif x < 2.0:
+        #     reward *= 2.0
+        # elif x > 6.0 and x < 7.0 and y > 0:
+        #     reward *= 2.0
+        # elif x > 7.6 and y < -1.6:
+        #     reward *= 2.0
+        # else:
+        #     reward *= 0.1
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
@@ -262,6 +274,7 @@ def reward_function(params):
     params['episode'] = episode
     params['closest'] = closest
     params['distance'] = distance
+    params['max_steps'] = max_steps
     params['destination'] = destination
     params['diff_progress'] = diff_progress
     params['diff_angle'] = diff_angle
