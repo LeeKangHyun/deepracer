@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 'ku03-80-c'
-ACTION = '21 / 5 / 8.0 / 2'
+ACTION = '30 / 5 / 8.0 / 2'
 HYPER = '256 / 0.999 / 40'
 
 SIGHT = 2
@@ -218,7 +218,7 @@ def reward_function(params):
     if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
         # reward += (BASE_REWARD - (distance / MAX_CENTER))
-        reward = 1
+        reward = 1.0
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
