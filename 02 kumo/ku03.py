@@ -160,7 +160,7 @@ def reward_function(params):
     progress = params['progress']
 
     # track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    # distance_from_center = params['distance_from_center']
     all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
@@ -172,10 +172,9 @@ def reward_function(params):
     location = [x, y]
 
     # waypoints = params['waypoints']
-    # closest_waypoints = params['closest_waypoints']
-    # prev_waypoint = waypoints[closest_waypoints[0]]
-    # next_waypoint = waypoints[closest_waypoints[1]]
-    # next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
+    # closest = params['closest']
+    # prev_waypoint = waypoints[closest[0]]
+    # next_waypoint = waypoints[closest[1]]
 
     # default
     reward = 0.00001
@@ -216,7 +215,7 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
+    if all_wheels_on_track == True and distance < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
         # reward += (BASE_REWARD - (distance / MAX_CENTER))
         reward = 1.0
