@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'ku03-80-c'
-ACTION = '30 / 5 / 8.0 / 2'
-HYPER = '256 / 0.999 / 40'
+NAME = 'ku03-80-d'
+ACTION = '24 / 5 / 8.0 / 2'
+HYPER = '256 / 0.00003 / 40'
 
 SIGHT = 2
 
@@ -243,14 +243,14 @@ def reward_function(params):
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif y > 2.2:
-            reward *= 2.0
-        elif x < 2.0:
-            reward *= 2.0
-        elif x > 6.0 and x < 7.0 and y > 0:
-            reward *= 2.0
-        elif x > 7.6 and y < -1.6:
-            reward *= 2.0
+        elif y > 2.2 and (x > 8.0 or x < 7.0): # top
+            reward *= 1.0
+        elif x < 2.0 and (y > -0.8 or y < -1.9): # left
+            reward *= 1.0
+        elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0: # center
+            reward *= 1.0
+        elif x > 7.6 and y < -1.6: # right bottom
+            reward *= 1.0
         else:
             reward *= 0.1
 
