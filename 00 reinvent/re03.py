@@ -160,7 +160,7 @@ def reward_function(params):
     progress = params['progress']
 
     # track_width = params['track_width']
-    # distance_from_center = params['distance_from_center']
+    distance_from_center = params['distance_from_center']
     # all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
@@ -215,7 +215,7 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if distance < MAX_CENTER and speed > MIN_SPEED:
+    if distance_from_center < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
         # reward += (BASE_REWARD - (distance / MAX_CENTER))
         reward = 1.0
