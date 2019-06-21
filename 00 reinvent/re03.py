@@ -241,8 +241,12 @@ def reward_function(params):
 
         # speed bonus
         if speed > MAX_SPEED:
+            reward *= 2.0
+        elif x > 6.5:
             reward *= 1.0
-        elif x > 6.0:
+        elif x < 1.1 and y > 3.8:
+            reward *= 1.0
+        elif x < 1.5 and y < 1.2:
             reward *= 1.0
         else:
             reward *= 0.1
