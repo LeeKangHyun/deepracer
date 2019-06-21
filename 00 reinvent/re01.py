@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're01-80-d'
+NAME = 're01-80-e'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -107,8 +107,8 @@ def reward_function(params):
     steering = params['steering_angle']
     speed = params['speed']
 
-    x = params['x']
-    y = params['y']
+    # x = params['x']
+    # y = params['y']
 
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
@@ -174,21 +174,35 @@ def reward_function(params):
         # if diff_progress > 0 and steps <= max_steps:
         #     reward += (diff_progress * 2)
 
-        # steps bonus
-        if steps <= max_steps:
+        # progress bonus
+        if diff_progress > 0.7:
             reward += 1.0
 
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif x > 6.5:
+        elif closest >= 11 and closest <= 24:
             reward *= 1.0
-        elif x < 1.1 and y > 3.8:
+        elif closest >= 41 and closest <= 42:
             reward *= 1.0
-        elif x < 1.5 and y < 1.2:
+        elif closest >= 51 and closest <= 52:
+            reward *= 1.0
+        elif closest >= 62 and closest <= 67:
             reward *= 1.0
         else:
             reward *= 0.1
+
+        # # speed bonus
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
+        # elif x > 6.5:
+        #     reward *= 1.0
+        # elif x < 1.1 and y > 3.8:
+        #     reward *= 1.0
+        # elif x < 1.5 and y < 1.2:
+        #     reward *= 1.0
+        # else:
+        #     reward *= 0.1
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
