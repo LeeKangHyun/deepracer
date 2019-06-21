@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're03-80-a'
+NAME = 're03-80-b'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -160,8 +160,8 @@ def reward_function(params):
     progress = params['progress']
 
     # track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
-    all_wheels_on_track = params['all_wheels_on_track']
+    # distance_from_center = params['distance_from_center']
+    # all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -215,7 +215,7 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
+    if distance < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
         # reward += (BASE_REWARD - (distance / MAX_CENTER))
         reward = 1.0
