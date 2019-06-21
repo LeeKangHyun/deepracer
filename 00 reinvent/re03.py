@@ -239,6 +239,10 @@ def reward_function(params):
         # if diff_progress > 0 and steps <= max_steps:
         #     reward += (diff_progress * 2)
 
+        # steps bonus
+        if steps <= max_steps:
+            reward += 1.0
+
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0

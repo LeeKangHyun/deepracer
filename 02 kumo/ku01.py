@@ -166,20 +166,6 @@ def reward_function(params):
         # if diff_steer <= MAX_STEER:
         #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # speed bonus
-        if speed > MAX_SPEED:
-            reward *= 2.0
-        elif y > 2.2 and (x > 8.0 or x < 7.0): # top
-            reward *= 1.0
-        elif x < 2.0 and (y > -0.8 or y < -1.9): # left
-            reward *= 1.0
-        elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0: # center
-            reward *= 1.0
-        elif x > 7.6 and y < -1.6: # right bottom
-            reward *= 1.0
-        else:
-            reward *= 0.1
-
         # # progress bonus
         # if diff_steps > 0 and steps <= max_steps:
         #     reward += (diff_steps * 2)
@@ -187,6 +173,24 @@ def reward_function(params):
         # # progress bonus
         # if diff_progress > 0 and steps <= max_steps:
         #     reward += (diff_progress * 2)
+
+        # steps bonus
+        if steps <= max_steps:
+            reward += 1.0
+
+        # speed bonus
+        if speed > MAX_SPEED:
+            reward *= 2.0
+        elif y > 2.2 and (x > 8.0 or x < 7.0):  # top
+            reward *= 1.0
+        elif x < 2.0 and (y > -0.8 or y < -1.9):  # left
+            reward *= 1.0
+        elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0:  # center
+            reward *= 1.0
+        elif x > 7.6 and y < -1.6:  # right bottom
+            reward *= 1.0
+        else:
+            reward *= 0.1
 
         # # steer panelity
         # if abs_steer > MAX_STEER:

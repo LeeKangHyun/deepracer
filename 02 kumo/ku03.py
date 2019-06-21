@@ -239,16 +239,20 @@ def reward_function(params):
         # if diff_progress > 0 and steps <= max_steps:
         #     reward += (diff_progress * 2)
 
+        # steps bonus
+        if steps <= max_steps:
+            reward += 1.0
+
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif y > 2.2 and (x > 8.0 or x < 7.0): # top
+        elif y > 2.2 and (x > 8.0 or x < 7.0):  # top
             reward *= 1.0
-        elif x < 2.0 and (y > -0.8 or y < -1.9): # left
+        elif x < 2.0 and (y > -0.8 or y < -1.9):  # left
             reward *= 1.0
-        elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0: # center
+        elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0:  # center
             reward *= 1.0
-        elif x > 7.6 and y < -1.6: # right bottom
+        elif x > 7.6 and y < -1.6:  # right bottom
             reward *= 1.0
         else:
             reward *= 0.1
