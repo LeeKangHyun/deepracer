@@ -107,8 +107,8 @@ def reward_function(params):
     steering = params['steering_angle']
     speed = params['speed']
 
-    x = params['x']
-    y = params['y']
+    # x = params['x']
+    # y = params['y']
 
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
@@ -116,7 +116,7 @@ def reward_function(params):
     # next_waypoint = waypoints[closest_waypoints[1]]
     next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
 
-    closest = closest_waypoints[1]
+    closest_waypoint = closest_waypoints[1]
 
     # default
     reward = 0.00001
@@ -174,23 +174,41 @@ def reward_function(params):
         # if diff_progress > 0 and steps <= max_steps:
         #     reward += (diff_progress * 2)
 
-        # steps bonus
-        if steps <= max_steps:
+        # progress bonus
+        if diff_progress > (90 / max_steps):
             reward += 1.0
 
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif y > 2.2 and (x > 8.0 or x < 7.0):  # top
+        elif closest_waypoint >= 30 and closest_waypoint <= 34:
             reward *= 1.0
-        elif x < 2.0 and (y > -0.8 or y < -1.9):  # left
+        elif closest_waypoint >= 65 and closest_waypoint <= 70:
             reward *= 1.0
-        elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0:  # center
+        elif closest_waypoint >= 75 and closest_waypoint <= 80:
             reward *= 1.0
-        elif x > 7.6 and y < -1.6:  # right bottom
+        elif closest_waypoint >= 91 and closest_waypoint <= 96:
+            reward *= 1.0
+        elif closest_waypoint >= 136 and closest_waypoint <= 140:
+            reward *= 1.0
+        elif closest_waypoint >= 140 and closest_waypoint <= 150:
             reward *= 1.0
         else:
             reward *= 0.1
+
+        # # speed bonus
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
+        # elif y > 2.2 and (x > 8.0 or x < 7.0):  # top
+        #     reward *= 1.0
+        # elif x < 2.0 and (y > -0.8 or y < -1.9):  # left
+        #     reward *= 1.0
+        # elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0:  # center
+        #     reward *= 1.0
+        # elif x > 7.6 and y < -1.6:  # right bottom
+        #     reward *= 1.0
+        # else:
+        #     reward *= 0.1
 
         # # steer panelity
         # if abs_steer > MAX_STEER:
@@ -207,7 +225,7 @@ def reward_function(params):
     params['name'] = NAME
     params['params'] = ACTION
     params['episode'] = episode
-    params['closest'] = closest
+    params['closest'] = closest_waypoint
     params['distance'] = distance
     params['max_steps'] = max_steps
     params['diff_progress'] = diff_progress

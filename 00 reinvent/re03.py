@@ -243,7 +243,7 @@ def reward_function(params):
         #     reward += (diff_progress * 2)
 
         # progress bonus
-        if diff_progress > 0.7:
+        if diff_progress > (90 / max_steps):
             reward += 1.0
 
         # speed bonus
