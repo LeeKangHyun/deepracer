@@ -166,20 +166,6 @@ def reward_function(params):
         # if diff_steer <= MAX_STEER:
         #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward *= 1.0
-        # elif closest >= 11 and closest <= 24:
-        #     reward *= 1.0
-        # elif closest >= 41 and closest <= 42:
-        #     reward *= 1.0
-        # elif closest >= 51 and closest <= 52:
-        #     reward *= 1.0
-        # elif closest >= 62 and closest <= 67:
-        #     reward *= 1.0
-        # else:
-        #     reward *= 0.1
-
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0

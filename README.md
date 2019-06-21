@@ -23,7 +23,7 @@ fields name, episode, steps, progress, total, time
 #| order by time
 
 fields steps, progress, x, y, reward, total, diff_angle, speed, steering_angle, distance, time
-| filter name == 're01-80-b' and episode == 4823
+| filter name == 're01-80-b' and episode == 3763
 | order by steps
 ```
 
