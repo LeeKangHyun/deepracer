@@ -116,7 +116,7 @@ def reward_function(params):
     # next_waypoint = waypoints[closest_waypoints[1]]
     next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
 
-    closest = closest_waypoints[1]
+    closest_waypoint = closest_waypoints[1]
 
     # default
     reward = 0.00001
@@ -181,13 +181,13 @@ def reward_function(params):
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif closest >= 11 and closest <= 24:
+        elif closest_waypoint >= 11 and closest_waypoint <= 24:
             reward *= 1.0
-        elif closest >= 41 and closest <= 42:
+        elif closest_waypoint >= 41 and closest_waypoint <= 42:
             reward *= 1.0
-        elif closest >= 51 and closest <= 52:
+        elif closest_waypoint >= 51 and closest_waypoint <= 52:
             reward *= 1.0
-        elif closest >= 62 and closest <= 67:
+        elif closest_waypoint >= 62 and closest_waypoint <= 67:
             reward *= 1.0
         else:
             reward *= 0.1
@@ -219,7 +219,7 @@ def reward_function(params):
     params['name'] = NAME
     params['params'] = ACTION
     params['episode'] = episode
-    params['closest'] = closest
+    params['closest'] = closest_waypoint
     params['distance'] = distance
     params['max_steps'] = max_steps
     params['diff_progress'] = diff_progress
