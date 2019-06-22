@@ -280,7 +280,7 @@ def reward_function(params):
         #     reward *= 1.0
         # elif closest_waypoint >= 136 and closest_waypoint <= 140:
         #     reward *= 1.0
-        # elif closest_waypoint >= 140 and closest_waypoint <= 150:
+        # elif closest_waypoint >= 146 and closest_waypoint <= 150:
         #     reward *= 1.0
         # else:
         #     reward *= 0.1

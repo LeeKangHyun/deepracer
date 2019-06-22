@@ -1,6 +1,7 @@
 import time
 
-ACTION = '21 / 7 / 8.0 / 2'
+NAME = 'ku03-kimwooglae'
+ACTION = '22 / 7 / 8.0 / 2'
 HYPER = '512 / 0.999 / 0.00001 / 30'
 
 '''
@@ -17,51 +18,52 @@ Number of epochs	10
 def reward_function(params):
     prev_waypoint = params['closest_waypoints'][0]
     next_waypoint = params['closest_waypoints'][1]
-    rules1A = [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 9, 9, 9, 9, 9, 9,  # 50
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # 100
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 1, 1, 1, 1, 1, 1,  # 150
-        1, 1, 1, 1, 1, 1, 1, 1, 1,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9  # prevent error
-    ]
 
-    rules2 = [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 1, 1, 1, 1, 1,
-        1, 1, 1, 9, 9, 9, 9, 9, 9, 9,  # 50
-        9, 9, 9, 9, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # 100
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 1, 1, 1, 1, 1, 1,  # 150
-        1, 1, 1, 1, 1, 1, 1, 1, 1,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9  # prevent error
-    ]
+    # rules1A = [
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    #     1, 1, 1, 1, 1, 1, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 1, 1, 1, 1, 1,
+    #     1, 1, 1, 1, 9, 9, 9, 9, 9, 9,  # 50
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # 100
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 1, 1, 1, 1, 1, 1,  # 150
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9  # prevent error
+    # ]
+
+    # rules2 = [
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    #     1, 1, 1, 1, 1, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 1, 1, 1, 1, 1,
+    #     1, 1, 1, 9, 9, 9, 9, 9, 9, 9,  # 50
+    #     9, 9, 9, 9, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 2, 2, 3, 3, 3, 3,
+    #     3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # 100
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+    #     9, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 1, 1, 1, 1, 1, 1,  # 150
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1,
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
+    #     9, 9, 9, 9, 9, 9, 9, 9, 9, 9  # prevent error
+    # ]
 
     rules3 = [
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
@@ -97,7 +99,7 @@ def reward_function(params):
 
     stdout_ = 'MYLOG48A,step=%d,x=%.4f,y=%.4f,reward=%.2f,prev_waypoint=%d,next_waypoint=%d,rule=%d,steering_angle=%.4f,speed=%.4f,distance_from_center=%.2f,track_width=%.2f,progress=%.4f,all_wheels_on_track=%s,is_left_of_center=%s,%s\n' % (
         params['steps'], params['x'], params['y'],
-        reward, prev_waypoint, next_waypoint, rules1A[next_waypoint],
+        reward, prev_waypoint, next_waypoint, rules3[next_waypoint],
         params['steering_angle'], params['speed'],
         params['distance_from_center'], params['track_width'],
         params['progress'], params['all_wheels_on_track'], params['is_left_of_center'], time.time())
@@ -105,7 +107,7 @@ def reward_function(params):
 
     stdout_ = 'MYLOG48B,%d,%.4f,%.4f,%.2f,%d,%d,%d,%.4f,%.4f,%.2f,%.2f,%.4f,%s,%s,%s\n' % (
         params['steps'], params['x'], params['y'],
-        reward, prev_waypoint, next_waypoint, rules1A[next_waypoint],
+        reward, prev_waypoint, next_waypoint, rules3[next_waypoint],
         params['steering_angle'], params['speed'],
         params['distance_from_center'], params['track_width'],
         params['progress'], params['all_wheels_on_track'], params['is_left_of_center'], time.time())

@@ -188,20 +188,34 @@ def reward_function(params):
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif closest_waypoint >= 30 and closest_waypoint <= 34:
+        elif closest_waypoint >= 28 and closest_waypoint <= 40:
             reward *= 1.0
-        elif closest_waypoint >= 65 and closest_waypoint <= 70:
+        elif closest_waypoint >= 65 and closest_waypoint <= 81:
             reward *= 1.0
-        elif closest_waypoint >= 75 and closest_waypoint <= 80:
+        elif closest_waypoint >= 90 and closest_waypoint <= 98:
             reward *= 1.0
-        elif closest_waypoint >= 91 and closest_waypoint <= 96:
-            reward *= 1.0
-        elif closest_waypoint >= 136 and closest_waypoint <= 140:
-            reward *= 1.0
-        elif closest_waypoint >= 140 and closest_waypoint <= 150:
+        elif closest_waypoint >= 134 and closest_waypoint <= 153:
             reward *= 1.0
         else:
             reward *= 0.1
+
+        # # speed bonus
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
+        # elif closest_waypoint >= 30 and closest_waypoint <= 34:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 65 and closest_waypoint <= 70:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 75 and closest_waypoint <= 80:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 91 and closest_waypoint <= 96:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 136 and closest_waypoint <= 140:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 146 and closest_waypoint <= 150:
+        #     reward *= 1.0
+        # else:
+        #     reward *= 0.1
 
         # # speed bonus
         # if speed > MAX_SPEED:
