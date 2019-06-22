@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku03-80-d'
+NAME = 'ku03-80-e'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -27,17 +27,23 @@ g_waypoints = []
 g_steer = []
 g_total = float(0)
 g_start = float(0)
+g_param = []
 
 
 def get_episode(steps, progress):
     global g_episode
     global g_max_steps
     global g_progress
+    global g_param
 
     # reset
     if steps == 0:
         g_episode += 1
         diff_progress = 0.00001
+
+        if g_episode > 1:
+            g_param['progress'] = -1
+            print(json.dumps(g_param))
     else:
         diff_progress = progress - g_progress
 
@@ -155,6 +161,7 @@ def reward_function(params):
     global g_steer
     global g_total
     global g_start
+    global g_param
 
     steps = params['steps']
     progress = params['progress']
@@ -249,20 +256,34 @@ def reward_function(params):
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif closest_waypoint >= 30 and closest_waypoint <= 34:
+        elif closest_waypoint >= 28 and closest_waypoint <= 40:
             reward *= 1.0
-        elif closest_waypoint >= 65 and closest_waypoint <= 70:
+        elif closest_waypoint >= 65 and closest_waypoint <= 81:
             reward *= 1.0
-        elif closest_waypoint >= 75 and closest_waypoint <= 80:
+        elif closest_waypoint >= 90 and closest_waypoint <= 98:
             reward *= 1.0
-        elif closest_waypoint >= 91 and closest_waypoint <= 96:
-            reward *= 1.0
-        elif closest_waypoint >= 136 and closest_waypoint <= 140:
-            reward *= 1.0
-        elif closest_waypoint >= 140 and closest_waypoint <= 150:
+        elif closest_waypoint >= 134 and closest_waypoint <= 153:
             reward *= 1.0
         else:
             reward *= 0.1
+
+        # # speed bonus
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
+        # elif closest_waypoint >= 30 and closest_waypoint <= 34:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 65 and closest_waypoint <= 70:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 75 and closest_waypoint <= 80:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 91 and closest_waypoint <= 96:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 136 and closest_waypoint <= 140:
+        #     reward *= 1.0
+        # elif closest_waypoint >= 140 and closest_waypoint <= 150:
+        #     reward *= 1.0
+        # else:
+        #     reward *= 0.1
 
         # # speed bonus
         # if speed > MAX_SPEED:
@@ -306,6 +327,8 @@ def reward_function(params):
     params['total'] = g_total
     params['time'] = lap_time
     print(json.dumps(params))
+
+    g_param = params
 
     return float(reward)
 
