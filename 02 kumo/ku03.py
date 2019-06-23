@@ -253,33 +253,39 @@ def reward_function(params):
         #     reward += 1.0
 
         # speed bonus
-        if closest_waypoint >= 28 and closest_waypoint <= 40 and steering >= 0:
+        if speed > MAX_SPEED:
+            reward *= 2.0
+
+        # steer bonus
+        if closest_waypoint >= 28 and closest_waypoint <= 40 and steering >= 0:  # left
             reward *= 1.0
-        elif closest_waypoint >= 65 and closest_waypoint <= 81 and steering >= 0:
+        elif closest_waypoint >= 65 and closest_waypoint <= 81 and steering >= 0:  # left
             reward *= 1.0
-        elif closest_waypoint >= 90 and closest_waypoint <= 98 and steering <= 0:
+        elif closest_waypoint >= 90 and closest_waypoint <= 98 and steering <= 0:  # right
             reward *= 1.0
-        elif closest_waypoint >= 134 and closest_waypoint <= 153 and steering >= 0:
+        elif closest_waypoint >= 134 and closest_waypoint <= 153 and steering >= 0:  # left
             reward *= 1.0
-        elif speed > MAX_SPEED or abs_steer <= MAX_STEER:
+        elif abs_steer <= MAX_STEER:
             reward *= 1.0
         else:
             reward *= 0.1
 
         # # speed bonus
-        # if closest_waypoint >= 30 and closest_waypoint <= 34 and steering >= 0:
+        # if speed > MAX_SPEED:
+        #     reward *= 2.0
+        # elif closest_waypoint >= 30 and closest_waypoint <= 34 and steering >= 0:  # left
         #     reward *= 1.0
-        # elif closest_waypoint >= 65 and closest_waypoint <= 70 and steering >= 0:
+        # elif closest_waypoint >= 65 and closest_waypoint <= 70 and steering >= 0:  # left
         #     reward *= 1.0
-        # elif closest_waypoint >= 75 and closest_waypoint <= 80 and steering >= 0:
+        # elif closest_waypoint >= 75 and closest_waypoint <= 80 and steering >= 0:  # left
         #     reward *= 1.0
-        # elif closest_waypoint >= 91 and closest_waypoint <= 96 and steering <= 0:
+        # elif closest_waypoint >= 91 and closest_waypoint <= 96 and steering <= 0:  # right
         #     reward *= 1.0
-        # elif closest_waypoint >= 136 and closest_waypoint <= 140 and steering >= 0:
+        # elif closest_waypoint >= 136 and closest_waypoint <= 140 and steering >= 0:  # left
         #     reward *= 1.0
-        # elif closest_waypoint >= 146 and closest_waypoint <= 150 and steering >= 0:
+        # elif closest_waypoint >= 146 and closest_waypoint <= 150 and steering >= 0:  # left
         #     reward *= 1.0
-        # elif speed > MAX_SPEED or abs_steer <= MAX_STEER:
+        # elif abs_steer <= MAX_STEER:
         #     reward *= 1.0
         # else:
         #     reward *= 0.1
