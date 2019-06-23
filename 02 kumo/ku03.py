@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku03-80-i'
+NAME = 'ku03-80-j'
 ACTION = '24 / 7 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
