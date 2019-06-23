@@ -174,20 +174,26 @@ def reward_function(params):
         # if diff_progress > 0 and steps <= max_steps:
         #     reward += (diff_progress * 2)
 
-        # progress bonus
-        if diff_progress > (90 / max_steps):
-            reward += 1.0
+        # # progress bonus
+        # if diff_progress > (90 / max_steps):
+        #     reward += 1.0
 
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif closest_waypoint >= 11 and closest_waypoint <= 24:
+
+        # steer bonus
+        if closest_waypoint >= 10 and closest_waypoint <= 24 and steering >= 0:  # left
             reward *= 1.0
-        elif closest_waypoint >= 41 and closest_waypoint <= 42:
+        elif closest_waypoint >= 33 and closest_waypoint <= 34 and steering <= 0:  # right
             reward *= 1.0
-        elif closest_waypoint >= 51 and closest_waypoint <= 52:
+        elif closest_waypoint >= 40 and closest_waypoint <= 42 and steering >= 0:  # left
             reward *= 1.0
-        elif closest_waypoint >= 62 and closest_waypoint <= 67:
+        elif closest_waypoint >= 50 and closest_waypoint <= 52 and steering >= 0:  # left
+            reward *= 1.0
+        elif closest_waypoint >= 60 and closest_waypoint <= 67 and steering >= 0:  # left
+            reward *= 1.0
+        elif abs_steer <= MAX_STEER:
             reward *= 1.0
         else:
             reward *= 0.1
