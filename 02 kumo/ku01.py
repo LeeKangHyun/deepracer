@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku01-80-g'
+NAME = 'ku01-80-h'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -158,11 +158,13 @@ def reward_function(params):
 
     # reward
     if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
-        # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        reward = 1.0
 
-        if distance < (MAX_CENTER * 0.3):
-            reward *= 2.0
+        # # center bonus
+        # reward += (BASE_REWARD - (distance / MAX_CENTER))
+
+        # if distance < (MAX_CENTER * 0.3):
+        #     reward *= 2.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
