@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku03-80-f'
-ACTION = '30 / 5 / 8.0 / 2'
+NAME = 'ku03-80-g'
+ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
 SIGHT = 2
@@ -256,13 +256,13 @@ def reward_function(params):
         # speed bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-        elif closest_waypoint >= 28 and closest_waypoint <= 40:
+        elif closest_waypoint >= 28 and closest_waypoint <= 40 and abs_steer >= 0:
             reward *= 1.0
-        elif closest_waypoint >= 65 and closest_waypoint <= 81:
+        elif closest_waypoint >= 65 and closest_waypoint <= 81 and abs_steer >= 0:
             reward *= 1.0
-        elif closest_waypoint >= 90 and closest_waypoint <= 98:
+        elif closest_waypoint >= 90 and closest_waypoint <= 98 and abs_steer <= 0:
             reward *= 1.0
-        elif closest_waypoint >= 134 and closest_waypoint <= 153:
+        elif closest_waypoint >= 134 and closest_waypoint <= 153 and abs_steer >= 0:
             reward *= 1.0
         else:
             reward *= 0.1
