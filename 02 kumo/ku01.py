@@ -159,8 +159,7 @@ def reward_function(params):
     # reward
     if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
         # center bonus
-        # reward += (BASE_REWARD - (distance / MAX_CENTER))
-        reward = 1.0
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
@@ -181,14 +180,12 @@ def reward_function(params):
         # if diff_progress > 0 and steps <= max_steps:
         #     reward += (diff_progress * 2)
 
-        # progress bonus
-        if diff_progress > (90 / max_steps):
-            reward += 1.0
+        # # progress bonus
+        # if diff_progress > (90 / max_steps):
+        #     reward += 1.0
 
         # speed bonus
-        if speed > MAX_SPEED:
-            reward *= 2.0
-        elif closest_waypoint >= 28 and closest_waypoint <= 40 and steering >= 0:
+        if closest_waypoint >= 28 and closest_waypoint <= 40 and steering >= 0:
             reward *= 1.0
         elif closest_waypoint >= 65 and closest_waypoint <= 81 and steering >= 0:
             reward *= 1.0
@@ -196,13 +193,13 @@ def reward_function(params):
             reward *= 1.0
         elif closest_waypoint >= 134 and closest_waypoint <= 153 and steering >= 0:
             reward *= 1.0
+        elif speed > MAX_SPEED or abs_steer <= MAX_STEER:
+            reward *= 1.0
         else:
             reward *= 0.1
 
         # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward *= 2.0
-        # elif closest_waypoint >= 30 and closest_waypoint <= 34 and steering >= 0:
+        # if closest_waypoint >= 30 and closest_waypoint <= 34 and steering >= 0:
         #     reward *= 1.0
         # elif closest_waypoint >= 65 and closest_waypoint <= 70 and steering >= 0:
         #     reward *= 1.0
@@ -214,19 +211,7 @@ def reward_function(params):
         #     reward *= 1.0
         # elif closest_waypoint >= 146 and closest_waypoint <= 150 and steering >= 0:
         #     reward *= 1.0
-        # else:
-        #     reward *= 0.1
-
-        # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward *= 2.0
-        # elif y > 2.2 and (x > 8.0 or x < 7.0):  # top
-        #     reward *= 1.0
-        # elif x < 2.0 and (y > -0.8 or y < -1.9):  # left
-        #     reward *= 1.0
-        # elif x > 6.3 and y < 0.5 and x < 7.5 and y > -1.0:  # center
-        #     reward *= 1.0
-        # elif x > 7.6 and y < -1.6:  # right bottom
+        # elif speed > MAX_SPEED or abs_steer <= MAX_STEER:
         #     reward *= 1.0
         # else:
         #     reward *= 0.1
