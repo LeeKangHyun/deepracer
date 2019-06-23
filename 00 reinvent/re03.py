@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're03-80-f'
+NAME = 're03-80-g'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -226,9 +226,10 @@ def reward_function(params):
 
     # reward
     if distance_from_center < MAX_CENTER and speed > MIN_SPEED:
-        # center bonus
-        # reward += (BASE_REWARD - (distance / MAX_CENTER))
         reward = 1.0
+
+        # center bonus
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
