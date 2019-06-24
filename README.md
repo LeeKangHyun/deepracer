@@ -23,7 +23,7 @@ fields name, episode, steps, progress, total, time
 #| order by time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, distance, time
-| filter progress > 0 and name == 'ku03-80-e' and episode == 3015
+| filter progress > 0 and name == 'ku01-80-l' and episode == 1495
 | order by steps
 
 fields episode, steps, x, y, reward, total, diff_progress, speed, steering_angle, distance, time

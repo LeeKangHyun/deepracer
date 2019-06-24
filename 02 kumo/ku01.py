@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku01-80-m'
+NAME = 'ku01-80-n'
 ACTION = '30 / 7 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -217,7 +217,7 @@ def reward_function(params):
 
         # speed bonus
         if speed > MAX_SPEED:
-            reward += 1.0
+            reward += 2.0
 
         # direction
         direction = get_rules(closest_waypoint)
