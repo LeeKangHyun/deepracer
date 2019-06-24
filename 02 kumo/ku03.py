@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku03-80-j'
-ACTION = '24 / 5 / 8.0 / 2'
+NAME = 'ku03-80-k'
+ACTION = '24 / 7 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
 SIGHT = 2
@@ -156,6 +156,35 @@ def get_diff_steering(steering):
     return diff
 
 
+def get_rules(index):
+    # 0 : any direction
+    # 1 : straight
+    # 2 : left
+    # 3 : right
+
+    rules = [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  # 50
+        0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 0, 0, 0, 3,
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  # 100
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,  # 150
+        2, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ]
+
+    return rules[index]
+
+
 def reward_function(params):
     global g_waypoints
     global g_steer
@@ -228,11 +257,11 @@ def reward_function(params):
     if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
         reward = 1.0
 
-        # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        # # center bonus
+        # reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        if distance < (MAX_CENTER * 0.3):
-            reward *= 2.0
+        # if distance < (MAX_CENTER * 0.3):
+        #     reward += 1.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -256,23 +285,30 @@ def reward_function(params):
 
         # speed bonus
         if speed > MAX_SPEED:
-            reward *= 2.0
+            reward += 2.0
 
-        # steer bonus
-        if closest_waypoint >= 28 and closest_waypoint <= 40 and steering >= 0:  # left
-            reward *= 1.0
-        elif closest_waypoint >= 65 and closest_waypoint <= 81 and steering >= 0:  # left
-            reward *= 1.0
-        elif closest_waypoint >= 90 and closest_waypoint <= 98 and steering <= 0:  # right
-            reward *= 1.0
-        elif closest_waypoint >= 134 and closest_waypoint <= 153 and steering >= 0:  # left
-            reward *= 1.0
-        elif abs_steer <= MAX_STEER:
-            reward *= 1.0
-        else:
-            reward *= 0.1
+        # direction
+        direction = get_rules(closest_waypoint)
 
-        # # speed bonus
+        # 0 : any direction
+        # 1 : straight
+        # 2 : left
+        # 3 : right
+
+        # direction bonus
+        if direction == 0:
+            reward += 1.0
+
+        elif direction == 1 and abs_steer <= MAX_STEER:
+            reward += 1.0
+
+        elif direction == 2 and steering >= 0:
+            reward += 1.0
+
+        elif direction == 3 and steering <= 0:
+            reward += 1.0
+
+        # # steer bonus
         # if closest_waypoint >= 30 and closest_waypoint <= 34 and steering >= 0:  # left
         #     reward *= 1.0
         # elif closest_waypoint >= 65 and closest_waypoint <= 70 and steering >= 0:  # left
