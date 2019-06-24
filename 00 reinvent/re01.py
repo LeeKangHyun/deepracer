@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're01-80-g'
+NAME = 're01-80-i'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -26,17 +26,23 @@ g_progress = float(0)
 g_steer = []
 g_total = float(0)
 g_start = float(0)
+g_param = []
 
 
 def get_episode(steps, progress):
     global g_episode
     global g_max_steps
     global g_progress
+    global g_param
 
     # reset
     if steps == 0:
         g_episode += 1
         diff_progress = 0.00001
+
+        if g_episode > 1:
+            g_param['progress'] = -1
+            print(json.dumps(g_param))
     else:
         diff_progress = progress - g_progress
 
@@ -95,6 +101,7 @@ def reward_function(params):
     global g_steer
     global g_total
     global g_start
+    global g_param
 
     steps = params['steps']
     progress = params['progress']
@@ -238,5 +245,7 @@ def reward_function(params):
     params['total'] = g_total
     params['time'] = lap_time
     print(json.dumps(params))
+
+    g_param = params
 
     return float(reward)
