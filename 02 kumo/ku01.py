@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 'ku01-80-m'
-ACTION = '24 / 5 / 8.0 / 2'
+ACTION = '30 / 7 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
 SIGHT = 6
