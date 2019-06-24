@@ -135,14 +135,14 @@ Action number	Steering	Speed
 '''
 
 
-def type1(params):
+def type1(params): # straight
     all_wheels_on_track = params['all_wheels_on_track']
     steering = params['steering_angle']
     speed = params['speed']
     distance_from_center = abs(params['distance_from_center'])
     track_width = params['track_width']
 
-    if all_wheels_on_track and (0.5*track_width - distance_from_center) >= 0.05:
+    if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1
     else:
         print("MYLOG48C-1-A")
@@ -162,17 +162,15 @@ def type1(params):
         reward = 1.0
     return float(reward)
 
-# couter clockwise turn
 
-
-def type2(params):
+def type2(params): # left
     all_wheels_on_track = params['all_wheels_on_track']
     speed = params['speed']
     distance_from_center = abs(params['distance_from_center'])
     track_width = params['track_width']
     steering = params['steering_angle']  # left plus, right minus
 
-    if all_wheels_on_track and (0.5*track_width - distance_from_center) >= 0.05:
+    if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1
     else:
         print("MYLOG48C-2-A")
@@ -192,17 +190,15 @@ def type2(params):
             reward = 1.0
     return float(reward)
 
-# clockwise turn
 
-
-def type3(params):
+def type3(params): # right
     all_wheels_on_track = params['all_wheels_on_track']
     speed = params['speed']
     distance_from_center = abs(params['distance_from_center'])
     track_width = params['track_width']
     steering = params['steering_angle']  # left plus, right minus
 
-    if all_wheels_on_track and (0.5*track_width - distance_from_center) >= 0.05:
+    if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1
     else:
         print("MYLOG48C-3-A")
@@ -229,7 +225,7 @@ def type9(params):
     distance_from_center = abs(params['distance_from_center'])
     track_width = params['track_width']
 
-    if all_wheels_on_track and (0.5*track_width - distance_from_center) >= 0.05:
+    if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1
     else:
         print("MYLOG48C-9-A")
