@@ -135,7 +135,7 @@ Action number	Steering	Speed
 '''
 
 
-def type1(params): # straight
+def type1(params):  # straight
     all_wheels_on_track = params['all_wheels_on_track']
     steering = params['steering_angle']
     speed = params['speed']
@@ -163,7 +163,7 @@ def type1(params): # straight
     return float(reward)
 
 
-def type2(params): # left
+def type2(params):  # left
     all_wheels_on_track = params['all_wheels_on_track']
     speed = params['speed']
     distance_from_center = abs(params['distance_from_center'])
@@ -191,7 +191,7 @@ def type2(params): # left
     return float(reward)
 
 
-def type3(params): # right
+def type3(params):  # right
     all_wheels_on_track = params['all_wheels_on_track']
     speed = params['speed']
     distance_from_center = abs(params['distance_from_center'])
