@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku01-80-l'
+NAME = 'ku01-80-m'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -228,7 +228,10 @@ def reward_function(params):
         # 3 : right
 
         # direction bonus
-        if direction == 1 and abs_steer <= MAX_STEER:
+        if direction == 0:
+            reward += 1.0
+
+        elif direction == 1 and abs_steer <= MAX_STEER:
             reward += 1.0
 
         elif direction == 2 and steering >= 0:
