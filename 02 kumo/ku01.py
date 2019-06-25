@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'ku01-80-p'
+NAME = 'ku01-80-q'
 ACTION = '30 / 7 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -240,6 +240,9 @@ def reward_function(params):
 
         elif direction == 3 and steering <= 0:
             reward += 1.0
+
+        else:
+            reward *= 0.1
 
         # # steer bonus
         # if closest_waypoint >= 30 and closest_waypoint <= 34 and steering >= 0:  # left

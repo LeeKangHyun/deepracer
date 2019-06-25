@@ -309,6 +309,9 @@ def reward_function(params):
         elif direction == 3 and steering <= 0:
             reward += 1.0
 
+        else:
+            reward *= 0.1
+
         # # steer bonus
         # if closest_waypoint >= 30 and closest_waypoint <= 34 and steering >= 0:  # left
         #     reward *= 1.0
