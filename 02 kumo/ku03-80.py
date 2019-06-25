@@ -4,18 +4,18 @@ import time
 
 NAME = 'ku03-80-k'
 ACTION = '24 / 7 / 8.0 / 2'
-HYPER = '256 / 0.00003 / 40'
+HYPER = '256 / 0.00001 / 40'
 
-SIGHT = 2
+SIGHT = 6
 
 MAX_CENTER = 0.25
 
-MAX_STEER = 20
-MIN_STEER = 10
+MAX_STEER = 21.0
+MIN_STEER = 13.0
 LEN_STEER = 2
 
-MAX_SPEED = 5
-MIN_SPEED = 3
+MAX_SPEED = 6.0
+MIN_SPEED = 3.0
 
 BASE_REWARD = 1.2
 
@@ -258,7 +258,7 @@ def reward_function(params):
         reward = 1.0
 
         # center bonus
-        if distance < (MAX_CENTER * 0.3):
+        if distance < (MAX_CENTER * 0.5):
             reward *= 2.0
 
         # direction
@@ -270,19 +270,17 @@ def reward_function(params):
         # 3 : right
 
         # direction bonus
-        if direction == 0:
+        if (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
             reward *= 1.0
-        elif direction == 1 and abs_steer < MIN_STEER:
+
+        elif (direction == 2 and steering > 0) or (direction == 3 and steering < 0):
             reward *= 1.0
-        elif direction == 2 and steering > 0:
-            reward *= 1.0
-        elif direction == 3 and steering < 0:
-            reward *= 1.0
+
         else:
             reward *= 0.1
 
         # speed bonus
-        if speed > MAX_SPEED:
+        if speed > MAX_SPEED and abs_steer < MAX_STEER:
             reward *= 2.0
 
     # total reward
