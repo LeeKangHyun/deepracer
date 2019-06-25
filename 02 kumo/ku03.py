@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 'ku03-80-k'
-ACTION = '24 / 7 / 8.0 / 2'
+ACTION = '30 / 7 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
 SIGHT = 2
@@ -42,6 +42,7 @@ def get_episode(steps, progress):
         diff_progress = 0.00001
 
         if g_episode > 1:
+            g_param['diff_progress'] = g_param['progress']
             g_param['progress'] = -1
             print(json.dumps(g_param))
     else:
@@ -171,11 +172,11 @@ def get_rules(index):
         1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  # 50
         0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 0, 0, 0, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  # 100
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        2, 2, 0, 0, 0, 0, 0, 3, 3, 3,
+        3, 3, 3, 3, 3, 3, 3, 3, 0, 0,
+        0, 0, 0, 1, 1, 1, 1, 1, 1, 1,  # 100
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,  # 150
@@ -260,8 +261,8 @@ def reward_function(params):
         # # center bonus
         # reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        # if distance < (MAX_CENTER * 0.3):
-        #     reward += 1.0
+        if distance < (MAX_CENTER * 0.3):
+            reward += 1.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
