@@ -42,6 +42,7 @@ def get_episode(steps, progress):
         diff_progress = 0.00001
 
         if g_episode > 1:
+            g_param['diff_progress'] = g_param['progress']
             g_param['progress'] = -1
             print(json.dumps(g_param))
     else:
