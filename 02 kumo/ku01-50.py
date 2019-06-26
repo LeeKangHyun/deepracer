@@ -26,6 +26,7 @@ g_steer = []
 g_total = float(0)
 g_start = float(0)
 g_time = float(0)
+g_param = []
 
 
 def get_episode(progress, steps):
@@ -36,6 +37,7 @@ def get_episode(progress, steps):
     global g_total
     global g_start
     global g_time
+    global g_param
 
     diff_progress = progress - g_progress
 
@@ -47,6 +49,11 @@ def get_episode(progress, steps):
         g_total = float(0)
         g_start = time.time()
         del g_steer[:]
+
+        if g_episode > 1:
+            g_param['diff_progress'] = g_param['progress']
+            g_param['progress'] = -1
+            print(json.dumps(g_param))
 
     g_time = time.time() - g_start
 
@@ -107,6 +114,7 @@ def get_diff_steering(steering):
 def reward_function(params):
     global g_total
     global g_time
+    global g_param
 
     steps = params['steps']
     progress = params['progress']
@@ -182,5 +190,7 @@ def reward_function(params):
     params['total'] = g_total
     params['time'] = g_time
     print(json.dumps(params))
+
+    g_param = params
 
     return float(reward)

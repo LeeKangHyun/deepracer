@@ -162,24 +162,44 @@ def get_rules(index):
     # 2 : left
     # 3 : right
 
+    # rules = [
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    #     1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+    #     1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  # 50
+    #     0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 0, 0, 0, 0, 0, 3, 3, 3,
+    #     3, 3, 3, 3, 3, 3, 3, 3, 0, 0,
+    #     0, 0, 0, 1, 1, 1, 1, 1, 1, 1,  # 100
+    #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    #     1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    #     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    #     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,  # 150
+    #     2, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    # ]
+
     rules = [
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 0, 0, 0, 0,  # 50
-        0, 0, 2, 2, 2, 2, 2, 2, 2, 2,
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0,  # 50
+        0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 0, 0, 0, 0, 0, 3, 3, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 0, 0,
-        0, 0, 0, 1, 1, 1, 1, 1, 1, 1,  # 100
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+        2, 2, 2, 0, 0, 0, 0, 0, 0, 3,
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  # 100
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,  # 150
-        2, 1, 1, 1, 1, 1, 1, 1, 1, 1
+        2, 2, 2, 2, 1, 1, 1, 1, 1, 1,  # 150
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     ]
 
     return rules[index]
@@ -196,7 +216,7 @@ def reward_function(params):
     progress = params['progress']
 
     # track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    # distance_from_center = params['distance_from_center']
     all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
@@ -254,11 +274,14 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
-        reward = 1.0
+    if all_wheels_on_track == True and speed > MIN_SPEED:
+        # reward = 1.0
 
-        # center bonus
-        if distance < (MAX_CENTER * 0.5):
+        # center bonus (0.25)
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
+
+        # center bonus (0.25)
+        if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
 
         # direction
@@ -269,18 +292,21 @@ def reward_function(params):
         # 2 : left
         # 3 : right
 
-        # direction bonus
+        # direction bonus (13)
         if (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
-            reward *= 1.0
+            reward *= 2.0
 
-        elif (direction == 2 and steering > 0) or (direction == 3 and steering < 0):
-            reward *= 1.0
+        elif (direction == 2 and steering >= 0) or (direction == 3 and steering <= 0):
+            reward *= 2.0
 
         else:
-            reward *= 0.1
+            reward = 0.1
 
-        # speed bonus
+        # speed bonus (6 / 21 / 13)
         if speed > MAX_SPEED and abs_steer < MAX_STEER:
+            reward *= 2.0
+
+        elif speed < MAX_SPEED and abs_steer > MIN_STEER:
             reward *= 2.0
 
     # total reward

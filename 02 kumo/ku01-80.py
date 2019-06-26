@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku01-80-v'
-ACTION = '30 / 7 / 8.0 / 2'
+NAME = 'ku01-80-w'
+ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00001 / 40'
 
 SIGHT = 6
@@ -170,7 +170,7 @@ def reward_function(params):
     lap_time = time.time() - g_start
 
     # distance
-    distance = params['distance_from_center']
+    distance = distance_from_center
 
     # diff angle
     diff_angle = get_diff_angle(
@@ -186,12 +186,15 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
+    if all_wheels_on_track == True and speed > MIN_SPEED:
         reward = 1.0
 
         # # center bonus (0.25)
-        # if distance < (MAX_CENTER * 0.5):
-        #     reward += 1.0
+        # reward += (BASE_REWARD - (distance / MAX_CENTER))
+
+        # # center bonus (0.25)
+        # if distance < (MAX_CENTER * 0.3):
+        #     reward *= 2.0
 
         # direction
         direction = get_rules(closest_waypoint)
