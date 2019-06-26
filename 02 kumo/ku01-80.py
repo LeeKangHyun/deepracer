@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'ku01-80-u'
-ACTION = '24 / 5 / 8.0 / 2'
+NAME = 'ku01-80-v'
+ACTION = '30 / 7 / 8.0 / 2'
 HYPER = '256 / 0.00001 / 40'
 
 SIGHT = 6
@@ -189,9 +189,9 @@ def reward_function(params):
     if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
         reward = 1.0
 
-        # center bonus
-        if distance < (MAX_CENTER * 0.5):
-            reward *= 2.0
+        # # center bonus (0.25)
+        # if distance < (MAX_CENTER * 0.5):
+        #     reward += 1.0
 
         # direction
         direction = get_rules(closest_waypoint)
@@ -201,18 +201,21 @@ def reward_function(params):
         # 2 : left
         # 3 : right
 
-        # direction bonus
+        # direction bonus (13)
         if (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
-            reward *= 1.0
+            reward *= 2.0
 
-        elif (direction == 2 and steering > 0) or (direction == 3 and steering < 0):
-            reward *= 1.0
+        elif (direction == 2 and steering >= 0) or (direction == 3 and steering <= 0):
+            reward *= 2.0
 
         else:
             reward *= 0.1
 
-        # speed bonus
+        # speed bonus (6 / 21 / 13)
         if speed > MAX_SPEED and abs_steer < MAX_STEER:
+            reward *= 2.0
+
+        elif speed < MAX_SPEED and abs_steer > MIN_STEER:
             reward *= 2.0
 
     # total reward
