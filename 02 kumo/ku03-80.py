@@ -3,7 +3,7 @@ import math
 import time
 
 NAME = 'ku03-80-k'
-ACTION = '24 / 7 / 8.0 / 2'
+ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00001 / 40'
 
 SIGHT = 6
@@ -275,14 +275,14 @@ def reward_function(params):
 
     # reward
     if all_wheels_on_track == True and speed > MIN_SPEED:
-        # reward = 1.0
+        reward = 1.0
 
-        # center bonus (0.25)
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        # # center bonus (0.25)
+        # reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        # center bonus (0.25)
-        if distance < (MAX_CENTER * 0.3):
-            reward *= 2.0
+        # # center bonus (0.25)
+        # if distance < (MAX_CENTER * 0.3):
+        #     reward *= 2.0
 
         # direction
         direction = get_rules(closest_waypoint)
@@ -300,7 +300,7 @@ def reward_function(params):
             reward *= 2.0
 
         else:
-            reward = 0.1
+            reward *= 0.1
 
         # speed bonus (6 / 21 / 13)
         if speed > MAX_SPEED and abs_steer < MAX_STEER:
