@@ -2,21 +2,20 @@ import json
 import math
 import time
 
-NAME = 'ku02-50-a'
-ACTION = '30 / 5 / 5.0 / 1'
-HYPER = '256 / 0.999 / 40'
+NAME = 'ku02-80-k'
+ACTION = '24 / 5 / 8.0 / 2'
+HYPER = '256 / 0.00001 / 40'
 
-SIGHT = 2
+SIGHT = 6
 
 MAX_CENTER = 0.25
 
-MAX_ANGLE = 10
-
-MAX_STEER = 10
+MAX_STEER = 21.0
+MIN_STEER = 13.0
 LEN_STEER = 2
 
-MAX_SPEED = 5
-MIN_SPEED = 3
+MAX_SPEED = 6.0
+MIN_SPEED = 3.0
 
 BASE_REWARD = 1.2
 
@@ -27,17 +26,24 @@ g_waypoints = []
 g_steer = []
 g_total = float(0)
 g_start = float(0)
+g_param = []
 
 
 def get_episode(steps, progress):
     global g_episode
     global g_max_steps
     global g_progress
+    global g_param
 
     # reset
     if steps == 0:
         g_episode += 1
         diff_progress = 0.00001
+
+        if g_episode > 1:
+            g_param['diff_progress'] = g_param['progress']
+            g_param['progress'] = -1
+            print(json.dumps(g_param))
     else:
         diff_progress = progress - g_progress
 
@@ -155,12 +161,13 @@ def reward_function(params):
     global g_steer
     global g_total
     global g_start
+    global g_param
 
     steps = params['steps']
     progress = params['progress']
 
     # track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    # distance_from_center = params['distance_from_center']
     all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
@@ -172,9 +179,10 @@ def reward_function(params):
     location = [x, y]
 
     # waypoints = params['waypoints']
-    # closest = params['closest']
-    # prev_waypoint = waypoints[closest[0]]
-    # next_waypoint = waypoints[closest[1]]
+    # closest_waypoints = params['closest_waypoints']
+    # prev_waypoint = waypoints[closest_waypoints[0]]
+    # next_waypoint = waypoints[closest_waypoints[1]]
+    # next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
 
     # default
     reward = 0.00001
@@ -215,10 +223,13 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if all_wheels_on_track == True and distance_from_center < MAX_CENTER and speed > MIN_SPEED:
-        # center bonus
+    if all_wheels_on_track == True and speed > MIN_SPEED:
+        # reward = 1.0
+
+        # center bonus (0.25)
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
+        # center bonus (0.25)
         if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
 
@@ -230,33 +241,12 @@ def reward_function(params):
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # progress bonus
-        # if diff_steps > 0 and steps <= max_steps:
-        #     reward += (diff_steps * 2)
+        # speed bonus (6 / 21 / 13)
+        if speed > MAX_SPEED and abs_steer < MAX_STEER:
+            reward *= 2.0
 
-        # progress bonus
-        if diff_progress > 0 and steps <= max_steps:
-            reward += (diff_progress * 2)
-
-        # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward *= 3.0
-        # elif y > 2.2:
-        #     reward *= 2.0
-        # elif x < 2.0:
-        #     reward *= 2.0
-        # elif x > 6.0 and x < 7.0 and y > 0:
-        #     reward *= 2.0
-        # else:
-        #     reward *= 0.1
-
-        # # steer panelity
-        # if abs_steer > MAX_STEER:
-        #     reward *= 0.5
-
-        # # steps panelity
-        # if steps > max_steps:
-        #     reward *= 0.5
+        elif speed < MAX_SPEED and abs_steer > MIN_STEER:
+            reward *= 2.0
 
     # total reward
     g_total += reward
@@ -278,6 +268,8 @@ def reward_function(params):
     params['total'] = g_total
     params['time'] = lap_time
     print(json.dumps(params))
+
+    g_param = params
 
     return float(reward)
 

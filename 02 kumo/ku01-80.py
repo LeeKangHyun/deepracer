@@ -196,13 +196,16 @@ def reward_function(params):
         # if distance < (MAX_CENTER * 0.3):
         #     reward *= 2.0
 
+        # # angle bonus
+        # if diff_angle <= MAX_ANGLE:
+        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
         # direction
         direction = get_rules(closest_waypoint)
-
-        # 0 : any direction
-        # 1 : straight
-        # 2 : left
-        # 3 : right
 
         # direction bonus (13)
         if (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
