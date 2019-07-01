@@ -226,9 +226,10 @@ def reward_function(params):
 
     # reward
     if distance_from_center < MAX_CENTER and speed > MIN_SPEED:
+        reward = 1.0
+
         # center bonus
         # reward += (BASE_REWARD - (distance / MAX_CENTER))
-        reward = 1.0
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
