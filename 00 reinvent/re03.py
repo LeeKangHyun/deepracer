@@ -157,19 +157,19 @@ def get_diff_steering(steering):
 
 
 def get_rules(index):
-    # 0 : any direction
+    # 0 : any direction [33,34]
     # 1 : straight
-    # 2 : left
+    # 2 : left [10,22] [40,42] [50,52] [60,67]
     # 3 : right
 
     rules = [
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
-        1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 1, 1, 1, 1, 1,  # 20
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 20
         1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-        1, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 40
-        1, 2, 2, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 2, 2, 2, 2, 2, 2, 1, 1,  # 60
+        2, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 40
+        2, 2, 2, 1, 1, 1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2, 2, 2, 2, 1, 1,  # 60
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     ]
 
@@ -249,7 +249,7 @@ def reward_function(params):
         reward = 1.0
 
         # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        # reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
@@ -262,19 +262,18 @@ def reward_function(params):
         # if diff_steer <= MAX_STEER:
         #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # progress bonus
-        # if diff_progress > (90 / max_steps):
-        #     reward += 1.0
-
-        # speed bonus
-        if speed > MAX_SPEED:
-            reward *= 2.0
+        # progress bonus
+        if diff_progress > (90 / max_steps):
+            reward += 1.0
 
         # direction
         direction = get_rules(closest_waypoint)
 
-        # direction bonus (13)
-        if (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
+        # bonus
+        if speed > MAX_SPEED:
+            reward *= 2.0
+
+        elif (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
             reward *= 2.0
 
         elif (direction == 2 and steering >= 0) or (direction == 3 and steering <= 0):
