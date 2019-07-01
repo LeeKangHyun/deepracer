@@ -272,6 +272,13 @@ def reward_function(params):
         # if diff_steer <= MAX_STEER:
         #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
+        # speed bonus (6 / 21 / 13)
+        if speed > MAX_SPEED and abs_steer < MAX_STEER:
+            reward *= 2.0
+
+        elif speed < MAX_SPEED and abs_steer > MIN_STEER:
+            reward *= 2.0
+
         # direction
         direction = get_rules(closest_waypoint)
 
@@ -284,13 +291,6 @@ def reward_function(params):
 
         else:
             reward *= 0.1
-
-        # speed bonus (6 / 21 / 13)
-        if speed > MAX_SPEED and abs_steer < MAX_STEER:
-            reward *= 2.0
-
-        elif speed < MAX_SPEED and abs_steer > MIN_STEER:
-            reward *= 2.0
 
     # total reward
     g_total += reward
