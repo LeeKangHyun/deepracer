@@ -50,5 +50,5 @@ import numpy as np
 
 x = np.load('aws.npy')
 
-np.savetxt('aws.csv', x, delimiter=',')
+np.savetxt('new.csv', x, delimiter=',')
 ```
