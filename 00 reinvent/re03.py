@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're03-80-g'
+NAME = 're03-80-h'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -10,13 +10,12 @@ SIGHT = 2
 
 MAX_CENTER = 0.25
 
-MAX_ANGLE = 10
-
-MAX_STEER = 10
+MAX_STEER = 21.0
+MIN_STEER = 13.0
 LEN_STEER = 2
 
-MAX_SPEED = 5
-MIN_SPEED = 3
+MAX_SPEED = 6.0
+MIN_SPEED = 3.0
 
 BASE_REWARD = 1.2
 
@@ -157,6 +156,26 @@ def get_diff_steering(steering):
     return diff
 
 
+def get_rules(index):
+    # 0 : any direction
+    # 1 : straight
+    # 2 : left
+    # 3 : right
+
+    rules = [
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
+        1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        2, 2, 2, 2, 2, 1, 1, 1, 1, 1,  # 20
+        1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
+        1, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 40
+        1, 2, 2, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 2, 2, 2, 2, 2, 2, 1, 1,  # 60
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ]
+
+    return rules[index]
+
+
 def reward_function(params):
     global g_waypoints
     global g_steer
@@ -251,29 +270,18 @@ def reward_function(params):
         if speed > MAX_SPEED:
             reward *= 2.0
 
-        # steer bonus
-        if closest_waypoint >= 10 and closest_waypoint <= 24 and steering >= 0:  # left
-            reward *= 1.0
-        elif closest_waypoint >= 33 and closest_waypoint <= 34 and steering <= 0:  # right
-            reward *= 1.0
-        elif closest_waypoint >= 40 and closest_waypoint <= 42 and steering >= 0:  # left
-            reward *= 1.0
-        elif closest_waypoint >= 50 and closest_waypoint <= 52 and steering >= 0:  # left
-            reward *= 1.0
-        elif closest_waypoint >= 60 and closest_waypoint <= 67 and steering >= 0:  # left
-            reward *= 1.0
-        elif abs_steer <= MAX_STEER:
-            reward *= 1.0
+        # direction
+        direction = get_rules(closest_waypoint)
+
+        # direction bonus (13)
+        if (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
+            reward *= 2.0
+
+        elif (direction == 2 and steering >= 0) or (direction == 3 and steering <= 0):
+            reward *= 2.0
+
         else:
             reward *= 0.1
-
-        # # steer panelity
-        # if abs_steer > MAX_STEER:
-        #     reward *= 0.5
-
-        # # steps panelity
-        # if steps > max_steps:
-        #     reward *= 0.5
 
     # total reward
     g_total += reward
