@@ -167,9 +167,9 @@ def get_rules(index):
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 20
         1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-        2, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 40
-        2, 2, 2, 1, 1, 1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2, 2, 2, 2, 1, 1,  # 60
+        1, 1, 1, 1, 1, 1, 1, 2, 2, 2,  # 40
+        2, 2, 2, 2, 2, 1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 1,  # 60
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     ]
 
@@ -239,20 +239,24 @@ def reward_function(params):
     diff_steer = get_diff_steering(steering)
     abs_steer = abs(steering)
 
+    # diif steps
     if steps > 0:
         diff_steps = progress / steps
     else:
         diff_steps = 0
 
+    # direction
+    direction = get_rules(closest_waypoint)
+
     # reward
     if speed > MIN_SPEED:
-        # reward = 1.0
+        reward = 1.0
 
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        if distance < (MAX_CENTER * 0.3):
-            reward *= 2.0
+        if distance < (MAX_CENTER * 0.2):
+            reward += 1.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -262,23 +266,19 @@ def reward_function(params):
         # if diff_steer <= MAX_STEER:
         #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # progress bonus
-        # if diff_progress > (90 / max_steps):
-        #     reward += 1.0
-
-        # direction
-        direction = get_rules(closest_waypoint)
+        # progress bonus
+        if diff_progress > 0.75:
+            reward *= 2.0
 
         # bonus
         if speed > MAX_SPEED:
             reward *= 2.0
-
-        elif (direction == 0) or (direction == 1 and abs_steer < MIN_STEER):
+        elif (direction == 0 and abs_steer < MAX_STEER):
             reward *= 1.0
-
+        elif (direction == 1 and abs_steer < 1):
+            reward *= 1.0
         elif (direction == 2 and steering >= 0) or (direction == 3 and steering <= 0):
             reward *= 1.0
-
         else:
             reward *= 0.1
 
@@ -298,6 +298,7 @@ def reward_function(params):
     params['diff_steer'] = diff_steer
     params['diff_steps'] = diff_steps
     params['abs_steer'] = abs_steer
+    params['direction'] = direction
     params['reward'] = reward
     params['total'] = g_total
     params['time'] = lap_time

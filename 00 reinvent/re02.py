@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're02-80-c'
+NAME = 're02-80-d'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -167,7 +167,7 @@ def get_rules(index):
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 20
         1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 2, 2,  # 40
+        1, 1, 1, 1, 1, 1, 1, 2, 2, 2,  # 40
         2, 2, 2, 2, 2, 1, 1, 1, 1, 1,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 1,  # 60
         1, 1, 1, 1, 1, 1, 1, 1, 1, 1
@@ -250,7 +250,7 @@ def reward_function(params):
 
     # reward
     if speed > MIN_SPEED:
-        # reward = 1.0
+        reward = 1.0
 
         # center bonus
         reward += (BASE_REWARD - (distance / MAX_CENTER))
@@ -267,8 +267,8 @@ def reward_function(params):
         #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # progress bonus
-        if diff_progress > (90 / max_steps):
-            reward += 1.0
+        if diff_progress > 0.75:
+            reward *= 2.0
 
         # bonus
         if speed > MAX_SPEED:
