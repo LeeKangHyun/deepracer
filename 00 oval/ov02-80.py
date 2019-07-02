@@ -2,12 +2,12 @@ import json
 import math
 import time
 
-NAME = 'ov02-80-a'
+NAME = 'ov02-80-b'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
-MIN_SIGHT = 3
-MAX_SIGHT = 6
+MIN_SIGHT = 1
+MAX_SIGHT = 2
 
 MAX_SPEED = 6.0
 MIN_SPEED = 3.0

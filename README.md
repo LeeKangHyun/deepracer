@@ -27,7 +27,7 @@ fields episode, steps, x, y, name, total, diff_progress, time
 #| order by diff_progress desc, time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, diff_angle, time
-| filter progress > 0 and name == 're03-80-k' and episode == 832
+| filter progress > 0 and name == 'ov02-80-a' and episode == 2267
 | order by steps
 ```
 
