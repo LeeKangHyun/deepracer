@@ -6,8 +6,8 @@ NAME = 'em02-80-a'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
-MIN_SIGHT = 3.0
-MAX_SIGHT = 6.0
+MIN_SIGHT = 3
+MAX_SIGHT = 6
 
 MAX_SPEED = 6.0
 MIN_SPEED = 3.0
