@@ -60,9 +60,12 @@ def get_distance(coor1, coor2):
     return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
 
 
+def get_angel(coor1, coor2):
+    return math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+
+
 def get_diff_angle(coor1, coor2, heading, steering):
-    # guide
-    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
+    angle = get_angel(coor1, coor2)
 
     # car yaw
     # yaw = math.radians(heading)
