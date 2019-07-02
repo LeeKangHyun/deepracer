@@ -6,16 +6,16 @@ NAME = 'em02-80-a'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
-SIGHT_NEAR = 3.0
-SIGHT_FAR  = 6.0
+MIN_SIGHT = 3.0
+MAX_SIGHT = 6.0
+
+MAX_SPEED = 6.0
+MIN_SPEED = 3.0
 
 MIN_ANGLE = 5.0
 
 MAX_STEER = 21.0
 MIN_STEER = 13.0
-
-MAX_SPEED = 6.0
-MIN_SPEED = 3.0
 
 MIN_PROGRESS = 0.75
 
@@ -84,8 +84,8 @@ def reward_function(params):
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
     prev = waypoints[closest_waypoints[0]]
-    next1 = waypoints[(closest_waypoints[1] + SIGHT_NEAR) % len(waypoints)]
-    next2 = waypoints[(closest_waypoints[1] + SIGHT_FAR) % len(waypoints)]
+    next1 = waypoints[(closest_waypoints[1] + MIN_SIGHT) % len(waypoints)]
+    next2 = waypoints[(closest_waypoints[1] + MAX_SIGHT) % len(waypoints)]
 
     # default
     reward = 0.00001
