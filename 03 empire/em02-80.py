@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'em02-80-a'
+NAME = 'em02-80-b'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -17,7 +17,7 @@ MIN_ANGLE = 5.0
 MAX_STEER = 21.0
 MIN_STEER = 13.0
 
-MIN_PROGRESS = 0.75
+MIN_PROGRESS = 0.6
 
 g_episode = 0
 g_progress = float(0)
@@ -29,11 +29,15 @@ g_param = []
 def get_episode(steps, progress):
     global g_episode
     global g_progress
+    global g_total
+    global g_start
     global g_param
 
     # reset
     if steps == 0:
         g_episode += 1
+        g_total = float(0)
+        g_start = time.time()
         diff_progress = 0.00001
 
         if g_episode > 1:
@@ -46,7 +50,10 @@ def get_episode(steps, progress):
     # prev
     g_progress = progress
 
-    return g_episode, diff_progress
+    # lap time
+    lap_time = time.time() - g_start
+
+    return g_episode, diff_progress, lap_time
 
 
 def get_angel(coor1, coor2):
@@ -55,7 +62,7 @@ def get_angel(coor1, coor2):
 
 def get_diff_angle(coor1, coor2, coor3):
     angle1 = get_angel(coor1, coor2)
-    angle2 = get_angel(coor1, coor2)
+    angle2 = get_angel(coor1, coor3)
 
     diff = (angle2 - angle1) % (2.0 * math.pi)
 
@@ -67,7 +74,6 @@ def get_diff_angle(coor1, coor2, coor3):
 
 def reward_function(params):
     global g_total
-    global g_start
     global g_param
 
     steps = params['steps']
@@ -83,7 +89,7 @@ def reward_function(params):
 
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
-    prev = waypoints[closest_waypoints[0]]
+    next0 = waypoints[closest_waypoints[1]]
     next1 = waypoints[(closest_waypoints[1] + MIN_SIGHT) % len(waypoints)]
     next2 = waypoints[(closest_waypoints[1] + MAX_SIGHT) % len(waypoints)]
 
@@ -91,21 +97,13 @@ def reward_function(params):
     reward = 0.00001
 
     # episode
-    episode, diff_progress = get_episode(steps, progress)
-
-    # reset
-    if steps == 0:
-        g_total = float(0)
-        g_start = time.time()
-
-    # lap time
-    lap_time = time.time() - g_start
+    episode, diff_progress, lap_time = get_episode(steps, progress)
 
     # distance
     distance = params['distance_from_center']
 
     # diff angle
-    diff_angle = get_diff_angle(prev, next1, next2)
+    diff_angle = get_diff_angle(next0, next1, next2)
 
     # direction
     direction = -1
