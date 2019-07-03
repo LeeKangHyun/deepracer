@@ -124,7 +124,7 @@ def reward_function(params):
             reward += 1.0
 
         # bonus
-        if speed > MAX_SPEED:
+        if speed > MAX_SPEED and abs_steer < MAX_STEER:
             reward += 4.0
         elif (direction == 0) or (direction == 1 and abs_steer < 1):
             reward += 2.0
