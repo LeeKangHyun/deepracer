@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 're02-80-k'
-ACTION = '24 / 5 / 8.0 / 2'
+NAME = 're02-80-l'
+ACTION = '22 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
 MIN_SIGHT = 3
@@ -14,7 +14,7 @@ MIN_SPEED = 3.0
 
 MIN_ANGLE = 5.0
 
-MAX_STEER = 21.0
+MAX_STEER = 20.0
 MIN_STEER = 13.0
 
 MIN_PROGRESS = 0.75
@@ -38,12 +38,13 @@ def get_episode(steps, progress):
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
-        diff_progress = 0.00001
 
         if g_episode > 1:
             g_param['diff_progress'] = g_param['progress']
             g_param['progress'] = -1
             print(json.dumps(g_param))
+
+        diff_progress = 0.00001
     else:
         diff_progress = progress - g_progress
 
