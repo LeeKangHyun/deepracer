@@ -1,7 +1,7 @@
 import math
 
-MIN_SIGHT = 1
-MAX_SIGHT = 2
+MIN_SIGHT = 2
+MAX_SIGHT = 4
 
 MIN_ANGLE = 3.0
 
@@ -25,10 +25,12 @@ def get_diff_angle(coor1, coor2, coor3):
 def calc():
     waypoints = get_waypoints()
 
-    count = len(waypoints)
+    fn = 'calc-{}-{}.csv'.format(MIN_SIGHT, MAX_SIGHT)
 
-    f = open("calc.csv", 'w')
+    f = open(fn, 'w')
     f.write(',x,y,angle\n')
+
+    count = len(waypoints)
 
     for i in range(count):
         next0 = waypoints[(i + 1) % count]
