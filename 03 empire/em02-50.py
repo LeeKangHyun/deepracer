@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'em02-80-c'
-ACTION = '24 / 5 / 8.0 / 2'
+NAME = 'em02-50-c'
+ACTION = '24 / 5 / 5.0 / 1'
 HYPER = '256 / 0.00003 / 40'
 
 MIN_SIGHT = 1
@@ -116,10 +116,10 @@ def reward_function(params):
         if diff_progress > MIN_PROGRESS:
             reward *= 2.0
 
-        # speed bonus
-        if speed > MAX_SPEED and abs(steering) < MIN_STEER:
-            direction = 0
-            reward *= 3.0
+        # # speed bonus
+        # if speed > MAX_SPEED and abs(steering) < MIN_STEER:
+        #     direction = 0
+        #     reward *= 3.0
 
         # angle bonus
         if abs(diff_angle) <= MIN_ANGLE and abs(steering) < MIN_STEER:
