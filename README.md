@@ -19,17 +19,17 @@ sudo pip3 install --upgrade Image
 
 ```
 fields name, episode, steps, total, progress, time
-| filter progress == 100 #and name == 're03-80-k'
+| filter progress == 100 #and name == 'em01-50-a'
 #| order by time
 
 fields episode, steps, x, y, name, total, diff_progress, time
-| filter progress < 0 and name != 're03-80-k'
-#| filter progress < 0 and name == 're03-80-c-gen2-b'
-#| filter progress < 0 and name == 're03-80-c-gen3-b'
+#| filter progress < 0 and name == 'em02-50-c'
+| filter progress < 0 and name == 'em01-50-a'
+#| filter progress < 0 and name == 'em01-50-a-b'
 | order by diff_progress desc, time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, diff_angle, time
-| filter progress > 0 and name == 'ov02-80-b' and episode == 1743
+| filter progress > 0 and name == 'em01-50-a' and episode == 355
 | order by steps
 ```
 
