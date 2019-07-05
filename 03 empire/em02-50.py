@@ -2,14 +2,14 @@ import json
 import math
 import time
 
-NAME = 'em02-50-d'
+NAME = 'em02-50-e'
 ACTION = '24 / 5 / 5.0 / 1'
 HYPER = '256 / 0.00003 / 40'
 
 MIN_SIGHT = 2
 MAX_SIGHT = 4
 
-MIN_ANGLE = 5.0
+MIN_ANGLE = 4.0
 
 MAX_SPEED = 5.0
 MIN_SPEED = 3.0
