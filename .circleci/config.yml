@@ -38,9 +38,9 @@ workflows:
   nightly:
     jobs:
       - report
-      - release:
-          requires:
-            - report
+      # - release:
+      #     requires:
+      #       - report
     triggers:
       - schedule:
           cron: "0 0 * * *"
