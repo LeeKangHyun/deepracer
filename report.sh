@@ -62,7 +62,7 @@ _slack() {
     fi
 
     echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
-    cat ${SHELL_DIR}/build/points.log | sort -r --version-sort | head -20 | column -t | nl >> ${SHELL_DIR}/target/message.log
+    cat ${SHELL_DIR}/build/points.log | sort -r -g | head -20 | nl >> ${SHELL_DIR}/target/message.log
 
     json="{\"text\":\"$(cat ${SHELL_DIR}/target/message.log)\"}"
 
