@@ -32,8 +32,6 @@ _build() {
         TIME="${ARR[1]}"
         POINTS="${ARR[2]}"
 
-        # echo "${NAME} ${TIME}"
-
         for IDX in {2..3}; do
             ARR=($(cat ${SHELL_DIR}/build/board_${IDX}_100.log | grep "\"${NAME}\""))
 
@@ -42,27 +40,24 @@ _build() {
 
             if [ "${SUB_TIME}" != "" ]; then
                 if [ "${SUB_POINTS}" == "null" ]; then
-                    # SUB_POINTS="${ARR[1]:3}"
                     SUB_POINTS=$(perl -e "print 1000-${ARR[1]:3}")
                 fi
 
-                # POINTS=$(( ${POINTS} + ${SUB_POINTS} ))
                 POINTS=$(perl -e "print ${POINTS}+${SUB_POINTS}")
             fi
         done
 
         echo "${POINTS} ${NAME}" >> ${SHELL_DIR}/build/points.log
-
     done < ${SHELL_DIR}/build/board_1_100.log
+
+    echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
+    cat ${SHELL_DIR}/build/points.log | sort -r -g | head -20 | nl >> ${SHELL_DIR}/target/message.log
 }
 
 _slack() {
     if [ -z ${SLACK_TOKEN} ]; then
         return
     fi
-
-    echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
-    cat ${SHELL_DIR}/build/points.log | sort -r -g | head -20 | nl >> ${SHELL_DIR}/target/message.log
 
     json="{\"text\":\"$(cat ${SHELL_DIR}/target/message.log)\"}"
 
