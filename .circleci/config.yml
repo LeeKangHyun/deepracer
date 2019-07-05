@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Check Charts
+          name: Check Points
           command: |
             bash ./report.sh
       - persist_to_workspace:
@@ -32,9 +32,9 @@ workflows:
   apply:
     jobs:
       - report
-      - release:
-          requires:
-            - report
+      # - release:
+      #     requires:
+      #       - report
   nightly:
     jobs:
       - report
