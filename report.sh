@@ -21,6 +21,7 @@ _build() {
     while read URL; do
         curl -sL ${URL} | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime) \(.additionalFields.points)"' > ${SHELL_DIR}/build/board_${IDX}_100.log
         # curl -sL ${URL} | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime)"' | head -20 > ${SHELL_DIR}/build/board_${IDX}_20.log
+        # &item.additionalFields.racerName=kimwooglae
 
         IDX=$(( ${IDX} + 1 ))
     done < ${URLS}
