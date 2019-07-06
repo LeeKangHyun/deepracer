@@ -9,7 +9,7 @@ HYPER = '256 / 0.00003 / 40'
 MIN_SIGHT = 2
 MAX_SIGHT = 4
 
-MIN_ANGLE = 4.0
+MIN_ANGLE = 5.0
 
 MAX_SPEED = 5.0
 MIN_SPEED = 3.0
@@ -112,14 +112,14 @@ def reward_function(params):
     if speed > MIN_SPEED:
         reward = 1.0
 
-        # progress bonus
-        if diff_progress > MIN_PROGRESS:
-            reward *= 2.0
+        # # progress bonus
+        # if diff_progress > MIN_PROGRESS:
+        #     reward *= 2.0
 
-        # # speed bonus
-        # if speed > MAX_SPEED and abs(steering) < MIN_STEER:
-        #     direction = 0
-        #     reward *= 3.0
+        # speed bonus
+        if speed > MAX_SPEED and abs(steering) < MIN_STEER:
+            direction = 0
+            reward *= 2.0
 
         # angle bonus
         if abs(diff_angle) <= MIN_ANGLE and abs(steering) < MIN_STEER:

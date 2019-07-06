@@ -2,8 +2,8 @@ import json
 import math
 import time
 
-NAME = 'em02-80-b'
-ACTION = '24 / 5 / 8.0 / 2'
+NAME = 'em02-70-b'
+ACTION = '24 / 5 / 7.0 / 3'
 HYPER = '256 / 0.00003 / 40'
 
 MIN_SIGHT = 2
