@@ -23,11 +23,11 @@ fields name, episode, steps, total, progress, time
 #| order by time
 
 fields episode, steps, x, y, name, total, diff_progress, time
-| filter progress < 0 and name == 'em02-50-e'
+| filter progress < 0 #and name == 'em02-50-e'
 | order by diff_progress desc, time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, diff_angle, time
-| filter progress > 0 and name == 'em01-70-a' and episode == 355
+| filter progress > 0 and name == 'em01-50-a-70-80' and episode == 417
 | order by steps
 ```
 

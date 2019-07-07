@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'em01-50-a'
+NAME = 'em01-50-d'
 ACTION = '24 / 5 / 5.0 / 1'
 HYPER = '256 / 0.00003 / 40'
 
@@ -10,7 +10,7 @@ SIGHT = 6
 
 MAX_CENTER = 0.25
 
-MAX_STEER = 21.0
+MAX_STEER = 20.0
 MIN_STEER = 13.0
 LEN_STEER = 2
 
@@ -18,6 +18,8 @@ MAX_SPEED = 6.0
 MIN_SPEED = 3.0
 
 BASE_REWARD = 1.2
+
+MIN_PROGRESS = 0.75
 
 g_episode = 0
 g_max_steps = 500
@@ -167,13 +169,20 @@ def reward_function(params):
         if distance < (MAX_CENTER * 0.3):
             reward *= 2.0
 
+        # speed bonus
+        reward += (speed * 2.0)
+
+        # progress bonus
+        if diff_progress > MIN_PROGRESS:
+            reward += 1.0
+
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # # steer bonus
+        # if diff_steer <= MAX_STEER:
+        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
     # total reward
     g_total += reward
