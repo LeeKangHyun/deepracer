@@ -13,15 +13,15 @@ jobs:
 
 workflows:
   version: 2
-  apply:
-    jobs:
-      - report
+  # apply:
+  #   jobs:
+  #     - report
   nightly:
     jobs:
       - report
     triggers:
       - schedule:
-          cron: "0 * * * *"
+          cron: "0/10 * * * *"
           filters:
             branches:
               only:
