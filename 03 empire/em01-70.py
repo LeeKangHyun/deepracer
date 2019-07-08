@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'em01-70-g3'
+NAME = 'em01-70-h'
 ACTION = '24 / 5 / 7.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
