@@ -144,9 +144,9 @@ _leaderboard() {
         BACKUP="$(cat ${SHELL_DIR}/build/backup.log | head -${IDX} | tail -1)"
 
         if [ "${LINE}" == "${BACKUP}" ]; then
-            echo "${IDX}\t${LINE}" >> ${SHELL_DIR}/target/message.log
+            echo "${IDX} ${LINE}" | column -t >> ${SHELL_DIR}/target/message.log
         else
-            echo "${IDX}\t${LINE} <<<<<<<" >> ${SHELL_DIR}/target/message.log
+            echo "${IDX} ${LINE} <<<<<<<" | column -t >> ${SHELL_DIR}/target/message.log
         fi
 
         IDX=$(( ${IDX} + 1 ))
