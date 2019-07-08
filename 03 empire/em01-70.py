@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'em01-70-e'
+NAME = 'em01-70-g'
 ACTION = '24 / 5 / 7.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -110,7 +110,7 @@ def reward_function(params):
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
-    # all_wheels_on_track = params['all_wheels_on_track']
+    all_wheels_on_track = params['all_wheels_on_track']
 
     heading = params['heading']
     steering = params['steering_angle']
@@ -159,15 +159,18 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if speed > MIN_SPEED:
-        reward = 1.0
+    if all_wheels_on_track == True and speed > MIN_SPEED:
+        # reward = 1.0
 
-        # # center bonus (0.25)
-        # reward += (BASE_REWARD - (distance / MAX_CENTER))
+        # speed bonus
+        reward += (speed * 2.0)
 
-        # # center bonus (0.25)
-        # if distance < (MAX_CENTER * 0.3):
-        #     reward *= 2.0
+        # center bonus (0.25)
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
+
+        # center bonus (0.25)
+        if distance < (MAX_CENTER * 0.3):
+            reward *= 2.0
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -175,14 +178,11 @@ def reward_function(params):
 
         # steer bonus
         if diff_steer <= MAX_STEER:
-            reward += 1.0
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # progress bonus
-        if diff_progress > MIN_PROGRESS:
-            reward += 1.0
-
-        # speed bonus
-        reward += (speed * 2.0)
+        # # progress bonus
+        # if diff_progress > MIN_PROGRESS:
+        #     reward += 1.0
 
     # total reward
     g_total += reward

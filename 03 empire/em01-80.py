@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'em01-80-a'
+NAME = 'em01-80-b'
 ACTION = '24 / 5 / 8.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -159,7 +159,7 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if speed > MIN_SPEED:
+    if all_wheels_on_track == True and speed > MIN_SPEED:
         # reward = 1.0
 
         # center bonus (0.25)
@@ -176,6 +176,10 @@ def reward_function(params):
         # steer bonus
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+
+        # # progress bonus
+        # if diff_progress > MIN_PROGRESS:
+        #     reward += 1.0
 
         # speed bonus
         reward += (speed * 2.0)

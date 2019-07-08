@@ -159,8 +159,11 @@ def reward_function(params):
         diff_steps = 0
 
     # reward
-    if speed > MIN_SPEED:
+    if all_wheels_on_track == True and speed > MIN_SPEED:
         # reward = 1.0
+
+        # speed bonus
+        reward += (speed * 2.0)
 
         # center bonus (0.25)
         reward += (BASE_REWARD - (distance / MAX_CENTER))
@@ -177,8 +180,9 @@ def reward_function(params):
         if diff_steer <= MAX_STEER:
             reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # speed bonus
-        reward += (speed * 2.0)
+        # # progress bonus
+        # if diff_progress > MIN_PROGRESS:
+        #     reward += 1.0
 
     # total reward
     g_total += reward

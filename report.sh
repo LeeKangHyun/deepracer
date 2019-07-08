@@ -19,12 +19,52 @@ _prepare() {
 _build() {
     IDX=1
     while read URL; do
-        curl -sL ${URL} | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime) \(.additionalFields.points)"' > ${SHELL_DIR}/build/board_${IDX}_100.log
-        # curl -sL ${URL} | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime)"' | head -20 > ${SHELL_DIR}/build/board_${IDX}_20.log
+        LOG_FILE=${SHELL_DIR}/build/leaderboard_100_${IDX}.log
+
+        curl -sL ${URL} \
+            | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime) \(.additionalFields.points)"' \
+            > ${LOG_FILE}
         # &item.additionalFields.racerName=kimwooglae
 
         IDX=$(( ${IDX} + 1 ))
     done < ${URLS}
+
+    for IDX in {1..3}; do
+        LOG_FILE=${SHELL_DIR}/build/leaderboard_100_${IDX}.log
+
+        JDX=1
+        while read LINE; do
+            ARR=(${LINE})
+
+            NAME="$(echo ${ARR[0]} | cut -d'"' -f2)"
+
+            for KDX in {1..3}; do
+                LOG_TEMP=${SHELL_DIR}/build/leaderboard_100_${KDX}.log
+
+                COUNT=$(cat ${LOG_TEMP} | grep "\"${NAME}\"" | wc -l | xargs)
+
+                if [ "x${COUNT}" != "x0" ]; then
+                    continue
+                fi
+
+                URL="$(cat ${URLS} | head -${KDX} | tail -1 | xargs)"
+
+                # echo "${KDX} ${NAME} ${COUNT}    "${URL}"&item.additionalFields.racerName=${NAME}"
+
+                # curl -sL ${URL}"&item.additionalFields.racerName=${NAME}" | jq .
+
+                curl -sL ${URL}"&item.additionalFields.racerName=${NAME}" \
+                    | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime) \(.additionalFields.points)"' \
+                    >> ${LOG_TEMP}
+            done
+
+            if [ "${JDX}" == "30" ]; then
+                break
+            fi
+
+            JDX=$(( ${JDX} + 1 ))
+        done < ${LOG_FILE}
+    done
 
     while read LINE; do
         ARR=(${LINE})
@@ -34,7 +74,9 @@ _build() {
         POINTS="${ARR[2]}"
 
         for IDX in {2..3}; do
-            ARR=($(cat ${SHELL_DIR}/build/board_${IDX}_100.log | grep "\"${NAME}\""))
+            LOG_FILE=${SHELL_DIR}/build/leaderboard_100_${IDX}.log
+
+            ARR=($(cat ${LOG_FILE} | grep "\"${NAME}\"" | head -1))
 
             SUB_TIME="${ARR[1]}"
             SUB_POINTS="${ARR[2]}"
@@ -49,10 +91,13 @@ _build() {
         done
 
         echo "${POINTS} ${NAME}" >> ${SHELL_DIR}/build/points.log
-    done < ${SHELL_DIR}/build/board_1_100.log
+    done < ${SHELL_DIR}/build/leaderboard_100_1.log
+
 
     echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
     cat ${SHELL_DIR}/build/points.log | sort -r -g | head -20 | nl >> ${SHELL_DIR}/target/message.log
+
+    cat ${SHELL_DIR}/target/message.log
 }
 
 _slack() {
