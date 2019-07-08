@@ -28,7 +28,7 @@ _prepare() {
 
 _build() {
     for SEASON in ${SEASONS}; do
-        echo ${SEASON}
+        # echo ${SEASON}
 
         URL="${URL_TEMPLATE}${SEASON}"
 
@@ -104,9 +104,16 @@ _build() {
         echo "${POINTS} ${NAME}" >> ${SHELL_DIR}/build/points.log
     done < ${SHELL_DIR}/build/leaderboard_${FIRST_SEASON}.log
 
+    # backup
+    if [ -f ${SHELL_DIR}/leaderboard/points.log ]; then
+        cp ${SHELL_DIR}/leaderboard/points.log ${SHELL_DIR}/build/backup.log
+    fi
+
     # print
     cat ${SHELL_DIR}/build/points.log | sort -r -g | head -25 > ${SHELL_DIR}/leaderboard/points.log
-    cat ${SHELL_DIR}/leaderboard/points.log | nl
+    # cat ${SHELL_DIR}/leaderboard/points.log | nl
+
+    # _leaderboard
 }
 
 _git_push() {
@@ -129,13 +136,31 @@ _git_push() {
     fi
 }
 
+_leaderboard() {
+    echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
+
+    IDX=1
+    while read LINE; do
+        BACKUP="$(cat ${SHELL_DIR}/build/backup.log | head -${IDX} | tail -1)"
+
+        if [ "${LINE}" == "${BACKUP}" ]; then
+            echo "${IDX} ${LINE}" >> ${SHELL_DIR}/target/message.log
+        else
+            echo "${IDX} ${LINE} <<<<<<<<<<" >> ${SHELL_DIR}/target/message.log
+        fi
+
+        IDX=$(( ${IDX} + 1 ))
+    done < ${SHELL_DIR}/leaderboard/points.log
+
+    cat ${SHELL_DIR}/target/message.log
+}
+
 _slack() {
     if [ -z ${SLACK_TOKEN} ]; then
         return
     fi
 
-    echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
-    cat ${SHELL_DIR}/leaderboard/points.log | nl >> ${SHELL_DIR}/target/message.log
+    _leaderboard
 
     json="{\"text\":\"$(cat ${SHELL_DIR}/target/message.log)\"}"
 

@@ -9,21 +9,20 @@ jobs:
       - run:
           name: Check Points
           command: |
-            bash echo "skip"
-            # bash ./report.sh
+            bash ./report.sh
 
 workflows:
   version: 2
   apply:
     jobs:
       - report
-  nightly:
-    jobs:
-      - report
-    triggers:
-      - schedule:
-          cron: "* * * * *"
-          filters:
-            branches:
-              only:
-                - master
+  # nightly:
+  #   jobs:
+  #     - report
+  #   triggers:
+  #     - schedule:
+  #         cron: "* * * * *"
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
