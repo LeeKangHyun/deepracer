@@ -21,7 +21,7 @@ workflows:
       - report
     triggers:
       - schedule:
-          cron: "0,15,30,45 * * * *"
+          cron: "0,10,20,30,40,50 * * * *"
           filters:
             branches:
               only:
