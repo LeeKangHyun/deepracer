@@ -139,16 +139,16 @@ _message() {
         BACKUP="$(cat ${SHELL_DIR}/build/backup.log | head -${IDX} | tail -1)"
 
         if [ "${LINE}" == "${BACKUP}" ]; then
-            echo "${IDX} ${LINE}" >> ${SHELL_DIR}/build/message.log
+            echo "${IDX}\t${LINE}" >> ${SHELL_DIR}/build/message.log
         else
-            echo "${IDX} ${LINE} <<<<<<<" >> ${SHELL_DIR}/build/message.log
+            echo "${IDX}\t${LINE}\t<<<<<<<" >> ${SHELL_DIR}/build/message.log
         fi
 
         IDX=$(( ${IDX} + 1 ))
     done < ${SHELL_DIR}/leaderboard/points.log
 
     echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
-    cat ${SHELL_DIR}/build/message.log | column -t >> ${SHELL_DIR}/target/message.log
+    cat ${SHELL_DIR}/build/message.log >> ${SHELL_DIR}/target/message.log
 
     cat ${SHELL_DIR}/target/message.log
 }
