@@ -111,9 +111,6 @@ _build() {
 
     # print
     cat ${SHELL_DIR}/build/points.log | sort -r -g | head -25 > ${SHELL_DIR}/leaderboard/points.log
-    # cat ${SHELL_DIR}/leaderboard/points.log | nl
-
-    # _leaderboard
 }
 
 _git_push() {
@@ -137,20 +134,21 @@ _git_push() {
 }
 
 _message() {
-    # echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
-
     IDX=1
     while read LINE; do
         BACKUP="$(cat ${SHELL_DIR}/build/backup.log | head -${IDX} | tail -1)"
 
         if [ "${LINE}" == "${BACKUP}" ]; then
-            echo "${IDX} ${LINE}" >> ${SHELL_DIR}/target/message.log
+            echo "${IDX} ${LINE}" >> ${SHELL_DIR}/build/message.log
         else
-            echo "${IDX} ${LINE} <<<<<<<" >> ${SHELL_DIR}/target/message.log
+            echo "${IDX} ${LINE} <<<<<<<" >> ${SHELL_DIR}/build/message.log
         fi
 
         IDX=$(( ${IDX} + 1 ))
     done < ${SHELL_DIR}/leaderboard/points.log
+
+    echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
+    cat ${SHELL_DIR}/build/message.log | column -t >> ${SHELL_DIR}/target/message.log
 
     cat ${SHELL_DIR}/target/message.log
 }
