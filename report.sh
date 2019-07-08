@@ -136,17 +136,17 @@ _git_push() {
     fi
 }
 
-_leaderboard() {
-    echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
+_message() {
+    # echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/target/message.log
 
     IDX=1
     while read LINE; do
         BACKUP="$(cat ${SHELL_DIR}/build/backup.log | head -${IDX} | tail -1)"
 
         if [ "${LINE}" == "${BACKUP}" ]; then
-            echo "${IDX} ${LINE}" | column -t >> ${SHELL_DIR}/target/message.log
+            echo "${IDX} ${LINE}" >> ${SHELL_DIR}/target/message.log
         else
-            echo "${IDX} ${LINE} <<<<<<<" | column -t >> ${SHELL_DIR}/target/message.log
+            echo "${IDX} ${LINE} <<<<<<<" >> ${SHELL_DIR}/target/message.log
         fi
 
         IDX=$(( ${IDX} + 1 ))
@@ -160,7 +160,7 @@ _slack() {
         return
     fi
 
-    _leaderboard
+    _message
 
     json="{\"text\":\"$(cat ${SHELL_DIR}/target/message.log)\"}"
 
