@@ -16,13 +16,13 @@ workflows:
   apply:
     jobs:
       - report
-  # nightly:
-  #   jobs:
-  #     - report
-  #   triggers:
-  #     - schedule:
-  #         cron: "* * * * *"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
+  nightly:
+    jobs:
+      - report
+    triggers:
+      - schedule:
+          cron: "* * * * *"
+          filters:
+            branches:
+              only:
+                - master
