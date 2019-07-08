@@ -123,7 +123,6 @@ _git_push() {
     git commit -m "${DATE}" > /dev/null 2>&1 || export CHANGED=true
 
     if [ -z ${CHANGED} ]; then
-        _command "git push github.com/${USERNAME}/${REPONAME}"
         git push -q https://${GITHUB_TOKEN}@github.com/${USERNAME}/${REPONAME}.git master
 
         _slack
