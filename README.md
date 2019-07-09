@@ -27,7 +27,7 @@ fields episode, steps, x, y, name, total, diff_progress, time
 | order by diff_progress desc, time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, diff_steer, time
-| filter progress > 0 and name == 'em01-70-a-80-s' and episode == 793
+| filter progress > 0 and name == 'em01-70-a-80-s' and episode == 39
 | order by steps
 ```
 
@@ -52,3 +52,7 @@ x = np.load('aws.npy')
 
 np.savetxt('new.csv', x, delimiter=',')
 ```
+
+## leaderboard
+
+<!-- leaderboard -->
