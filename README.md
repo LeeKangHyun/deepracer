@@ -82,4 +82,4 @@ np.savetxt('new.csv', x, delimiter=',')
 | 22 | 2953.045 | RichardFan | |
 | 23 | 2952.225 | leo-DNPds | |
 | 24 | 2946.848 | rkom | |
-| 25 | 2945.792 | HY-DNP | |
+| 25 | 2946.237 | HY-DNP | * |
