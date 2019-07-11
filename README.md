@@ -64,7 +64,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 4 | 2964.209 | Jouni-Cybercom | |
 | 5 | 2964.15 | Etaggel | |
 | 6 | 2963.848 | sola-DNPds | |
-| 7 | 2963.543 | nero-DNPds | * |
+| 7 | 2963.543 | nero-DNPds | |
 | 8 | 2963.295 | maeda-ai | |
 | 9 | 2963.031 | nalbam-me | |
 | 10 | 2962.95 | hiroisojp | |
@@ -72,7 +72,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 12 | 2962.732 | JasonLian | |
 | 13 | 2962.426 | PGS-Tomasz-Panek | |
 | 14 | 2960.431 | ABaykov | |
-| 15 | 2960.28 | yuki-h | * |
+| 15 | 2960.28 | yuki-h | |
 | 16 | 2959.315 | leo-DNPds | |
 | 17 | 2959.016 | kimwooglae | |
 | 18 | 2957.322 | nalbam | |
