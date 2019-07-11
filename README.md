@@ -29,6 +29,9 @@ fields episode, steps, x, y, name, total, diff_progress, time
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, diff_steer, time
 | filter progress > 0 and name == 'em01-70-a' and episode == 1783
 | order by steps
+
+fields @timestamp, @message
+| filter @message =~ 'SIM_TRACE_LOG'
 ```
 
 ## track
