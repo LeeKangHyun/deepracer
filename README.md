@@ -66,7 +66,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 6 | 2963.848 | sola-DNPds | |
 | 7 | 2963.543 | nero-DNPds | |
 | 8 | 2963.295 | maeda-ai | |
-| 9 | 2963.031 | nalbam-me | |
+| 9 | 2963.031 | nalbam-me | * |
 | 10 | 2962.95 | hiroisojp | |
 | 11 | 2962.92 | Aiis-DNP | |
 | 12 | 2962.732 | JasonLian | |
