@@ -64,7 +64,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 4 | 2964.209 | Jouni-Cybercom | |
 | 5 | 2964.15 | Etaggel | |
 | 6 | 2963.848 | sola-DNPds | |
-| 7 | 2963.302 | nero-DNPds | |
+| 7 | 2963.543 | nero-DNPds | * |
 | 8 | 2963.295 | maeda-ai | |
 | 9 | 2963.031 | nalbam-me | |
 | 10 | 2962.95 | hiroisojp | |
@@ -72,14 +72,14 @@ np.savetxt('new.csv', x, delimiter=',')
 | 12 | 2962.732 | JasonLian | |
 | 13 | 2962.426 | PGS-Tomasz-Panek | |
 | 14 | 2960.431 | ABaykov | |
-| 15 | 2959.315 | leo-DNPds | |
-| 16 | 2959.016 | kimwooglae | |
-| 17 | 2957.322 | nalbam | |
-| 18 | 2957.277 | Jochem | |
-| 19 | 2956.151 | TonyJ | |
-| 20 | 2955.56 | t-maru078 | |
-| 21 | 2954.999 | Kire | |
-| 22 | 2953.207 | KAGRAZAKA-DNP | |
-| 23 | 2953.045 | RichardFan | |
-| 24 | 2946.848 | rkom | |
-| 25 | 2946.237 | HY-DNP | |
+| 15 | 2960.28 | yuki-h | * |
+| 16 | 2959.315 | leo-DNPds | |
+| 17 | 2959.016 | kimwooglae | |
+| 18 | 2957.322 | nalbam | |
+| 19 | 2957.277 | Jochem | |
+| 20 | 2956.151 | TonyJ | |
+| 21 | 2955.56 | t-maru078 | |
+| 22 | 2954.999 | Kire | |
+| 23 | 2953.207 | KAGRAZAKA-DNP | |
+| 24 | 2953.045 | RichardFan | |
+| 25 | 2946.848 | rkom | |
