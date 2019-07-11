@@ -1,5 +1,6 @@
 {
-    "action_space": [{
+    "action_space": [
+        {
             "steering_angle": -24,
             "speed": 5,
             "index": 0
