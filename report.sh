@@ -48,6 +48,8 @@ _error() {
 _prepare() {
     _command "_prepare"
 
+    rm -rf ${SHELL_DIR}/build
+
     mkdir -p ${SHELL_DIR}/build
     mkdir -p ${SHELL_DIR}/leaderboard
 
@@ -60,13 +62,13 @@ _build() {
     _command "_build"
 
     for SEASON in ${SEASONS}; do
-        _command "${SEASON}"
-
         URL="${URL_TEMPLATE}${SEASON}"
 
         curl -sL ${URL} \
             | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime) \(.additionalFields.points)"' \
             > ${SHELL_DIR}/build/leaderboard_${SEASON}.log
+
+        _result "${SEASON}"
     done
 
     for SEASON in ${SEASONS}; do
@@ -87,13 +89,13 @@ _build() {
                     continue
                 fi
 
-                _command "${SVAL} ${NAME}"
-
                 URL="${URL_TEMPLATE}${SVAL}&item.additionalFields.racerName=${NAME}"
 
                 curl -sL ${URL} \
                     | jq -r '.items[].item | "\"\(.additionalFields.racerName)\" \(.additionalFields.lapTime) \(.additionalFields.points)"' \
                     >> ${LOG_TEMP}
+
+                _result "${SVAL} ${NAME}"
             done
 
             if [ "${JDX}" == "30" ]; then
@@ -166,6 +168,10 @@ _message() {
             echo "${IDX}\t${ARR[0]}\t${ARR[1]}" >> ${MESSAGE}
             echo "| ${IDX} | ${ARR[0]} | ${ARR[1]} | |" >> ${README}
         else
+            CHANGED=true
+
+            _result "${ARR[0]} ${ARR[1]}"
+
             echo "${IDX}\t${ARR[0]}\t${ARR[1]}\t<<<<<<<" >> ${MESSAGE}
             echo "| ${IDX} | ${ARR[0]} | ${ARR[1]} | * |" >> ${README}
         fi
@@ -176,8 +182,6 @@ _message() {
     # message
     echo "*DeepRacer Virtual Circuit*" > ${SHELL_DIR}/build/message.log
     cat ${MESSAGE} >> ${SHELL_DIR}/build/message.log
-
-    cat ${SHELL_DIR}/build/message.log
 
     # readme
     IDX=1
@@ -194,7 +198,9 @@ _message() {
     sed "${IDX}q" ${SHELL_DIR}/README.md > ${SHELL_DIR}/build/readme.md
     cat ${README} >> ${SHELL_DIR}/build/readme.md
 
-    cp -rf ${SHELL_DIR}/build/readme.md ${SHELL_DIR}/README.md
+    if [ ! -z ${CHANGED} ]; then
+        cp -rf ${SHELL_DIR}/build/readme.md ${SHELL_DIR}/README.md
+    fi
 }
 
 _git_push() {
@@ -210,13 +216,9 @@ _git_push() {
     git config --global user.email "${GIT_USEREMAIL}"
 
     git add --all
-    git commit -m "${DATE}" > /dev/null 2>&1 || export CHANGED=true
+    git commit -m "${DATE}"
 
-    if [ -z ${CHANGED} ]; then
-        git push -q https://${GITHUB_TOKEN}@github.com/${USERNAME}/${REPONAME}.git master
-
-        _slack
-    fi
+    git push -q https://${GITHUB_TOKEN}@github.com/${USERNAME}/${REPONAME}.git master
 }
 
 _slack() {
@@ -226,18 +228,24 @@ _slack() {
         return
     fi
 
-    json="{\"text\":\"$(cat ${SHELL_DIR}/target/message.log)\"}"
+    json="{\"text\":\"$(cat ${SHELL_DIR}/build/message.log)\"}"
 
     webhook_url="https://hooks.slack.com/services/${SLACK_TOKEN}"
     curl -s -d "payload=${json}" "${webhook_url}"
 }
 
-_prepare
+__init__() {
+    _prepare
 
-_build
+    _build
+    _message
 
-_message
+    if [ ! -z ${CHANGED} ]; then
+        _git_push
+        _slack
+    fi
 
-_git_push
+    _success
+}
 
-_success
+__init__
