@@ -56,8 +56,8 @@ np.savetxt('new.csv', x, delimiter=',')
 ## leaderboard
 
 <!-- leaderboard -->
-| # | RacerName | Point |   |
-| - | --------- | ----- | - |
+| # | Point | RacerName |   |
+| - | ----- | - | --------- |
 | 1 | 2969.488 | Karl-NAB | |
 | 2 | 2966.789 | Fumiaki | |
 | 3 | 2965.215 | Breadcentric | |
