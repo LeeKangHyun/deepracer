@@ -32,6 +32,7 @@ fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angl
 
 fields @timestamp, @message
 | filter @message =~ 'SIM_TRACE_LOG'
+| order by @timestamp desc, @message desc
 ```
 
 ## track
