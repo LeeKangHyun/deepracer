@@ -16,7 +16,38 @@ GIT_USEREMAIL="bot@nalbam.com"
 
 CHANGED=
 
+# command -v tput > /dev/null && TPUT=true
+TPUT=
+
+_echo() {
+    if [ "${TPUT}" != "" ] && [ "$2" != "" ]; then
+        echo -e "$(tput setaf $2)$1$(tput sgr0)"
+    else
+        echo -e "$1"
+    fi
+}
+
+_result() {
+    _echo "# $@" 4
+}
+
+_command() {
+    _echo "$ $@" 3
+}
+
+_success() {
+    _echo "+ $@" 2
+    exit 0
+}
+
+_error() {
+    _echo "- $@" 1
+    exit 1
+}
+
 _prepare() {
+    _command "_prepare"
+
     mkdir -p ${SHELL_DIR}/build
     mkdir -p ${SHELL_DIR}/leaderboard
 
@@ -26,8 +57,10 @@ _prepare() {
 }
 
 _build() {
+    _command "_build"
+
     for SEASON in ${SEASONS}; do
-        # echo ${SEASON}
+        _command "${SEASON}"
 
         URL="${URL_TEMPLATE}${SEASON}"
 
@@ -53,6 +86,8 @@ _build() {
                 if [ "x${COUNT}" != "x0" ]; then
                     continue
                 fi
+
+                _command "${SVAL} ${NAME}"
 
                 URL="${URL_TEMPLATE}${SVAL}&item.additionalFields.racerName=${NAME}"
 
@@ -113,6 +148,8 @@ _build() {
 }
 
 _message() {
+    _command "_message"
+
     MESSAGE=${SHELL_DIR}/build/message.tmp
     README=${SHELL_DIR}/build/readme.tmp
 
@@ -161,6 +198,8 @@ _message() {
 }
 
 _git_push() {
+    _command "_git_push"
+
     if [ -z ${GITHUB_TOKEN} ]; then
         return
     fi
@@ -181,6 +220,8 @@ _git_push() {
 }
 
 _slack() {
+    _command "_slack"
+
     if [ -z ${SLACK_TOKEN} ]; then
         return
     fi
@@ -198,3 +239,5 @@ _build
 _message
 
 _git_push
+
+_success

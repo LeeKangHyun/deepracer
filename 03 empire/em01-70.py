@@ -179,9 +179,9 @@ def reward_function(params):
         # if abs_steer <= MIN_STEER:
         #     reward += 1.0
 
-        # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward += (speed - MAX_SPEED)
+        # speed bonus
+        if speed > MAX_SPEED:
+            reward += (speed - MAX_SPEED)
 
     # total reward
     g_total += reward
