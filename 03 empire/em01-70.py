@@ -6,6 +6,8 @@ NAME = 'em01-70-m'
 ACTION = '24 / 5 / 7.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
+SIGHT = 6
+
 BASE_REWARD = 2.0
 
 MAX_CENTER = 0.25
@@ -17,10 +19,9 @@ LEN_STEER = 2
 MAX_SPEED = 5.0
 MIN_SPEED = 3.0
 
-SIGHT = 6
+PROGRESS = 0.6
 
 g_episode = 0
-g_max_steps = 500
 g_progress = float(0)
 g_steer = []
 g_total = float(0)
@@ -30,7 +31,6 @@ g_param = []
 
 def get_episode(steps, progress):
     global g_episode
-    global g_max_steps
     global g_progress
     global g_param
 
@@ -49,10 +49,7 @@ def get_episode(steps, progress):
     # prev
     g_progress = progress
 
-    if progress == 100 and steps < g_max_steps:
-        g_max_steps = steps
-
-    return g_episode, g_max_steps, diff_progress
+    return g_episode, diff_progress
 
 
 def get_distance(coor1, coor2):
@@ -110,26 +107,26 @@ def reward_function(params):
     # distance_from_center = params['distance_from_center']
     # all_wheels_on_track = params['all_wheels_on_track']
 
-    heading = params['heading']
+    # heading = params['heading']
     steering = params['steering_angle']
     speed = params['speed']
 
     # x = params['x']
     # y = params['y']
 
-    waypoints = params['waypoints']
-    closest_waypoints = params['closest_waypoints']
-    prev_waypoint = waypoints[closest_waypoints[0]]
+    # waypoints = params['waypoints']
+    # closest_waypoints = params['closest_waypoints']
+    # prev_waypoint = waypoints[closest_waypoints[0]]
     # next_waypoint = waypoints[closest_waypoints[1]]
-    next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
+    # next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
 
-    closest_waypoint = closest_waypoints[1]
+    # closest_waypoint = closest_waypoints[1]
 
     # default
     reward = 0.00001
 
     # episode
-    episode, max_steps, diff_progress = get_episode(steps, progress)
+    episode, diff_progress = get_episode(steps, progress)
 
     # reset
     if steps == 0:
@@ -141,20 +138,17 @@ def reward_function(params):
     lap_time = time.time() - g_start
 
     # distance
-    distance = params['distance_from_center']
+    # distance = params['distance_from_center']
 
-    # diff angle
-    diff_angle = get_diff_angle(
-        prev_waypoint, next_waypoint, heading, steering)
+    # # diff angle
+    # diff_angle = get_diff_angle(
+    #     prev_waypoint, next_waypoint, heading, steering)
 
     # diff steering
-    diff_steer = get_diff_steering(steering)
-    abs_steer = abs(steering)
+    # diff_steer = get_diff_steering(steering)
 
-    if steps > 0:
-        diff_steps = progress / steps
-    else:
-        diff_steps = 0
+    # abs steering
+    abs_steer = abs(steering)
 
     # reward
     if speed > MIN_SPEED:
@@ -162,10 +156,13 @@ def reward_function(params):
 
         reward = (BASE_REWARD - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
 
-        # # center bonus (0.25)
+        if diff_progress > PROGRESS:
+            reward *= (diff_progress * 2.0)
+
+        # # center bonus
         # reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        # # center bonus (0.25)
+        # # center bonus
         # if distance < (MAX_CENTER * 0.3):
         #     reward *= 2.0
 
@@ -192,13 +189,12 @@ def reward_function(params):
     params['name'] = NAME
     params['params'] = ACTION
     params['episode'] = episode
-    params['closest'] = closest_waypoint
-    params['distance'] = distance
-    params['max_steps'] = max_steps
+    # params['max_steps'] = max_steps
+    # params['closest'] = closest_waypoint
+    # params['distance'] = distance
     params['diff_progress'] = diff_progress
-    params['diff_angle'] = diff_angle
-    params['diff_steer'] = diff_steer
-    params['diff_steps'] = diff_steps
+    # params['diff_angle'] = diff_angle
+    # params['diff_steer'] = diff_steer
     params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
