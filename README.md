@@ -65,7 +65,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 1 | 2969.488 | Karl-NAB | |
 | 2 | 2966.789 | Fumiaki | |
 | 3 | 2965.215 | Breadcentric | |
-| 4 | 2964.725 | PGS-Tomasz-Panek | * |
+| 4 | 2964.725 | PGS-Tomasz-Panek | |
 | 5 | 2964.419 | nero-DNPds | |
 | 6 | 2964.297 | Etaggel | |
 | 7 | 2964.209 | Jouni-Cybercom | |
@@ -79,7 +79,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 15 | 2960.431 | ABaykov | |
 | 16 | 2960.28 | yuki-h | |
 | 17 | 2959.315 | leo-DNPds | |
-| 18 | 2959.016 | kimwooglae | |
+| 18 | 2959.076 | kimwooglae | * |
 | 19 | 2957.322 | nalbam | |
 | 20 | 2956.151 | TonyJ | |
 | 21 | 2955.56 | t-maru078 | |
