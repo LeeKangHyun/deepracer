@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'em01-70-m'
+NAME = 'em01-70-n'
 ACTION = '24 / 5 / 7.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -138,7 +138,7 @@ def reward_function(params):
     lap_time = time.time() - g_start
 
     # distance
-    # distance = params['distance_from_center']
+    distance = params['distance_from_center']
 
     # # diff angle
     # diff_angle = get_diff_angle(
@@ -152,19 +152,16 @@ def reward_function(params):
 
     # reward
     if speed > MIN_SPEED:
-        # reward = 1.0
+        reward = 1.0
 
-        reward = (BASE_REWARD - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
-
-        if diff_progress > PROGRESS:
-            reward *= (diff_progress * 2.0)
-
-        # # center bonus
-        # reward += (BASE_REWARD - (distance / MAX_CENTER))
+        # center bonus
+        reward += (BASE_REWARD - (distance / MAX_CENTER))
 
         # # center bonus
         # if distance < (MAX_CENTER * 0.3):
         #     reward *= 2.0
+
+        reward = (BASE_REWARD - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
@@ -181,6 +178,10 @@ def reward_function(params):
         # # speed bonus
         # if speed > MAX_SPEED:
         #     reward *= (speed - MAX_SPEED)
+
+        # # progress bonus
+        # if diff_progress > PROGRESS:
+        #     reward *= (diff_progress * 2.0)
 
     # total reward
     g_total += reward
