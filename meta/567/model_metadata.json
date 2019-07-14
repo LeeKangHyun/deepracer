@@ -6,17 +6,17 @@
         },
         {
             "steering_angle": -15,
-            "speed": 7,
+            "speed": 6,
             "index": 1
         },
         {
             "steering_angle": 0,
-            "speed": 8,
+            "speed": 7,
             "index": 2
         },
         {
             "steering_angle": 15,
-            "speed": 7,
+            "speed": 6,
             "index": 3
         },
         {
