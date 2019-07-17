@@ -145,7 +145,7 @@ def reward_function(params):
     #     prev_waypoint, next_waypoint, heading, steering)
 
     # diff steering
-    # diff_steer = get_diff_steering(steering)
+    diff_steer = get_diff_steering(steering)
 
     # abs steering
     abs_steer = abs(steering)
@@ -170,9 +170,9 @@ def reward_function(params):
         # if diff_angle <= MAX_ANGLE:
         #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # # steer bonus
-        # if diff_steer <= MAX_STEER:
-        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        # steer bonus
+        if diff_steer <= MAX_STEER:
+            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
 
         # # steer bonus
         # if abs_steer <= MAX_STEER:
