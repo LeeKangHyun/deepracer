@@ -71,7 +71,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 7 | 2964.209 | Jouni-Cybercom | |
 | 8 | 2963.992 | sola-DNPds | |
 | 9 | 2963.295 | maeda-ai | |
-| 10 | 2963.274 | JasonLian | * |
+| 10 | 2963.274 | JasonLian | |
 | 11 | 2963.031 | nalbam-me | |
 | 12 | 2962.967 | Aiis-DNP | |
 | 13 | 2962.95 | hiroisojp | |
@@ -86,4 +86,4 @@ np.savetxt('new.csv', x, delimiter=',')
 | 22 | 2955.56 | t-maru078 | |
 | 23 | 2954.999 | Kire | |
 | 24 | 2953.207 | KAGRAZAKA-DNP | |
-| 25 | 2953.045 | RichardFan | |
+| 25 | 2953.053 | SF | * |
