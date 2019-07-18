@@ -72,7 +72,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 8 | 2963.992 | sola-DNPds | |
 | 9 | 2963.295 | maeda-ai | |
 | 10 | 2963.274 | JasonLian | |
-| 11 | 2963.137 | hiroisojp | * |
+| 11 | 2963.137 | hiroisojp | |
 | 12 | 2963.031 | nalbam-me | |
 | 13 | 2962.967 | Aiis-DNP | |
 | 14 | 2961.416 | ABaykov | |
@@ -80,7 +80,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 16 | 2960.28 | yuki-h | |
 | 17 | 2959.606 | JimWu | |
 | 18 | 2959.315 | leo-DNPds | |
-| 19 | 2959.112 | kimwooglae | |
+| 19 | 2959.165 | kimwooglae | * |
 | 20 | 2957.322 | nalbam | |
 | 21 | 2956.178 | TonyJ | |
 | 22 | 2955.56 | t-maru078 | |
