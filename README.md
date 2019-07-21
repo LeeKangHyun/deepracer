@@ -64,8 +64,8 @@ np.savetxt('new.csv', x, delimiter=',')
 | - | ----- | --------- | - |
 | 1 | 2969.488 | Karl-NAB | |
 | 2 | 2967.584 | Fumiaki | |
-| 3 | 2965.549 | PGS-Tomasz-Panek | |
-| 4 | 2965.436 | Breadcentric | * |
+| 3 | 2965.574 | Breadcentric | * |
+| 4 | 2965.549 | PGS-Tomasz-Panek | |
 | 5 | 2964.683 | nero-DNPds | |
 | 6 | 2964.35 | Etaggel | |
 | 7 | 2964.209 | Jouni-Cybercom | |
