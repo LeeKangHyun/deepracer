@@ -182,6 +182,9 @@ def reward_function(params):
         # if speed > MAX_SPEED:
         #     reward *= (speed - MAX_SPEED)
 
+        # speed bonus
+        reward *= (speed - 5)
+
     # total reward
     g_total += reward
 
