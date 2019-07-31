@@ -98,7 +98,7 @@ _build() {
                 # _result "${SVAL} ${NAME}"
             done
 
-            if [ "${JDX}" == "30" ]; then
+            if [ "${JDX}" == "50" ]; then
                 break
             fi
 
@@ -149,7 +149,7 @@ _build() {
     fi
 
     # print
-    cat ${SHELL_DIR}/build/points.log | sort -r -g | head -25 > ${SHELL_DIR}/leaderboard/points.log
+    cat ${SHELL_DIR}/build/points.log | sort -r -g | head -35 > ${SHELL_DIR}/leaderboard/points.log
 }
 
 _message() {
