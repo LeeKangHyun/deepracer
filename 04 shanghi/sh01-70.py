@@ -150,39 +150,35 @@ def reward_function(params):
     # abs steering
     abs_steer = abs(steering)
 
-    # reward
-    if speed > MIN_SPEED:
-        # reward = 1.0
+    # center bonus
+    reward += (BASE_REWARD - (distance / MAX_CENTER))
 
-        # center bonus
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+    # # center bonus (0.25)
+    # if distance < (MAX_CENTER * 0.3):
+    #     reward *= 2.0
 
-        # # center bonus (0.25)
-        # if distance < (MAX_CENTER * 0.3):
-        #     reward *= 2.0
+    # # steer * speed
+    # reward *= (BASE_REWARD - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
 
-        # # steer * speed
-        # reward *= (BASE_REWARD - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
+    # # angle bonus
+    # if diff_angle <= MAX_ANGLE:
+    #     reward *= (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # # angle bonus
-        # if diff_angle <= MAX_ANGLE:
-        #     reward *= (BASE_REWARD - (diff_angle / MAX_ANGLE))
+    # steer bonus
+    if diff_steer <= MAX_STEER:
+        reward *= (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # steer bonus
-        if diff_steer <= MAX_STEER:
-            reward *= (BASE_REWARD - (diff_steer / MAX_STEER))
+    # # steer bonus
+    # if abs_steer <= MIN_STEER:
+    #     reward *= (BASE_REWARD - (abs_steer / MIN_STEER))
 
-        # # steer bonus
-        # if abs_steer <= MIN_STEER:
-        #     reward *= (BASE_REWARD - (abs_steer / MIN_STEER))
+    # speed bonus
+    if speed > MAX_SPEED:
+        reward *= (speed - MAX_SPEED)
 
-        # speed bonus
-        if speed > MAX_SPEED:
-            reward *= (speed - MAX_SPEED)
-
-        # # progress bonus
-        # if diff_progress > PROGRESS:
-        #     reward *= (diff_progress * 2.0)
+    # # progress bonus
+    # if diff_progress > PROGRESS:
+    #     reward *= (diff_progress * 2.0)
 
     # total reward
     g_total += reward
