@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'sh01-50-c'
+NAME = 'sh01-50-d'
 ACTION = '24 / 5 / 5.0 / 1'
 HYPER = '256 / 0.00003 / 40'
 
@@ -161,24 +161,24 @@ def reward_function(params):
         # if distance < (MAX_CENTER * 0.3):
         #     reward *= 2.0
 
-        # steer * speed
-        reward *= (2.0 - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
+        # # steer * speed
+        # reward *= (BASE_REWARD - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
 
         # # angle bonus
         # if diff_angle <= MAX_ANGLE:
-        #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
+        #     reward *= (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
         # # steer bonus
         # if diff_steer <= MAX_STEER:
-        #     reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        #     reward *= (BASE_REWARD - (diff_steer / MAX_STEER))
 
-        # # steer bonus
-        # if abs_steer <= MIN_STEER:
-        #     reward *= 2.0
+        # steer bonus
+        if abs_steer <= MIN_STEER:
+            reward *= (BASE_REWARD - (abs_steer / MIN_STEER))
 
-        # # speed bonus
-        # if speed > MAX_SPEED:
-        #     reward *= (speed - MAX_SPEED)
+        # speed bonus
+        if speed > MAX_SPEED:
+            reward *= (speed - MAX_SPEED)
 
         # # progress bonus
         # if diff_progress > PROGRESS:
