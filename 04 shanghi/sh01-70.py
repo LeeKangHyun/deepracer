@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'sh01-70-d'
+NAME = 'sh01-70-a'
 ACTION = '24 / 5 / 7.0 / 2'
 HYPER = '256 / 0.00003 / 40'
 
@@ -145,7 +145,7 @@ def reward_function(params):
     #     prev_waypoint, next_waypoint, heading, steering)
 
     # diff steering
-    # diff_steer = get_diff_steering(steering)
+    diff_steer = get_diff_steering(steering)
 
     # abs steering
     abs_steer = abs(steering)
@@ -168,13 +168,13 @@ def reward_function(params):
         # if diff_angle <= MAX_ANGLE:
         #     reward *= (BASE_REWARD - (diff_angle / MAX_ANGLE))
 
-        # # steer bonus
-        # if diff_steer <= MAX_STEER:
-        #     reward *= (BASE_REWARD - (diff_steer / MAX_STEER))
-
         # steer bonus
-        if abs_steer <= MIN_STEER:
-            reward *= (BASE_REWARD - (abs_steer / MIN_STEER))
+        if diff_steer <= MAX_STEER:
+            reward *= (BASE_REWARD - (diff_steer / MAX_STEER))
+
+        # # steer bonus
+        # if abs_steer <= MIN_STEER:
+        #     reward *= (BASE_REWARD - (abs_steer / MIN_STEER))
 
         # speed bonus
         if speed > MAX_SPEED:
@@ -196,7 +196,7 @@ def reward_function(params):
     # params['distance'] = distance
     params['diff_progress'] = diff_progress
     # params['diff_angle'] = diff_angle
-    # params['diff_steer'] = diff_steer
+    params['diff_steer'] = diff_steer
     params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
