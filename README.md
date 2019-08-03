@@ -27,11 +27,11 @@ fields episode, steps, x, y, name, total, diff_progress, time
 | order by diff_progress desc, time
 
 fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, abs_steer, time
-| filter progress > 0 and name == 'sh01-50-a' and episode == 2093
+| filter progress > 0 and name == 'sh01-80-30' and episode == 4084
 | order by steps
 
 fields @timestamp, @message
-| filter @message =~ 'SIM_TRACE_LOG' #and @message =~ '0,True'
+| filter @message =~ 'SIM_TRACE_LOG' and @message =~ '0,True'
 | order by @timestamp desc, @message desc
 ```
 
