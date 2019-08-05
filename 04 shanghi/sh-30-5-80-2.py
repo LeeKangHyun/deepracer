@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'sh-30-5-60-2'
+NAME = 'sh-30-5-80-2'
 
 SIGHT = 6
 
