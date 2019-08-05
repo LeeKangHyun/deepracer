@@ -62,7 +62,7 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 3957.599 | Fumiaki | * |
+| 1 | 3957.771 | Fumiaki | * |
 | 2 | 3955.512 | nero-DNPds | |
 | 3 | 3951.624 | nalbam-me | |
 | 4 | 3951.207 | Jouni-Cybercom | |
