@@ -3,8 +3,6 @@ import math
 import time
 
 NAME = 'sh-30-5-60-2'
-ACTION = '30 / 5 / 6.0 / 2'
-HYPER = '256 / 0.00003 / 40'
 
 SIGHT = 6
 
@@ -185,7 +183,6 @@ def reward_function(params):
 
     # log
     params['name'] = NAME
-    params['params'] = ACTION
     params['episode'] = episode
     # params['max_steps'] = max_steps
     # params['closest'] = closest_waypoint
