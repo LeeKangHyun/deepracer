@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'sh-30-3-55-1'
+NAME = 'sh-30-5-50-1'
 
 BASE_REWARD = 10.0
 
@@ -76,11 +76,11 @@ def reward_function(params):
 
     # reward
     reward = BASE_REWARD
-    reward *= (track_width - distance) / track_half
-    reward *= (MAX_STEER - abs_steer) / MAX_STEER
+    reward *= (track_half - (distance * 0.5)) / track_half
+    reward *= (MAX_STEER - (abs_steer * 0.5)) / MAX_STEER
     reward *= speed / MAX_SPEED
 
-    if reward < 0:
+    if reward <= 0:
         reward = 0.00001
 
     # total reward
