@@ -76,7 +76,7 @@ def reward_function(params):
 
     # reward
     reward = BASE_REWARD
-    reward *= (track_half - distance) / track_half
+    reward *= (track_width - distance) / track_half
     reward *= (MAX_STEER - abs_steer) / MAX_STEER
     reward *= speed / MAX_SPEED
 
