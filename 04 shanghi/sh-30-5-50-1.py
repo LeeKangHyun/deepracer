@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'sh-30-5-50-1'
+NAME = 'sh-30-3-55-1'
 
 BASE_REWARD = 10.0
 
@@ -10,16 +10,12 @@ MAX_CENTER = 0.25
 
 MAX_STEER = 30.0
 MIN_STEER = 10.0
-LEN_STEER = 2
 
 MAX_SPEED = 8.0
 MIN_SPEED = 3.0
 
-PROGRESS = 0.6
-
 g_episode = 0
 g_progress = float(0)
-g_steer = []
 g_total = float(0)
 g_start = float(0)
 g_param = []
@@ -48,50 +44,7 @@ def get_episode(steps, progress):
     return g_episode, diff_progress
 
 
-def get_distance(coor1, coor2):
-    return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
-
-
-def get_diff_angle(coor1, coor2, heading, steering):
-    # guide
-    angle = math.atan2((coor2[1] - coor1[1]), (coor2[0] - coor1[0]))
-
-    # car yaw
-    # yaw = math.radians(heading)
-    yaw = math.radians(heading + steering)
-
-    diff = (yaw - angle) % (2.0 * math.pi)
-
-    if diff >= math.pi:
-        diff -= 2.0 * math.pi
-
-    return math.degrees(abs(diff))
-
-
-def get_diff_steering(steering):
-    global g_steer
-
-    prev = -100
-    diff = 0
-
-    # steering list
-    g_steer.append(steering)
-    if len(g_steer) > LEN_STEER:
-        del g_steer[0]
-
-    # steering diff
-    for v in g_steer:
-        if prev > -100:
-            diff += abs(prev - v)
-        prev = v
-
-    diff = diff / (LEN_STEER - 1)
-
-    return diff
-
-
 def reward_function(params):
-    global g_steer
     global g_total
     global g_start
     global g_param
@@ -107,7 +60,6 @@ def reward_function(params):
 
     # reset
     if steps == 0:
-        del g_steer[:]
         g_total = float(0)
         g_start = time.time()
 
@@ -119,45 +71,8 @@ def reward_function(params):
     track_width = params['track_width']
     track_half = track_width / 2.0
 
-    # # diff angle
-    # diff_angle = get_diff_angle(
-    #     prev_waypoint, next_waypoint, heading, steering)
-
-    # diff steering
-    diff_steer = get_diff_steering(steering)
-
     # abs steering
     abs_steer = abs(steering)
-
-    # # center bonus
-    # reward += (BASE_REWARD - (distance / MAX_CENTER))
-
-    # # center bonus (0.25)
-    # if distance < (MAX_CENTER * 0.3):
-    #     reward *= 2.0
-
-    # # steer * speed
-    # reward *= (BASE_REWARD - (abs_steer / MAX_STEER)) * (speed - MIN_SPEED)
-
-    # # angle bonus
-    # if diff_angle <= MAX_ANGLE:
-    #     reward *= (BASE_REWARD - (diff_angle / MAX_ANGLE))
-
-    # # steer bonus
-    # if diff_steer <= MAX_STEER:
-    #     reward *= (BASE_REWARD - (diff_steer / MAX_STEER))
-
-    # # steer bonus
-    # if abs_steer <= MIN_STEER:
-    #     reward *= (BASE_REWARD - (abs_steer / MIN_STEER))
-
-    # # speed bonus
-    # if speed > MAX_SPEED:
-    #     reward *= (speed - MAX_SPEED + 1.0)
-
-    # # progress bonus
-    # if diff_progress > PROGRESS:
-    #     reward *= (diff_progress * 2.0)
 
     # reward
     reward = BASE_REWARD
@@ -174,12 +89,7 @@ def reward_function(params):
     # log
     params['name'] = NAME
     params['episode'] = episode
-    # params['max_steps'] = max_steps
-    # params['closest'] = closest_waypoint
-    # params['distance'] = distance
     params['diff_progress'] = diff_progress
-    # params['diff_angle'] = diff_angle
-    params['diff_steer'] = diff_steer
     params['abs_steer'] = abs_steer
     params['reward'] = reward
     params['total'] = g_total
