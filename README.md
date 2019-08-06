@@ -63,23 +63,23 @@ np.savetxt('new.csv', x, delimiter=',')
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
 | 1 | 3957.922 | Fumiaki | |
-| 2 | 3955.512 | nero-DNPds | |
-| 3 | 3954.432 | PGS-Tomasz-Panek | |
-| 4 | 3951.753 | nalbam-me | |
-| 5 | 3951.207 | Jouni-Cybercom | |
-| 6 | 3950.563 | hiroisojp | |
-| 7 | 3950.397 | Aiis-DNP | |
-| 8 | 3949.508 | leo-DNPds | |
-| 9 | 3948.209 | JimWu | * |
-| 10 | 3947.515 | kimwooglae | |
-| 11 | 3947.285 | ABaykov | |
-| 12 | 3946.609 | Breadcentric | |
+| 2 | 3955.969 | Breadcentric | * |
+| 3 | 3955.512 | nero-DNPds | |
+| 4 | 3954.432 | PGS-Tomasz-Panek | |
+| 5 | 3951.753 | nalbam-me | |
+| 6 | 3951.207 | Jouni-Cybercom | |
+| 7 | 3950.563 | hiroisojp | |
+| 8 | 3950.397 | Aiis-DNP | |
+| 9 | 3949.508 | leo-DNPds | |
+| 10 | 3948.416 | JimWu | * |
+| 11 | 3947.515 | kimwooglae | |
+| 12 | 3947.285 | ABaykov | |
 | 13 | 3944.833 | nalbam | |
 | 14 | 3942.354 | RichardFan | |
 | 15 | 3942.303 | t-maru078 | |
-| 16 | 3939.313 | Kire | * |
-| 17 | 3938.550 | KAGRAZAKA-DNP | |
-| 18 | 3938.405 | RayG | * |
+| 16 | 3939.313 | Kire | |
+| 17 | 3939.033 | RayG | * |
+| 18 | 3938.550 | KAGRAZAKA-DNP | |
 | 19 | 3938.205 | HY-DNP | |
 | 20 | 3937.783 | Etaggel | |
 | 21 | 3937.220 | Maverick | |
