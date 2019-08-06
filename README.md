@@ -62,25 +62,25 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 3957.806 | Fumiaki | |
+| 1 | 3957.922 | Fumiaki | * |
 | 2 | 3955.512 | nero-DNPds | |
 | 3 | 3954.432 | PGS-Tomasz-Panek | |
 | 4 | 3951.753 | nalbam-me | |
 | 5 | 3951.207 | Jouni-Cybercom | |
 | 6 | 3950.563 | hiroisojp | |
 | 7 | 3950.397 | Aiis-DNP | |
-| 8 | 3948.969 | leo-DNPds | |
+| 8 | 3949.508 | leo-DNPds | * |
 | 9 | 3947.515 | kimwooglae | |
 | 10 | 3947.285 | ABaykov | |
 | 11 | 3946.609 | Breadcentric | |
 | 12 | 3945.988 | JimWu | |
 | 13 | 3944.833 | nalbam | |
 | 14 | 3942.303 | t-maru078 | |
-| 15 | 3938.550 | KAGRAZAKA-DNP | * |
+| 15 | 3938.550 | KAGRAZAKA-DNP | |
 | 16 | 3938.179 | RayG | |
 | 17 | 3937.783 | Etaggel | |
 | 18 | 3937.220 | Maverick | |
-| 19 | 3937.000 | KJH | * |
+| 19 | 3937.000 | KJH | |
 | 20 | 3936.215 | HY-DNP | |
 | 21 | 3933.089 | Alex-Schultz | |
 | 22 | 3931.429 | GWP | |
