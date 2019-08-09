@@ -85,7 +85,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 21 | 3939.003 | HY-DNP | |
 | 22 | 3938.550 | KAGRAZAKA-DNP | |
 | 23 | 3937.442 | Maverick | |
-| 24 | 3937.305 | TonyJ | * |
+| 24 | 3937.375 | TonyJ | * |
 | 25 | 3937.000 | KJH | |
 | 26 | 3933.248 | Alex-Schultz | |
 | 27 | 3931.429 | GWP | |
