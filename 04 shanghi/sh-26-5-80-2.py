@@ -93,9 +93,9 @@ def reward_function(params):
     lap_time = time.time() - g_start
 
     # distance
-    # distance = params['distance_from_center']
-    # track_width = params['track_width']
-    # track_half = track_width / 2.0
+    distance = params['distance_from_center']
+    track_width = params['track_width']
+    track_half = track_width / 2.0
 
     # diff steering
     diff_steer = get_diff_steering(steering)
@@ -105,7 +105,7 @@ def reward_function(params):
 
     # reward
     reward = BASE_REWARD
-    # reward *= (track_half - (distance * 0.5)) / track_half
+    reward *= (track_half - (distance * 0.5)) / track_half
     reward *= ((MAX_STEER * 2.0) - (diff_steer * 0.5)) / (MAX_STEER * 2.0)
     # reward *= (MAX_STEER - (abs_steer * 0.5)) / MAX_STEER
     reward *= speed / MAX_SPEED
