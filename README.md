@@ -63,7 +63,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
 | 1 | 3958.116 | Fumiaki | |
-| 2 | 3957.004 | Breadcentric | * |
+| 2 | 3957.004 | Breadcentric | |
 | 3 | 3956.187 | Etaggel | |
 | 4 | 3955.650 | nero-DNPds | |
 | 5 | 3954.432 | PGS-Tomasz-Panek | |
@@ -72,7 +72,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 8 | 3953.035 | nalbam-me | |
 | 9 | 3952.399 | Aiis-DNP | |
 | 10 | 3951.726 | Jouni-Cybercom | |
-| 11 | 3950.834 | JimWu | |
+| 11 | 3950.856 | JimWu | * |
 | 12 | 3950.563 | hiroisojp | |
 | 13 | 3949.933 | leo-DNPds | |
 | 14 | 3949.045 | kimwooglae | |
