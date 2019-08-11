@@ -71,7 +71,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 7 | 3953.709 | sola-DNPds | |
 | 8 | 3953.035 | nalbam-me | |
 | 9 | 3952.399 | Aiis-DNP | |
-| 10 | 3952.129 | maeda-ai | * |
+| 10 | 3952.129 | maeda-ai | |
 | 11 | 3951.726 | Jouni-Cybercom | |
 | 12 | 3950.997 | JimWu | |
 | 13 | 3950.563 | hiroisojp | |
@@ -81,7 +81,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 17 | 3948.547 | ABaykov | |
 | 18 | 3944.833 | nalbam | |
 | 19 | 3943.625 | Kire | |
-| 20 | 3942.860 | RichardFan | * |
+| 20 | 3942.860 | RichardFan | |
 | 21 | 3942.541 | BespinRacer | |
 | 22 | 3942.303 | t-maru078 | |
 | 23 | 3939.309 | RayG | |
@@ -90,7 +90,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 26 | 3937.442 | Maverick | |
 | 27 | 3937.375 | TonyJ | |
 | 28 | 3937.000 | KJH | |
-| 29 | 3933.248 | Alex-Schultz | |
+| 29 | 3933.624 | Alex-Schultz | * |
 | 30 | 3931.429 | GWP | |
 | 31 | 3922.198 | woodstocktimes | |
 | 32 | 3856.897 | kito-DNPds | |
