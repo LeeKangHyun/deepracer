@@ -46,7 +46,7 @@ def get_episode(steps, progress):
         g_start = time.time()
         del g_steer[:]
 
-    # lab time
+    # lap time
     g_time = time.time() - g_start
 
     # waypoints
