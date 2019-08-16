@@ -73,19 +73,19 @@ np.savetxt('new.csv', x, delimiter=',')
 | 9 | 3952.399 | Aiis-DNP | |
 | 10 | 3952.129 | maeda-ai | |
 | 11 | 3951.726 | Jouni-Cybercom | |
-| 12 | 3951.095 | JimWu | |
+| 12 | 3951.105 | JimWu | * |
 | 13 | 3950.563 | hiroisojp | |
 | 14 | 3949.933 | leo-DNPds | |
 | 15 | 3949.500 | ABaykov | |
 | 16 | 3949.406 | kimwooglae | |
 | 17 | 3949.001 | Jochem | |
 | 18 | 3944.833 | nalbam | |
-| 19 | 3944.584 | hyeonwoo | * |
+| 19 | 3944.584 | hyeonwoo | |
 | 20 | 3943.625 | Kire | |
 | 21 | 3943.138 | RichardFan | |
 | 22 | 3942.541 | BespinRacer | |
 | 23 | 3942.303 | t-maru078 | |
-| 24 | 3941.555 | TonyJ | |
+| 24 | 3941.643 | TonyJ | * |
 | 25 | 3939.583 | RayG | |
 | 26 | 3939.003 | HY-DNP | |
 | 27 | 3938.550 | KAGRAZAKA-DNP | |
