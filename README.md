@@ -62,12 +62,12 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 3961.632 | Karl-NAB | * |
+| 1 | 3961.632 | Karl-NAB | |
 | 2 | 3958.175 | Fumiaki | |
 | 3 | 3957.060 | Breadcentric | |
 | 4 | 3956.187 | Etaggel | |
 | 5 | 3956.177 | PGS-Tomasz-Panek | |
-| 6 | 3955.749 | nero-DNPds | * |
+| 6 | 3955.749 | nero-DNPds | |
 | 7 | 3954.976 | JasonLian | |
 | 8 | 3953.709 | sola-DNPds | |
 | 9 | 3953.035 | nalbam-me | |
@@ -80,7 +80,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 16 | 3949.720 | kimwooglae | |
 | 17 | 3949.500 | ABaykov | |
 | 18 | 3949.001 | Jochem | |
-| 19 | 3945.460 | hyeonwoo | |
+| 19 | 3946.174 | hyeonwoo | * |
 | 20 | 3945.067 | TonyJ | |
 | 21 | 3944.833 | nalbam | |
 | 22 | 3943.625 | Kire | |
@@ -96,4 +96,4 @@ np.savetxt('new.csv', x, delimiter=',')
 | 32 | 3856.897 | kito-DNPds | |
 | 33 | 2970.379 | Paul-NAB | |
 | 34 | 2962.347 | mogamin | |
-| 35 | 2960.280 | yuki-h | * |
+| 35 | 2960.280 | yuki-h | |
