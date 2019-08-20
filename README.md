@@ -68,7 +68,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 4 | 3956.187 | Etaggel | |
 | 5 | 3956.177 | PGS-Tomasz-Panek | |
 | 6 | 3955.775 | nero-DNPds | |
-| 7 | 3955.033 | JasonLian | * |
+| 7 | 3955.058 | JasonLian | * |
 | 8 | 3953.709 | sola-DNPds | |
 | 9 | 3953.035 | nalbam-me | |
 | 10 | 3952.399 | Aiis-DNP | |
@@ -93,7 +93,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 29 | 3937.442 | Maverick | |
 | 30 | 3937.000 | KJH | |
 | 31 | 3933.624 | Alex-Schultz | |
-| 32 | 3923.245 | SF | * |
+| 32 | 3923.245 | SF | |
 | 33 | 3856.897 | kito-DNPds | |
 | 34 | 2970.379 | Paul-NAB | |
 | 35 | 2962.347 | mogamin | |
