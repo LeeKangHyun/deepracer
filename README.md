@@ -70,7 +70,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 6 | 3955.775 | nero-DNPds | |
 | 7 | 3955.065 | JasonLian | |
 | 8 | 3953.709 | sola-DNPds | |
-| 9 | 3953.164 | hiroisojp | * |
+| 9 | 3953.164 | hiroisojp | |
 | 10 | 3953.035 | nalbam-me | |
 | 11 | 3952.399 | Aiis-DNP | |
 | 12 | 3952.129 | maeda-ai | |
@@ -88,7 +88,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 24 | 3942.541 | BespinRacer | |
 | 25 | 3942.303 | t-maru078 | |
 | 26 | 3941.339 | RayG | |
-| 27 | 3939.273 | SF | |
+| 27 | 3939.448 | SF | * |
 | 28 | 3939.003 | HY-DNP | |
 | 29 | 3938.550 | KAGRAZAKA-DNP | |
 | 30 | 3937.442 | Maverick | |
