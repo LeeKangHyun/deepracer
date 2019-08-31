@@ -73,7 +73,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 9 | 3953.513 | Aiis-DNP | |
 | 10 | 3953.164 | hiroisojp | |
 | 11 | 3953.035 | nalbam-me | |
-| 12 | 3952.837 | mogamin | * |
+| 12 | 3952.837 | mogamin | |
 | 13 | 3952.554 | Jouni-Cybercom | |
 | 14 | 3952.129 | maeda-ai | |
 | 15 | 3951.253 | JimWu | |
@@ -96,4 +96,4 @@ np.savetxt('new.csv', x, delimiter=',')
 | 32 | 3937.000 | KJH | |
 | 33 | 3933.624 | Alex-Schultz | |
 | 34 | 3856.897 | kito-DNPds | |
-| 35 | 2970.379 | Paul-NAB | |
+| 35 | 2976.942 | ZivHsu | * |
