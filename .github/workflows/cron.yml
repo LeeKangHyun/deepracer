@@ -16,6 +16,14 @@ jobs:
         run: |
           bash ./report.sh
 
+      - name: Commit & Push
+        uses: opspresso/action-builder@master
+        with:
+          args: --commit
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE_PATH: ./build/commit_message.txt
+
       - name: Post to Slack
         uses: opspresso/action-builder@master
         with:
