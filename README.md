@@ -62,38 +62,38 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 3962.846 | Karl-NAB | |
-| 2 | 3958.175 | Fumiaki | |
-| 3 | 3957.540 | Breadcentric | |
-| 4 | 3956.187 | Etaggel | |
-| 5 | 3956.177 | PGS-Tomasz-Panek | |
-| 6 | 3955.775 | nero-DNPds | |
-| 7 | 3955.065 | JasonLian | |
-| 8 | 3953.709 | sola-DNPds | |
-| 9 | 3953.513 | Aiis-DNP | |
-| 10 | 3953.164 | hiroisojp | |
-| 11 | 3953.035 | nalbam-me | |
-| 12 | 3952.837 | mogamin | |
-| 13 | 3952.554 | Jouni-Cybercom | |
-| 14 | 3952.129 | maeda-ai | |
-| 15 | 3951.253 | JimWu | |
-| 16 | 3951.149 | Jochem | |
-| 17 | 3950.598 | ABaykov | * |
-| 18 | 3950.448 | kimwooglae | |
-| 19 | 3950.312 | leo-DNPds | |
-| 20 | 3946.386 | hyeonwoo | |
-| 21 | 3945.067 | TonyJ | |
-| 22 | 3944.833 | nalbam | |
-| 23 | 3944.418 | Kire | |
-| 24 | 3943.517 | RichardFan | |
-| 25 | 3942.541 | BespinRacer | |
-| 26 | 3942.303 | t-maru078 | |
-| 27 | 3941.339 | RayG | |
-| 28 | 3939.930 | SF | |
-| 29 | 3939.438 | HY-DNP | |
-| 30 | 3938.550 | KAGRAZAKA-DNP | |
-| 31 | 3937.442 | Maverick | |
-| 32 | 3937.000 | KJH | |
-| 33 | 3933.624 | Alex-Schultz | |
-| 34 | 3856.897 | kito-DNPds | |
-| 35 | 2976.942 | ZivHsu | |
+| 1 | 4952.843 | Karl-NAB | * |
+| 2 | 4948.900 | Breadcentric | * |
+| 3 | 4947.269 | Etaggel | * |
+| 4 | 4947.062 | PGS-Tomasz-Panek | * |
+| 5 | 4946.359 | nero-DNPds | * |
+| 6 | 4946.345 | JasonLian | * |
+| 7 | 4944.271 | Aiis-DNP | * |
+| 8 | 4943.271 | sola-DNPds | * |
+| 9 | 4942.915 | nalbam-me | * |
+| 10 | 4942.117 | Jouni-Cybercom | * |
+| 11 | 4942.031 | maeda-ai | * |
+| 12 | 4941.879 | JimWu | * |
+| 13 | 4941.702 | hiroisojp | * |
+| 14 | 4941.129 | kimwooglae | * |
+| 15 | 4940.972 | Jochem | * |
+| 16 | 4939.540 | ABaykov | * |
+| 17 | 4939.195 | leo-DNPds | * |
+| 18 | 4935.562 | Kire | * |
+| 19 | 4934.418 | TonyJ | * |
+| 20 | 4933.870 | RichardFan | * |
+| 21 | 4932.355 | nalbam | * |
+| 22 | 4931.377 | RayG | * |
+| 23 | 4929.189 | HY-DNP | * |
+| 24 | 4927.447 | hyeonwoo | * |
+| 25 | 4925.840 | Maverick | * |
+| 26 | 4924.962 | KAGRAZAKA-DNP | * |
+| 27 | 4922.020 | Alex-Schultz | * |
+| 28 | 4844.969 | kito-DNPds | * |
+| 29 | 3958.175 | Fumiaki | |
+| 30 | 3952.837 | mogamin | |
+| 31 | 3942.541 | BespinRacer | |
+| 32 | 3942.303 | t-maru078 | |
+| 33 | 3939.930 | SF | |
+| 34 | 3937.075 | Carl | * |
+| 35 | 3937.000 | KJH | |
