@@ -6,10 +6,10 @@ SHELL_DIR=$(dirname $0)
 
 URL_TEMPLATE="https://aws.amazon.com/api/dirs/items/search?item.directoryId=deepracer-leaderboard&sort_by=item.additionalFields.position&sort_order=asc&size=100&item.locale=en_US&tags.id=deepracer-leaderboard%23recordtype%23individual&tags.id=deepracer-leaderboard%23eventtype%23virtual&tags.id=deepracer-leaderboard%23eventid%23virtual-season-"
 
-SEASONS="2019-05 2019-06 2019-07 2019-08"
+SEASONS="2019-05 2019-06 2019-07 2019-08 2019-09"
 
 FIRST="2019-05"
-LATEST="2019-08"
+LATEST="2019-09"
 
 USERNAME=${CIRCLE_PROJECT_USERNAME:-nalbam}
 REPONAME=${CIRCLE_PROJECT_REPONAME:-deepracer}
@@ -155,7 +155,7 @@ _build() {
 
             if [ "${SUB_TIME}" != "" ]; then
                 if [ "${SUB_POINTS}" == "null" ]; then
-                    SUB_POINTS=$(echo "1000-${ARR[0]:3}" | bc)
+                    SUB_POINTS=$(echo "1000-60*${ARR[0]:0:2}-${ARR[0]:3}" | bc)
                 fi
 
                 POINTS=$(echo "${POINTS}+${SUB_POINTS}" | bc)
@@ -232,6 +232,29 @@ _message() {
     fi
 }
 
+_json() {
+    _command "_json"
+
+    JSON=${SHELL_DIR}/cache/points.json
+
+    echo "{\"deepracer\":[" > ${JSON}
+
+    IDX=1
+    while read LINE; do
+        ARR=(${LINE})
+
+        if [ "${IDX}" != "1" ]; then
+            echo "," >> ${JSON}
+        fi
+
+        printf "{\"no\":${IDX},\"name\":\"${ARR[1]}\",\"point\":${ARR[0]}}" >> ${JSON}
+
+        IDX=$(( ${IDX} + 1 ))
+    done < ${SHELL_DIR}/build/points.log
+
+    echo "]}" >> ${JSON}
+}
+
 _git_push() {
     _command "_git_push"
 
@@ -268,6 +291,7 @@ __main__() {
 
     _build
     _message
+    _json
 
     if [ ! -z ${CHANGED} ]; then
         _git_push
