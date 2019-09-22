@@ -252,9 +252,9 @@ _json() {
 _slack() {
     _command "_slack"
 
-    if [ -z ${SLACK_TOKEN} ]; then
-        return
-    fi
+    # if [ -z ${SLACK_TOKEN} ]; then
+    #     return
+    # fi
 
     json="{\"text\":\"$(cat ${SHELL_DIR}/build/message.log)\"}"
     echo $json > ${SHELL_DIR}/build/slack_message.json
