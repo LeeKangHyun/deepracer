@@ -83,17 +83,17 @@ np.savetxt('new.csv', x, delimiter=',')
 | 19 | 4934.418 | TonyJ | |
 | 20 | 4933.870 | RichardFan | |
 | 21 | 4932.355 | nalbam | * |
-| 22 | 4931.377 | RayG | * |
-| 23 | 4929.189 | HY-DNP | * |
-| 24 | 4927.447 | hyeonwoo | * |
-| 25 | 4925.840 | Maverick | * |
-| 26 | 4924.962 | KAGRAZAKA-DNP | * |
-| 27 | 4922.020 | Alex-Schultz | * |
-| 28 | 4844.969 | kito-DNPds | * |
-| 29 | 3958.175 | Fumiaki | * |
-| 30 | 3952.837 | mogamin | * |
-| 31 | 3942.541 | BespinRacer | * |
-| 32 | 3942.303 | t-maru078 | * |
-| 33 | 3939.930 | SF | * |
-| 34 | 3937.075 | Carl | * |
-| 35 | 3937.000 | KJH | * |
+| 22 | 4931.377 | RayG | |
+| 23 | 4929.189 | HY-DNP | |
+| 24 | 4927.447 | hyeonwoo | |
+| 25 | 4925.840 | Maverick | |
+| 26 | 4924.962 | KAGRAZAKA-DNP | |
+| 27 | 4922.020 | Alex-Schultz | |
+| 28 | 4844.969 | kito-DNPds | |
+| 29 | 3958.175 | Fumiaki | |
+| 30 | 3952.837 | mogamin | |
+| 31 | 3942.541 | BespinRacer | |
+| 32 | 3942.303 | t-maru078 | |
+| 33 | 3939.930 | SF | |
+| 34 | 3937.075 | Carl | |
+| 35 | 3937.000 | KJH | |
