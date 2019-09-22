@@ -11,12 +11,6 @@ SEASONS="2019-05 2019-06 2019-07 2019-08 2019-09"
 FIRST="2019-05"
 LATEST="2019-09"
 
-USERNAME=${CIRCLE_PROJECT_USERNAME:-nalbam}
-REPONAME=${CIRCLE_PROJECT_REPONAME:-deepracer}
-
-GIT_USERNAME="bot"
-GIT_USEREMAIL="bot@nalbam.com"
-
 CHANGED=
 
 # command -v tput > /dev/null && TPUT=true
@@ -255,24 +249,6 @@ _json() {
     echo "]}" >> ${JSON}
 }
 
-_git_push() {
-    _command "_git_push"
-
-    if [ -z ${GITHUB_TOKEN} ]; then
-        return
-    fi
-
-    DATE=$(date +%Y%m%d-%H%M)
-
-    git config --global user.name "${GIT_USERNAME}"
-    git config --global user.email "${GIT_USEREMAIL}"
-
-    git add --all
-    git commit -m "${DATE}"
-
-    git push -q https://${GITHUB_TOKEN}@github.com/${USERNAME}/${REPONAME}.git master
-}
-
 _slack() {
     _command "_slack"
 
@@ -283,8 +259,8 @@ _slack() {
     json="{\"text\":\"$(cat ${SHELL_DIR}/build/message.log)\"}"
     echo $json > /${SHELL_DIR}/build/slack_message.json
 
-    webhook_url="https://hooks.slack.com/services/${SLACK_TOKEN}"
-    curl -s -d "payload=${json}" "${webhook_url}"
+    # webhook_url="https://hooks.slack.com/services/${SLACK_TOKEN}"
+    # curl -s -d "payload=${json}" "${webhook_url}"
 }
 
 __main__() {
@@ -298,7 +274,6 @@ __main__() {
         _error
     fi
 
-    _git_push
     _slack
 
     _success

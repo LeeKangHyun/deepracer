@@ -15,3 +15,12 @@ jobs:
       - name: Report
         run: |
           bash ./report.sh
+
+      - name: Post to Slack
+        uses: opspresso/action-builder@master
+        with:
+          args: --slack
+        env:
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          JSON_PATH: ./target/slack_message.json
+          LOOSE_ERROR: "true"
