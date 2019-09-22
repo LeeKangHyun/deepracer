@@ -257,7 +257,7 @@ _slack() {
     fi
 
     json="{\"text\":\"$(cat ${SHELL_DIR}/build/message.log)\"}"
-    echo $json > /${SHELL_DIR}/build/slack_message.json
+    echo $json > ${SHELL_DIR}/build/slack_message.json
 
     # webhook_url="https://hooks.slack.com/services/${SLACK_TOKEN}"
     # curl -s -d "payload=${json}" "${webhook_url}"
