@@ -195,8 +195,8 @@ _message() {
 
             _result "changed ${ARR[0]} ${ARR[1]}"
 
-            echo "${IDX}\t${ARR[0]}\t${ARR[1]}\t<<<<<<<\n" >> ${MESSAGE}
-            echo "| ${IDX} | ${ARR[0]} | ${ARR[1]} | * |" >> ${README}
+            echo "${IDX}\t${ARR[0]}\t${ARR[1]}\t<<<\n" >> ${MESSAGE}
+            echo "| ${IDX} | ${ARR[0]} | ${ARR[1]} | <<< |" >> ${README}
         fi
 
         IDX=$(( ${IDX} + 1 ))
