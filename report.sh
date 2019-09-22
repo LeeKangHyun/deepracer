@@ -252,15 +252,10 @@ _json() {
 _slack() {
     _command "_slack"
 
-    # if [ -z ${SLACK_TOKEN} ]; then
-    #     return
-    # fi
+    echo "$(date +%Y%m%d-%H%M)" > ${SHELL_DIR}/build/commit_message.txt
 
     json="{\"text\":\"$(cat ${SHELL_DIR}/build/message.log)\"}"
     echo $json > ${SHELL_DIR}/build/slack_message.json
-
-    # webhook_url="https://hooks.slack.com/services/${SLACK_TOKEN}"
-    # curl -s -d "payload=${json}" "${webhook_url}"
 }
 
 __main__() {
