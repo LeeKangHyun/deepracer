@@ -22,5 +22,5 @@ jobs:
           args: --slack
         env:
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
-          JSON_PATH: ./target/slack_message.json
+          JSON_PATH: ./build/slack_message.json
           LOOSE_ERROR: "true"
