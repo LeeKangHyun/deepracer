@@ -188,14 +188,14 @@ _message() {
         ARR=(${LINE})
 
         if [ "x${COUNT}" != "x0" ]; then
-            echo "${IDX}\t${ARR[0]}\t${ARR[1]}" >> ${MESSAGE}
+            echo "${IDX}\t${ARR[0]}\t${ARR[1]}\n" >> ${MESSAGE}
             echo "| ${IDX} | ${ARR[0]} | ${ARR[1]} | |" >> ${README}
         else
             CHANGED=true
 
             _result "changed ${ARR[0]} ${ARR[1]}"
 
-            echo "${IDX}\t${ARR[0]}\t${ARR[1]}\t<<<<<<<" >> ${MESSAGE}
+            echo "${IDX}\t${ARR[0]}\t${ARR[1]}\t<<<<<<<\n" >> ${MESSAGE}
             echo "| ${IDX} | ${ARR[0]} | ${ARR[1]} | * |" >> ${README}
         fi
 
@@ -203,8 +203,15 @@ _message() {
     done < ${SHELL_DIR}/cache/points.log
 
     # message
-    echo "*DeepRacer Virtual Circuit Scoreboard*" > ${SHELL_DIR}/build/message.log
+    echo "*DeepRacer Virtual Circuit Scoreboard*\n" > ${SHELL_DIR}/build/message.log
     cat ${MESSAGE} >> ${SHELL_DIR}/build/message.log
+
+    # slack message
+    json="{\"text\":\"$(cat ${SHELL_DIR}/build/message.log)\"}"
+    echo $json > ${SHELL_DIR}/build/slack_message.json
+
+    # commit message
+    printf "$(date +%Y%m%d-%H%M)" > ${SHELL_DIR}/build/commit_message.txt
 
     # readme
     IDX=1
@@ -249,15 +256,6 @@ _json() {
     echo "]}" >> ${JSON}
 }
 
-_slack() {
-    _command "_slack"
-
-    echo "$(date +%Y%m%d-%H%M)" > ${SHELL_DIR}/build/commit_message.txt
-
-    json="{\"text\":\"$(cat ${SHELL_DIR}/build/message.log)\"}"
-    echo $json > ${SHELL_DIR}/build/slack_message.json
-}
-
 __main__() {
     _prepare
 
@@ -268,8 +266,6 @@ __main__() {
     if [ -z ${CHANGED} ]; then
         _error
     fi
-
-    _slack
 
     _success
 }
