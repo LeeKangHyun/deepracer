@@ -12,6 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Check Version
+      - name: Report
         run: |
-          bash ./build.sh
+          bash ./report.sh
