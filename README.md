@@ -85,8 +85,8 @@ np.savetxt('new.csv', x, delimiter=',')
 | 21 | 4932.355 | nalbam | |
 | 22 | 4931.880 | RayG | |
 | 23 | 4929.189 | HY-DNP | |
-| 24 | 4927.447 | hyeonwoo | |
-| 25 | 4926.527 | SF | |
+| 24 | 4928.896 | hyeonwoo | <<< |
+| 25 | 4926.921 | SF | <<< |
 | 26 | 4924.962 | KAGRAZAKA-DNP | |
 | 27 | 4922.020 | Alex-Schultz | |
 | 28 | 4844.969 | kito-DNPds | |
@@ -94,6 +94,6 @@ np.savetxt('new.csv', x, delimiter=',')
 | 30 | 3952.837 | mogamin | |
 | 31 | 3942.541 | BespinRacer | |
 | 32 | 3942.303 | t-maru078 | |
-| 33 | 3937.442 | Maverick | <<< |
+| 33 | 3937.442 | Maverick | |
 | 34 | 3937.075 | Carl | |
 | 35 | 3937.000 | KJH | |
