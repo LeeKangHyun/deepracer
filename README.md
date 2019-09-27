@@ -83,8 +83,8 @@ np.savetxt('new.csv', x, delimiter=',')
 | 19 | 4934.418 | TonyJ | |
 | 20 | 4933.870 | RichardFan | |
 | 21 | 4932.355 | nalbam | |
-| 22 | 4931.984 | RayG | <<< |
-| 23 | 4930.032 | BespinRacer | <<< |
+| 22 | 4931.984 | RayG | |
+| 23 | 4931.867 | BespinRacer | <<< |
 | 24 | 4929.189 | HY-DNP | |
 | 25 | 4928.896 | hyeonwoo | |
 | 26 | 4927.536 | KAGRAZAKA-DNP | |
