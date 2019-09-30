@@ -72,7 +72,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 8 | 4944.271 | Aiis-DNP | |
 | 9 | 4943.271 | sola-DNPds | |
 | 10 | 4942.915 | nalbam-me | |
-| 11 | 4942.708 | Jouni-Cybercom | <<< |
+| 11 | 4942.790 | Jouni-Cybercom | <<< |
 | 12 | 4942.097 | JimWu | |
 | 13 | 4942.031 | maeda-ai | |
 | 14 | 4941.702 | hiroisojp | |
