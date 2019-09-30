@@ -64,7 +64,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | - | ----- | --------- | - |
 | 1 | 4953.203 | Karl-NAB | |
 | 2 | 4948.900 | Breadcentric | |
-| 3 | 4948.817 | Fumiaki | <<< |
+| 3 | 4948.817 | Fumiaki | |
 | 4 | 4947.269 | Etaggel | |
 | 5 | 4947.062 | PGS-Tomasz-Panek | |
 | 6 | 4946.359 | nero-DNPds | |
@@ -91,7 +91,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 27 | 4929.189 | HY-DNP | |
 | 28 | 4927.536 | KAGRAZAKA-DNP | |
 | 29 | 4926.921 | SF | |
-| 30 | 4924.470 | t-maru078 | |
+| 30 | 4925.622 | t-maru078 | <<< |
 | 31 | 4922.020 | Alex-Schultz | |
 | 32 | 4844.969 | kito-DNPds | |
 | 33 | 3937.442 | Maverick | |
