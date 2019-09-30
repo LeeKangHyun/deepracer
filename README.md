@@ -62,7 +62,7 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 4953.203 | Karl-NAB | |
+| 1 | 4953.298 | Karl-NAB | <<< |
 | 2 | 4948.900 | Breadcentric | |
 | 3 | 4948.867 | Fumiaki | |
 | 4 | 4947.269 | Etaggel | |
@@ -72,7 +72,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 8 | 4944.271 | Aiis-DNP | |
 | 9 | 4943.271 | sola-DNPds | |
 | 10 | 4942.915 | nalbam-me | |
-| 11 | 4942.704 | Jouni-Cybercom | <<< |
+| 11 | 4942.704 | Jouni-Cybercom | |
 | 12 | 4942.097 | JimWu | |
 | 13 | 4942.031 | maeda-ai | |
 | 14 | 4941.702 | hiroisojp | |
@@ -80,7 +80,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | 16 | 4940.972 | Jochem | |
 | 17 | 4939.589 | leo-DNPds | |
 | 18 | 4939.540 | ABaykov | |
-| 19 | 4937.952 | mogamin | <<< |
+| 19 | 4937.952 | mogamin | |
 | 20 | 4935.562 | Kire | |
 | 21 | 4934.806 | hyeonwoo | |
 | 22 | 4934.418 | TonyJ | |
