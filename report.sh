@@ -69,7 +69,7 @@ _load_leaderboard() {
         CACHE_FILE=${SHELL_DIR}/cache/${SEASON}.log
 
         if [ -f ${CACHE_FILE} ] && [ "${SEASON}" != "${LATEST}" ]; then
-            _command "_build ${SEASON} cached"
+            _result "_build ${SEASON} cached"
             continue
         fi
 
@@ -78,6 +78,8 @@ _load_leaderboard() {
         curl -sL ${URL} \
             | jq -r '.items[].item | "\(.additionalFields.lapTime) \"\(.additionalFields.racerName)\" \(.additionalFields.points)"' \
             > ${CACHE_FILE}
+
+        _result "_build ${SEASON} loaded"
     done
 
     echo
