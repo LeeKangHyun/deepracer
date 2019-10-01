@@ -93,7 +93,7 @@ _load_extra() {
     CACHE_FILE=${SHELL_DIR}/cache/${SEASON}.log
 
     if [ ! -f ${CACHE_FILE} ]; then
-        _command "_build ${SEASON} not found"
+        _result "_build ${SEASON} not found"
         continue
     fi
 
@@ -160,7 +160,7 @@ _build_summary() {
             CACHE_FILE=${SHELL_DIR}/cache/${SEASON}.log
 
             if [ ! -f ${CACHE_FILE} ]; then
-                _command "_build ${SEASON} not found"
+                _result "_build ${SEASON} not found"
                 continue
             fi
 
@@ -301,6 +301,7 @@ __main__() {
     # _json
 
     if [ -z ${CHANGED} ]; then
+        _result "not changed."
         _error
     fi
 
