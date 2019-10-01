@@ -59,6 +59,8 @@ _prepare() {
     if [ -f ${SHELL_DIR}/build/points.log ]; then
         rm -rf ${SHELL_DIR}/build/points.log
     fi
+
+    echo
 }
 
 _load_leaderboard() {
@@ -195,9 +197,9 @@ _build_summary() {
 _build() {
     _load_leaderboard
 
-    # _load_extras
-
-    # _load_extra ${LATEST}
+    if [ "${MODE}" == "clear" ]; then
+        _load_extras
+    fi
 
     _build_summary
 }
@@ -301,8 +303,7 @@ __main__() {
     # _json
 
     if [ -z ${CHANGED} ]; then
-        _result "not changed."
-        _error
+        _error "not changed."
     fi
 
     _success
