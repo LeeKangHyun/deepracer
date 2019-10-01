@@ -62,7 +62,7 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 5934.713 | nero-DNPds | <<< |
+| 1 | 5934.911 | nero-DNPds | <<< |
 | 2 | 5874.202 | BespinRacer | |
 | 3 | 4953.296 | Karl-NAB | |
 | 4 | 4948.898 | Breadcentric | |
