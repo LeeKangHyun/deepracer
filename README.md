@@ -62,38 +62,38 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 4953.296 | Karl-NAB | <<< |
-| 2 | 4948.898 | Breadcentric | <<< |
-| 3 | 4948.864 | Fumiaki | <<< |
-| 4 | 4947.274 | Etaggel | <<< |
-| 5 | 4947.059 | PGS-Tomasz-Panek | <<< |
-| 6 | 4946.357 | nero-DNPds | <<< |
-| 7 | 4946.342 | JasonLian | <<< |
-| 8 | 4944.273 | Aiis-DNP | <<< |
-| 9 | 4943.274 | sola-DNPds | <<< |
-| 10 | 4942.940 | Jouni-Cybercom | <<< |
-| 11 | 4942.916 | nalbam-me | <<< |
-| 12 | 4942.098 | JimWu | <<< |
-| 13 | 4942.034 | maeda-ai | <<< |
-| 14 | 4941.706 | hiroisojp | <<< |
-| 15 | 4941.212 | kimwooglae | <<< |
-| 16 | 4940.973 | Jochem | <<< |
-| 17 | 4939.588 | leo-DNPds | <<< |
-| 18 | 4939.540 | ABaykov | |
-| 19 | 4937.950 | mogamin | <<< |
-| 20 | 4935.566 | Kire | <<< |
-| 21 | 4934.802 | hyeonwoo | <<< |
-| 22 | 4934.419 | TonyJ | <<< |
-| 23 | 4932.403 | BespinRacer | |
+| 1 | 5874.202 | BespinRacer | <<< |
+| 2 | 4953.296 | Karl-NAB | <<< |
+| 3 | 4948.898 | Breadcentric | <<< |
+| 4 | 4948.864 | Fumiaki | <<< |
+| 5 | 4947.274 | Etaggel | <<< |
+| 6 | 4947.059 | PGS-Tomasz-Panek | <<< |
+| 7 | 4946.357 | nero-DNPds | <<< |
+| 8 | 4946.342 | JasonLian | <<< |
+| 9 | 4944.273 | Aiis-DNP | <<< |
+| 10 | 4943.274 | sola-DNPds | <<< |
+| 11 | 4942.940 | Jouni-Cybercom | <<< |
+| 12 | 4942.916 | nalbam-me | <<< |
+| 13 | 4942.098 | JimWu | <<< |
+| 14 | 4942.034 | maeda-ai | <<< |
+| 15 | 4941.706 | hiroisojp | <<< |
+| 16 | 4941.212 | kimwooglae | <<< |
+| 17 | 4940.973 | Jochem | <<< |
+| 18 | 4939.588 | leo-DNPds | <<< |
+| 19 | 4939.540 | ABaykov | <<< |
+| 20 | 4937.950 | mogamin | <<< |
+| 21 | 4935.566 | Kire | <<< |
+| 22 | 4934.802 | hyeonwoo | <<< |
+| 23 | 4934.419 | TonyJ | <<< |
 | 24 | 4932.351 | nalbam | <<< |
 | 25 | 4931.985 | RayG | <<< |
-| 26 | 4929.189 | HY-DNP | |
-| 27 | 4927.538 | KAGRAZAKA-DNP | <<< |
-| 28 | 4926.918 | SF | <<< |
-| 29 | 4925.620 | t-maru078 | <<< |
-| 30 | 4922.017 | Alex-Schultz | <<< |
-| 31 | 4914.609 | StarlightDreamStudio | <<< |
-| 32 | 4844.973 | kito-DNPds | <<< |
-| 33 | 3956.004 | RichardFan | <<< |
-| 34 | 3937.073 | Carl | <<< |
-| 35 | 3937.000 | KJH | |
+| 26 | 4929.189 | HY-DNP | <<< |
+| 27 | 4929.051 | Robin-Castro | <<< |
+| 28 | 4927.538 | KAGRAZAKA-DNP | <<< |
+| 29 | 4926.918 | SF | <<< |
+| 30 | 4925.840 | Maverick | <<< |
+| 31 | 4925.620 | t-maru078 | <<< |
+| 32 | 4922.017 | Alex-Schultz | <<< |
+| 33 | 4917.132 | GWP | <<< |
+| 34 | 4914.609 | StarlightDreamStudio | <<< |
+| 35 | 4907.201 | woodstocktimes | <<< |
