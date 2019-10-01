@@ -61,7 +61,7 @@ _prepare() {
     fi
 }
 
-_build() {
+_load_leaderboard() {
     # leaderboard
     for SEASON in ${SEASONS}; do
         _command "_build ${SEASON}"
@@ -80,51 +80,65 @@ _build() {
             > ${CACHE_FILE}
     done
 
-    # additional
+    echo
+}
+
+_load_extra() {
+    SEASON=$1
+
+    _command "_build ${SEASON} extra"
+
+    CACHE_FILE=${SHELL_DIR}/cache/${SEASON}.log
+
+    if [ ! -f ${CACHE_FILE} ]; then
+        _command "_build ${SEASON} not found"
+        continue
+    fi
+
+    JDX=1
+    while read LINE; do
+        NAME="$(echo ${LINE} | cut -d'"' -f2)"
+
+        for SVAL in ${SEASONS}; do
+            if [ "${SVAL}" == "${SEASON}" ]; then
+                continue
+            fi
+
+            LOG_TEMP=${SHELL_DIR}/cache/${SVAL}.log
+
+            COUNT=$(cat ${LOG_TEMP} | grep "\"${NAME}\"" | wc -l | xargs)
+
+            if [ "x${COUNT}" != "x0" ]; then
+                continue
+            fi
+
+            URL="${URL_TEMPLATE}${SVAL}&item.additionalFields.racerName=${NAME}"
+
+            curl -sL ${URL} \
+                | jq -r '.items[].item | "\(.additionalFields.lapTime) \"\(.additionalFields.racerName)\" \(.additionalFields.points)"' \
+                >> ${LOG_TEMP}
+
+            _result "_build ${SVAL} ${NAME}"
+        done
+
+        # if [ "${JDX}" == "50" ]; then
+        #     break
+        # fi
+
+        JDX=$(( ${JDX} + 1 ))
+    done < ${CACHE_FILE}
+}
+
+_load_extras() {
+    # extra
     for SEASON in ${SEASONS}; do
-        _command "_build ${SEASON} additional"
-
-        CACHE_FILE=${SHELL_DIR}/cache/${SEASON}.log
-
-        if [ ! -f ${CACHE_FILE} ]; then
-            _command "_build ${SEASON} not found"
-            continue
-        fi
-
-        JDX=1
-        while read LINE; do
-            NAME="$(echo ${LINE} | cut -d'"' -f2)"
-
-            for SVAL in ${SEASONS}; do
-                if [ "${SVAL}" == "${SEASON}" ]; then
-                    continue
-                fi
-
-                LOG_TEMP=${SHELL_DIR}/cache/${SVAL}.log
-
-                COUNT=$(cat ${LOG_TEMP} | grep "\"${NAME}\"" | wc -l | xargs)
-
-                if [ "x${COUNT}" != "x0" ]; then
-                    continue
-                fi
-
-                URL="${URL_TEMPLATE}${SVAL}&item.additionalFields.racerName=${NAME}"
-
-                curl -sL ${URL} \
-                    | jq -r '.items[].item | "\(.additionalFields.lapTime) \"\(.additionalFields.racerName)\" \(.additionalFields.points)"' \
-                    >> ${LOG_TEMP}
-
-                _result "_build ${SVAL} ${NAME}"
-            done
-
-            # if [ "${JDX}" == "50" ]; then
-            #     break
-            # fi
-
-            JDX=$(( ${JDX} + 1 ))
-        done < ${CACHE_FILE}
+        _load_extra ${SEASON}
     done
 
+    echo
+}
+
+_build_summary() {
     # summary
     _command "_build summary"
 
@@ -172,6 +186,18 @@ _build() {
 
     # print
     cat ${SHELL_DIR}/build/points.log | sort -r -g | head -35 > ${SHELL_DIR}/cache/points.log
+
+    echo
+}
+
+_build() {
+    _load_leaderboard
+
+    # _load_extras
+
+    # _load_extra ${LATEST}
+
+    _build_summary
 }
 
 _message() {
@@ -207,6 +233,8 @@ _message() {
 
         IDX=$(( ${IDX} + 1 ))
     done < ${SHELL_DIR}/cache/points.log
+
+    echo
 
     # message
     echo "*DeepRacer Virtual Circuit Scoreboard*\n" > ${SHELL_DIR}/build/message.log
@@ -267,7 +295,8 @@ __main__() {
 
     _build
     _message
-    _json
+
+    # _json
 
     if [ -z ${CHANGED} ]; then
         _error
