@@ -62,38 +62,38 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 4953.298 | Karl-NAB | |
-| 2 | 4948.900 | Breadcentric | |
-| 3 | 4948.867 | Fumiaki | |
-| 4 | 4947.269 | Etaggel | |
-| 5 | 4947.062 | PGS-Tomasz-Panek | |
-| 6 | 4946.359 | nero-DNPds | |
-| 7 | 4946.345 | JasonLian | |
-| 8 | 4944.271 | Aiis-DNP | |
-| 9 | 4943.271 | sola-DNPds | |
-| 10 | 4942.935 | Jouni-Cybercom | <<< |
-| 11 | 4942.915 | nalbam-me | |
-| 12 | 4942.097 | JimWu | |
-| 13 | 4942.031 | maeda-ai | |
-| 14 | 4941.702 | hiroisojp | |
-| 15 | 4941.208 | kimwooglae | |
-| 16 | 4940.972 | Jochem | |
-| 17 | 4939.589 | leo-DNPds | |
+| 1 | 4953.296 | Karl-NAB | <<< |
+| 2 | 4948.898 | Breadcentric | <<< |
+| 3 | 4948.864 | Fumiaki | <<< |
+| 4 | 4947.274 | Etaggel | <<< |
+| 5 | 4947.059 | PGS-Tomasz-Panek | <<< |
+| 6 | 4946.357 | nero-DNPds | <<< |
+| 7 | 4946.342 | JasonLian | <<< |
+| 8 | 4944.273 | Aiis-DNP | <<< |
+| 9 | 4943.274 | sola-DNPds | <<< |
+| 10 | 4942.940 | Jouni-Cybercom | <<< |
+| 11 | 4942.916 | nalbam-me | <<< |
+| 12 | 4942.098 | JimWu | <<< |
+| 13 | 4942.034 | maeda-ai | <<< |
+| 14 | 4941.706 | hiroisojp | <<< |
+| 15 | 4941.212 | kimwooglae | <<< |
+| 16 | 4940.973 | Jochem | <<< |
+| 17 | 4939.588 | leo-DNPds | <<< |
 | 18 | 4939.540 | ABaykov | |
-| 19 | 4937.952 | mogamin | |
-| 20 | 4935.562 | Kire | |
-| 21 | 4934.806 | hyeonwoo | |
-| 22 | 4934.418 | TonyJ | |
-| 23 | 4933.870 | RichardFan | |
-| 24 | 4932.403 | BespinRacer | |
-| 25 | 4932.355 | nalbam | |
-| 26 | 4931.984 | RayG | |
-| 27 | 4929.189 | HY-DNP | |
-| 28 | 4927.536 | KAGRAZAKA-DNP | |
-| 29 | 4926.921 | SF | |
-| 30 | 4925.622 | t-maru078 | |
-| 31 | 4922.020 | Alex-Schultz | |
-| 32 | 4844.969 | kito-DNPds | |
-| 33 | 3937.442 | Maverick | |
-| 34 | 3937.075 | Carl | |
+| 19 | 4937.950 | mogamin | <<< |
+| 20 | 4935.566 | Kire | <<< |
+| 21 | 4934.802 | hyeonwoo | <<< |
+| 22 | 4934.419 | TonyJ | <<< |
+| 23 | 4932.403 | BespinRacer | |
+| 24 | 4932.351 | nalbam | <<< |
+| 25 | 4931.985 | RayG | <<< |
+| 26 | 4929.189 | HY-DNP | |
+| 27 | 4927.538 | KAGRAZAKA-DNP | <<< |
+| 28 | 4926.918 | SF | <<< |
+| 29 | 4925.620 | t-maru078 | <<< |
+| 30 | 4922.017 | Alex-Schultz | <<< |
+| 31 | 4914.609 | StarlightDreamStudio | <<< |
+| 32 | 4844.973 | kito-DNPds | <<< |
+| 33 | 3956.004 | RichardFan | <<< |
+| 34 | 3937.073 | Carl | <<< |
 | 35 | 3937.000 | KJH | |
