@@ -63,7 +63,7 @@ np.savetxt('new.csv', x, delimiter=',')
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
 | 1 | 5937.289 | nero-DNPds | |
-| 2 | 5937.070 | JasonLian | <<< |
+| 2 | 5937.288 | JasonLian | <<< |
 | 3 | 5936.790 | Breadcentric | |
 | 4 | 5933.053 | JimWu | |
 | 5 | 5930.791 | nalbam-me | |
