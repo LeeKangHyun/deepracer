@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 're-26-5-80-2'
+NAME = 're-30'
 
 BASE_REWARD = 10.0
 
@@ -12,8 +12,8 @@ MAX_STEER = 30.0
 MIN_STEER = 10.0
 LEN_STEER = 2
 
-MAX_SPEED = 8.0
-MIN_SPEED = 3.0
+MAX_SPEED = 3.0
+MIN_SPEED = 1.0
 
 g_episode = 0
 g_progress = float(0)
