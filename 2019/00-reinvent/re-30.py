@@ -12,7 +12,7 @@ MAX_STEER = 30.0
 MIN_STEER = 10.0
 LEN_STEER = 2
 
-MAX_SPEED = 3.0
+MAX_SPEED = 10.0
 MIN_SPEED = 1.0
 
 g_episode = 0
