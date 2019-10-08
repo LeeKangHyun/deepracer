@@ -105,9 +105,9 @@ def reward_function(params):
 
     # reward
     reward = BASE_REWARD
-    reward *= (track_half - (distance * 0.5)) / track_half
-    reward *= ((MAX_STEER * 2.0) - (diff_steer * 0.5)) / (MAX_STEER * 2.0)
-    # reward *= (MAX_STEER - (abs_steer * 0.5)) / MAX_STEER
+    # reward *= (track_half - (distance * 0.5)) / track_half
+    # reward *= ((MAX_STEER * 2.0) - (diff_steer * 0.5)) / (MAX_STEER * 2.0)
+    reward *= (MAX_STEER - (abs_steer * 0.5)) / MAX_STEER
     reward *= speed / MAX_SPEED
 
     if reward <= 0:
@@ -119,6 +119,8 @@ def reward_function(params):
     # log
     params['name'] = NAME
     params['episode'] = episode
+    params['distance'] = distance
+    params['track_half'] = track_half
     params['diff_progress'] = diff_progress
     params['diff_steer'] = diff_steer
     params['abs_steer'] = abs_steer
