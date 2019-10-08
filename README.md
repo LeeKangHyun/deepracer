@@ -62,7 +62,7 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 5944.781 | Karl-NAB | <<< |
+| 1 | 5944.781 | Karl-NAB | |
 | 2 | 5938.308 | Breadcentric | |
 | 3 | 5938.100 | Etaggel | |
 | 4 | 5937.822 | PGS-Tomasz-Panek | |
@@ -78,13 +78,13 @@ np.savetxt('new.csv', x, delimiter=',')
 | 14 | 5928.808 | leo-DNPds | |
 | 15 | 5928.211 | ABaykov | |
 | 16 | 5923.629 | TonyJ | |
-| 17 | 5922.816 | RayG | <<< |
+| 17 | 5922.851 | RayG | <<< |
 | 18 | 5922.375 | BespinRacer | |
 | 19 | 5917.795 | Robin-Castro | |
 | 20 | 5915.790 | SF | |
 | 21 | 5908.888 | t-maru078 | |
-| 22 | 5902.050 | GWP | |
-| 23 | 5901.895 | StarlightDreamStudio | |
+| 22 | 5902.073 | StarlightDreamStudio | <<< |
+| 23 | 5902.050 | GWP | |
 | 24 | 5901.350 | Alex-Schultz | |
 | 25 | 5892.072 | woodstocktimes | |
 | 26 | 4948.864 | Fumiaki | |
