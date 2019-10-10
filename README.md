@@ -62,7 +62,7 @@ np.savetxt('new.csv', x, delimiter=',')
 <!-- leaderboard -->
 | # | Score | RacerName |   |
 | - | ----- | --------- | - |
-| 1 | 5945.246 | Karl-NAB | <<< |
+| 1 | 5945.246 | Karl-NAB | |
 | 2 | 5938.308 | Breadcentric | |
 | 3 | 5938.100 | Etaggel | |
 | 4 | 5937.822 | PGS-Tomasz-Panek | |
@@ -72,25 +72,25 @@ np.savetxt('new.csv', x, delimiter=',')
 | 8 | 5933.782 | Jouni-Cybercom | |
 | 9 | 5933.328 | JimWu | |
 | 10 | 5933.200 | nalbam-me | |
-| 11 | 5932.703 | kimwooglae | |
-| 12 | 5931.388 | Jochem | |
-| 13 | 5929.387 | hiroisojp | |
-| 14 | 5929.084 | ABaykov | |
-| 15 | 5928.808 | leo-DNPds | |
-| 16 | 5923.629 | TonyJ | |
-| 17 | 5922.873 | RayG | |
-| 18 | 5922.375 | BespinRacer | |
-| 19 | 5917.856 | Robin-Castro | |
-| 20 | 5916.687 | KAGRAZAKA-DNP | |
-| 21 | 5915.950 | SF | |
-| 22 | 5910.845 | Alex-Schultz | |
-| 23 | 5908.888 | t-maru078 | |
-| 24 | 5902.471 | StarlightDreamStudio | |
-| 25 | 5902.050 | GWP | <<< |
-| 26 | 5892.072 | woodstocktimes | |
-| 27 | 4948.864 | Fumiaki | |
-| 28 | 4946.495 | RichardFan | |
-| 29 | 4943.274 | sola-DNPds | |
+| 11 | 5933.154 | sola-DNPds | <<< |
+| 12 | 5932.703 | kimwooglae | |
+| 13 | 5931.388 | Jochem | |
+| 14 | 5929.387 | hiroisojp | |
+| 15 | 5929.084 | ABaykov | |
+| 16 | 5928.808 | leo-DNPds | |
+| 17 | 5923.629 | TonyJ | |
+| 18 | 5922.873 | RayG | |
+| 19 | 5922.375 | BespinRacer | |
+| 20 | 5917.856 | Robin-Castro | |
+| 21 | 5916.687 | KAGRAZAKA-DNP | |
+| 22 | 5915.950 | SF | |
+| 23 | 5910.845 | Alex-Schultz | |
+| 24 | 5908.888 | t-maru078 | |
+| 25 | 5902.471 | StarlightDreamStudio | |
+| 26 | 5902.050 | GWP | |
+| 27 | 5892.072 | woodstocktimes | |
+| 28 | 4948.864 | Fumiaki | |
+| 29 | 4946.495 | RichardFan | |
 | 30 | 4942.034 | maeda-ai | |
 | 31 | 4937.950 | mogamin | |
 | 32 | 4935.566 | Kire | |
