@@ -35,6 +35,12 @@ fields @timestamp, @message
 | order by @timestamp desc, @message desc
 ```
 
+## log download
+
+```bash
+aws logs get-log-events --log-group-name "/aws/robomaker/SimulationJobs" --log-stream-name "<STREAM_NAME>" --output text --region us-east-1 > deepracer-sim.log
+```
+
 ## track
 
 ```bash
