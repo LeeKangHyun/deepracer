@@ -316,13 +316,6 @@ class DeepRacerEnv(gym.Env):
                     in_range = True
             return in_range
 
-        # def slack(message):
-        #     import json
-        #     import requests
-        #     url = 'https://hooks.slack.com/services/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'
-        #     data = json.dumps(message)
-        #     requests.post(url, json={'text': data}, headers={'Content-Type': 'application/json'})
-
         closest_waypoints = get_closest_waypoints(
             waypoints, closest_waypoints, x, y)
         heading = math.cos(car_orientation)
