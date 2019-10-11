@@ -43,6 +43,13 @@ aws logs get-log-events \
     --log-stream-name "<STREAM_NAME>" \
     --output text \
     --region us-east-1 > deepracer-sim.log
+
+aws logs filter-log-events \
+    --log-group-name "/aws/robomaker/SimulationJobs" \
+    --log-stream-name "<STREAM_NAME>" \
+    --filter-pattern SIM_TRACE_LOG \
+    --output text \
+    --region us-east-1 > deepracer-sim.log
 ```
 
 ## track
