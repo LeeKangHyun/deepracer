@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'mk25-c'
-ACTION = '18 / 7 / 5 / 1'
-HYPER = '256 / 0.999 / 40'
+NAME = "mk25-c"
+ACTION = "18 / 7 / 5 / 1"
+HYPER = "256 / 0.999 / 40"
 
 SIGHT = 2
 
@@ -41,8 +41,11 @@ def get_episode(progress, steps):
 
     # reset
     if g_progress > progress:
-        print('- episode reset - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                g_time, g_steps, g_progress))
+        print(
+            "- episode reset - {} - {} - {} - {} - {}".format(
+                NAME, g_episode, g_time, g_steps, g_progress
+            )
+        )
         g_episode += 1
         g_total = float(0)
         g_start = time.time()
@@ -52,8 +55,11 @@ def get_episode(progress, steps):
 
     # completed
     if g_progress < progress and progress == 100:
-        print('- episode completed - {} - {} - {} - {} - {}'.format(NAME, g_episode,
-                                                                    g_time, steps, progress))
+        print(
+            "- episode completed - {} - {} - {} - {} - {}".format(
+                NAME, g_episode, g_time, steps, progress
+            )
+        )
 
     # waypoints
     if len(g_waypoints) < 1:
@@ -75,7 +81,7 @@ def get_closest_waypoint(location):
 
     index = 0
     closest = 0
-    min_dist = float('inf')
+    min_dist = float("inf")
 
     for dist in dist_list:
         if dist < min_dist:
@@ -99,7 +105,10 @@ def get_closest_waypoint(location):
 
 
 def get_distance(coor1, coor2):
-    return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
+    return math.sqrt(
+        (coor1[0] - coor2[0]) * (coor1[0] - coor2[0])
+        + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1])
+    )
 
 
 def get_destination(closest, sight):
@@ -156,17 +165,17 @@ def reward_function(params):
     global g_total
     global g_time
 
-    steps = params['steps']
-    progress = params['progress']
+    steps = params["steps"]
+    progress = params["progress"]
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
 
-    heading = params['heading']
-    steering = params['steering_angle']
+    heading = params["heading"]
+    steering = params["steering_angle"]
 
-    x = params['x']
-    y = params['y']
+    x = params["x"]
+    y = params["y"]
     location = [x, y]
 
     # waypoints = params['waypoints']
@@ -185,14 +194,13 @@ def reward_function(params):
 
     # center bonus
     if distance < MAX_CENTER:
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        reward += BASE_REWARD - (distance / MAX_CENTER)
 
     # point
     destination = get_destination(closest, SIGHT)
 
     # diff angle
-    diff_angle = get_diff_angle(
-        g_waypoints[closest], destination, heading, steering)
+    diff_angle = get_diff_angle(g_waypoints[closest], destination, heading, steering)
 
     # if diff_angle <= MAX_ANGLE:
     #     reward += (BASE_REWARD - (diff_angle / MAX_ANGLE))
@@ -201,22 +209,22 @@ def reward_function(params):
     diff_steer = get_diff_steering(steering)
 
     if diff_steer <= MAX_STEER:
-        reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        reward += BASE_REWARD - (diff_steer / MAX_STEER)
 
     # total reward
     g_total += reward
 
     # log
-    params['name'] = NAME
-    params['params'] = ACTION
-    params['episode'] = episode
-    params['distance'] = distance
-    params['destination'] = destination
-    params['diff_angle'] = diff_angle
-    params['diff_steer'] = diff_steer
-    params['reward'] = reward
-    params['total'] = g_total
-    params['time'] = g_time
+    params["name"] = NAME
+    params["params"] = ACTION
+    params["episode"] = episode
+    params["distance"] = distance
+    params["destination"] = destination
+    params["diff_angle"] = diff_angle
+    params["diff_steer"] = diff_steer
+    params["reward"] = reward
+    params["total"] = g_total
+    params["time"] = g_time
     print(json.dumps(params))
 
     return float(reward)

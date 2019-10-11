@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'steering'
+CODE_NAME = "steering"
 
 MAX_STEER = 15
 
@@ -41,20 +41,21 @@ def reward_function(params):
     global g_total
     global g_min_speed
 
-    all_wheels_on_track = params['all_wheels_on_track']
-    progress = params['progress']
+    all_wheels_on_track = params["all_wheels_on_track"]
+    progress = params["progress"]
 
-    speed = params['speed']
+    speed = params["speed"]
 
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    track_width = params["track_width"]
+    distance_from_center = params["distance_from_center"]
 
-    steering = abs(params['steering_angle'])
-
-    reward = 0.001
+    steering = abs(params["steering_angle"])
 
     # episode
-    episode = get_episode(progress, speed)
+    episode = get_episode(progress)
+
+    # reward
+    reward = 0.001
 
     if all_wheels_on_track == True:
         # center
@@ -81,11 +82,11 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_STEER)
-    params['log_key'] = CODE_NAME
-    params['episode'] = episode
-    params['reward'] = reward
-    params['total'] = g_total
+    params["log_key"] = "{}-{}".format(CODE_NAME, MAX_STEER)
+    params["log_key"] = CODE_NAME
+    params["episode"] = episode
+    params["reward"] = reward
+    params["total"] = g_total
     print(json.dumps(params))
 
     return float(reward)

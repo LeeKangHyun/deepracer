@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'ku01-50-k'
-ACTION = '24 / 5 / 5.0 / 1'
-HYPER = '256 / 0.00001 / 40'
+NAME = "ku01-50-k"
+ACTION = "24 / 5 / 5.0 / 1"
+HYPER = "256 / 0.00001 / 40"
 
 SIGHT = 6
 
@@ -40,8 +40,8 @@ def get_episode(steps, progress):
         diff_progress = 0.00001
 
         if g_episode > 1:
-            g_param['diff_progress'] = g_param['progress']
-            g_param['progress'] = -1
+            g_param["diff_progress"] = g_param["progress"]
+            g_param["progress"] = -1
             print(json.dumps(g_param))
     else:
         diff_progress = progress - g_progress
@@ -56,7 +56,10 @@ def get_episode(steps, progress):
 
 
 def get_distance(coor1, coor2):
-    return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
+    return math.sqrt(
+        (coor1[0] - coor2[0]) * (coor1[0] - coor2[0])
+        + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1])
+    )
 
 
 def get_diff_angle(coor1, coor2, heading, steering):
@@ -103,22 +106,22 @@ def reward_function(params):
     global g_start
     global g_param
 
-    steps = params['steps']
-    progress = params['progress']
+    steps = params["steps"]
+    progress = params["progress"]
 
     # track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
-    all_wheels_on_track = params['all_wheels_on_track']
+    distance_from_center = params["distance_from_center"]
+    all_wheels_on_track = params["all_wheels_on_track"]
 
-    heading = params['heading']
-    steering = params['steering_angle']
-    speed = params['speed']
+    heading = params["heading"]
+    steering = params["steering_angle"]
+    speed = params["speed"]
 
     # x = params['x']
     # y = params['y']
 
-    waypoints = params['waypoints']
-    closest_waypoints = params['closest_waypoints']
+    waypoints = params["waypoints"]
+    closest_waypoints = params["closest_waypoints"]
     prev_waypoint = waypoints[closest_waypoints[0]]
     # next_waypoint = waypoints[closest_waypoints[1]]
     next_waypoint = waypoints[(closest_waypoints[1] + SIGHT) % len(waypoints)]
@@ -144,8 +147,7 @@ def reward_function(params):
     distance = distance_from_center
 
     # diff angle
-    diff_angle = get_diff_angle(
-        prev_waypoint, next_waypoint, heading, steering)
+    diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading, steering)
 
     # diff steering
     diff_steer = get_diff_steering(steering)
@@ -161,7 +163,7 @@ def reward_function(params):
         # reward = 1.0
 
         # center bonus (0.25)
-        reward += (BASE_REWARD - (distance / MAX_CENTER))
+        reward += BASE_REWARD - (distance / MAX_CENTER)
 
         # center bonus (0.25)
         if distance < (MAX_CENTER * 0.3):
@@ -173,26 +175,26 @@ def reward_function(params):
 
         # steer bonus
         if diff_steer <= MAX_STEER:
-            reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+            reward += BASE_REWARD - (diff_steer / MAX_STEER)
 
     # total reward
     g_total += reward
 
     # log
-    params['name'] = NAME
-    params['params'] = ACTION
-    params['episode'] = episode
-    params['closest'] = closest_waypoint
-    params['distance'] = distance
-    params['max_steps'] = max_steps
-    params['diff_progress'] = diff_progress
-    params['diff_angle'] = diff_angle
-    params['diff_steer'] = diff_steer
-    params['diff_steps'] = diff_steps
-    params['abs_steer'] = abs_steer
-    params['reward'] = reward
-    params['total'] = g_total
-    params['time'] = lap_time
+    params["name"] = NAME
+    params["params"] = ACTION
+    params["episode"] = episode
+    params["closest"] = closest_waypoint
+    params["distance"] = distance
+    params["max_steps"] = max_steps
+    params["diff_progress"] = diff_progress
+    params["diff_angle"] = diff_angle
+    params["diff_steer"] = diff_steer
+    params["diff_steps"] = diff_steps
+    params["abs_steer"] = abs_steer
+    params["reward"] = reward
+    params["total"] = g_total
+    params["time"] = lap_time
     print(json.dumps(params))
 
     g_param = params

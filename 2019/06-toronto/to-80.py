@@ -2,7 +2,7 @@ import json
 import math
 import time
 
-NAME = 'to-80'
+NAME = "to-80"
 
 BASE_REWARD = 10.0
 
@@ -34,8 +34,8 @@ def get_episode(steps, progress):
         diff_progress = 0.00001
 
         if g_episode > 1:
-            g_param['diff_progress'] = g_param['progress']
-            g_param['progress'] = -1
+            g_param["diff_progress"] = g_param["progress"]
+            g_param["progress"] = -1
             print(json.dumps(g_param))
     else:
         diff_progress = progress - g_progress
@@ -74,11 +74,11 @@ def reward_function(params):
     global g_steer
     global g_param
 
-    steps = params['steps']
-    progress = params['progress']
+    steps = params["steps"]
+    progress = params["progress"]
 
-    steering = params['steering_angle']
-    speed = params['speed']
+    steering = params["steering_angle"]
+    speed = params["speed"]
 
     # episode
     episode, diff_progress = get_episode(steps, progress)
@@ -93,8 +93,8 @@ def reward_function(params):
     lap_time = time.time() - g_start
 
     # distance
-    distance = params['distance_from_center']
-    track_width = params['track_width']
+    distance = params["distance_from_center"]
+    track_width = params["track_width"]
     track_half = track_width / 2.0
 
     # diff steering
@@ -117,16 +117,16 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['name'] = NAME
-    params['episode'] = episode
-    params['distance'] = distance
-    params['track_half'] = track_half
-    params['diff_progress'] = diff_progress
-    params['diff_steer'] = diff_steer
-    params['abs_steer'] = abs_steer
-    params['reward'] = reward
-    params['total'] = g_total
-    params['time'] = lap_time
+    params["name"] = NAME
+    params["episode"] = episode
+    params["distance"] = distance
+    params["track_half"] = track_half
+    params["diff_progress"] = diff_progress
+    params["diff_steer"] = diff_steer
+    params["abs_steer"] = abs_steer
+    params["reward"] = reward
+    params["total"] = g_total
+    params["time"] = lap_time
     print(json.dumps(params))
 
     g_param = params

@@ -1,7 +1,7 @@
 import json
 import time
 
-CODE_NAME = 'center'
+CODE_NAME = "center"
 
 g_episode = 0
 g_progress = float(0)
@@ -35,21 +35,22 @@ def reward_function(params):
     global g_total
     global g_time
 
-    progress = params['progress']
-
-    reward = 0.001
+    progress = params["progress"]
 
     # episode
     episode = get_episode(progress)
 
+    # reward
+    reward = 0.001
+
     g_total += reward
 
     # log
-    params['log_key'] = '{}'.format(CODE_NAME)
-    params['episode'] = episode
-    params['reward'] = reward
-    params['total'] = g_total
-    params['time'] = g_time
+    params["log_key"] = "{}".format(CODE_NAME)
+    params["episode"] = episode
+    params["reward"] = reward
+    params["total"] = g_total
+    params["time"] = g_time
     print(json.dumps(params))
 
     return float(reward)

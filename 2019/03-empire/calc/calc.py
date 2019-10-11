@@ -25,10 +25,10 @@ def get_diff_angle(coor1, coor2, coor3):
 def calc():
     waypoints = get_waypoints()
 
-    fn = 'calc-{}-{}.csv'.format(MIN_SIGHT, MAX_SIGHT)
+    fn = "calc-{}-{}.csv".format(MIN_SIGHT, MAX_SIGHT)
 
-    f = open(fn, 'w')
-    f.write(',x,y,angle\n')
+    f = open(fn, "w")
+    f.write(",x,y,angle\n")
 
     count = len(waypoints)
 
@@ -40,7 +40,7 @@ def calc():
         # diff angle
         diff_angle = get_diff_angle(next0, next1, next2)
 
-        f.write('{},{},{},{}\n'.format(i, next0[0], next0[1], diff_angle))
+        f.write("{},{},{},{}\n".format(i, next0[0], next0[1], diff_angle))
 
     f.close()
 
@@ -224,5 +224,5 @@ def get_waypoints():
     return waypoints
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     calc()

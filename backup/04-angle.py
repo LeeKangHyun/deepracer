@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'angle'
+CODE_NAME = "angle"
 
 MAX_ANGLE = 5
 RAD_ANGLE = math.radians(MAX_ANGLE)
@@ -58,30 +58,30 @@ def reward_function(params):
     global g_total
     global g_min_speed
 
-    all_wheels_on_track = params['all_wheels_on_track']
-    progress = params['progress']
+    all_wheels_on_track = params["all_wheels_on_track"]
+    progress = params["progress"]
 
-    speed = params['speed']
+    speed = params["speed"]
 
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    track_width = params["track_width"]
+    distance_from_center = params["distance_from_center"]
 
-    heading = params['heading']
-    steering = params['steering_angle']
+    heading = params["heading"]
+    steering = params["steering_angle"]
 
-    waypoints = params['waypoints']
-    closest_waypoints = params['closest_waypoints']
+    waypoints = params["waypoints"]
+    closest_waypoints = params["closest_waypoints"]
     prev_waypoint = waypoints[closest_waypoints[0]]
     next_waypoint = waypoints[closest_waypoints[1]]
 
+    # episode
+    episode = get_episode(progress)
+
+    # reward
     reward = 0.001
 
-    # episode
-    episode = get_episode(progress, speed)
-
     # diff angle
-    diff_angle = get_diff_angle(
-        prev_waypoint, next_waypoint, heading, steering)
+    diff_angle = get_diff_angle(prev_waypoint, next_waypoint, heading, steering)
 
     if all_wheels_on_track == True:
         # distance
@@ -93,16 +93,16 @@ def reward_function(params):
 
         # diff angle
         if diff_angle <= RAD_ANGLE:
-            reward += (1.2 - (diff_angle / RAD_ANGLE))
+            reward += 1.2 - (diff_angle / RAD_ANGLE)
 
     g_total += reward
 
     # log
-    params['log_key'] = '{}-{}'.format(CODE_NAME, MAX_ANGLE)
-    params['episode'] = episode
-    params['diff_angle'] = diff_angle
-    params['reward'] = reward
-    params['total'] = g_total
+    params["log_key"] = "{}-{}".format(CODE_NAME, MAX_ANGLE)
+    params["episode"] = episode
+    params["diff_angle"] = diff_angle
+    params["reward"] = reward
+    params["total"] = g_total
     print(json.dumps(params))
 
     return float(reward)

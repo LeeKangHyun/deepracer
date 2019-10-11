@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'center'
+CODE_NAME = "center"
 
 g_episode = 0
 g_progress = float(0)
@@ -38,18 +38,19 @@ def get_episode(progress, speed):
 def reward_function(params):
     global g_total
 
-    all_wheels_on_track = params['all_wheels_on_track']
-    progress = params['progress']
+    all_wheels_on_track = params["all_wheels_on_track"]
+    progress = params["progress"]
 
-    speed = params['speed']
+    speed = params["speed"]
 
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
-
-    reward = 0.001
+    track_width = params["track_width"]
+    distance_from_center = params["distance_from_center"]
 
     # episode
-    episode = get_episode(progress, speed)
+    episode = get_episode(progress)
+
+    # reward
+    reward = 0.001
 
     if all_wheels_on_track == True:
         # center
@@ -65,10 +66,10 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['log_key'] = '{}'.format(CODE_NAME)
-    params['episode'] = episode
-    params['reward'] = reward
-    params['total'] = g_total
+    params["log_key"] = "{}".format(CODE_NAME)
+    params["episode"] = episode
+    params["reward"] = reward
+    params["total"] = g_total
     print(json.dumps(params))
 
     return float(reward)

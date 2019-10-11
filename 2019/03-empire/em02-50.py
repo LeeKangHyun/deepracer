@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 'em02-50-f'
-ACTION = '24 / 5 / 5.0 / 1'
-HYPER = '256 / 0.00003 / 40'
+NAME = "em02-50-f"
+ACTION = "24 / 5 / 5.0 / 1"
+HYPER = "256 / 0.00003 / 40"
 
 MIN_SIGHT = 2
 MAX_SIGHT = 4
@@ -41,8 +41,8 @@ def get_episode(steps, progress):
         diff_progress = 0.00001
 
         if g_episode > 1:
-            g_param['diff_progress'] = g_param['progress']
-            g_param['progress'] = -1
+            g_param["diff_progress"] = g_param["progress"]
+            g_param["progress"] = -1
             print(json.dumps(g_param))
     else:
         diff_progress = progress - g_progress
@@ -76,19 +76,19 @@ def reward_function(params):
     global g_total
     global g_param
 
-    steps = params['steps']
-    progress = params['progress']
+    steps = params["steps"]
+    progress = params["progress"]
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
     # all_wheels_on_track = params['all_wheels_on_track']
 
-    speed = params['speed']
-    steering = params['steering_angle']
+    speed = params["speed"]
+    steering = params["steering_angle"]
     # heading = params['heading']
 
-    waypoints = params['waypoints']
-    closest_waypoints = params['closest_waypoints']
+    waypoints = params["waypoints"]
+    closest_waypoints = params["closest_waypoints"]
     next0 = waypoints[closest_waypoints[1]]
     next1 = waypoints[(closest_waypoints[1] + MIN_SIGHT) % len(waypoints)]
     next2 = waypoints[(closest_waypoints[1] + MAX_SIGHT) % len(waypoints)]
@@ -100,7 +100,7 @@ def reward_function(params):
     episode, diff_progress, lap_time = get_episode(steps, progress)
 
     # distance
-    distance = params['distance_from_center']
+    distance = params["distance_from_center"]
 
     # diff angle
     diff_angle = get_diff_angle(next0, next1, next2)
@@ -141,16 +141,16 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['name'] = NAME
-    params['params'] = ACTION
-    params['episode'] = episode
-    params['distance'] = distance
-    params['diff_progress'] = diff_progress
-    params['diff_angle'] = diff_angle
-    params['direction'] = direction
-    params['reward'] = reward
-    params['total'] = g_total
-    params['time'] = lap_time
+    params["name"] = NAME
+    params["params"] = ACTION
+    params["episode"] = episode
+    params["distance"] = distance
+    params["diff_progress"] = diff_progress
+    params["diff_angle"] = diff_angle
+    params["direction"] = direction
+    params["reward"] = reward
+    params["total"] = g_total
+    params["time"] = lap_time
     print(json.dumps(params))
 
     g_param = params

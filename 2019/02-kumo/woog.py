@@ -1,10 +1,10 @@
 import time
 
-NAME = 'ku03-kimwooglae'
-ACTION = '22 / 7 / 8.0 / 2'
-HYPER = '512 / 0.999 / 0.00001 / 30'
+NAME = "ku03-kimwooglae"
+ACTION = "22 / 7 / 8.0 / 2"
+HYPER = "512 / 0.999 / 0.00001 / 30"
 
-'''
+"""
 Gradient descent batch size	512
 Entropy	0.01
 Discount factor	0.999
@@ -12,12 +12,12 @@ Loss type	Huber
 Learning rate	0.00001
 Number of experience episodes between each policy-updating iteration	30
 Number of epochs	10
-'''
+"""
 
 
 def reward_function(params):
-    prev_waypoint = params['closest_waypoints'][0]
-    next_waypoint = params['closest_waypoints'][1]
+    prev_waypoint = params["closest_waypoints"][0]
+    next_waypoint = params["closest_waypoints"][1]
 
     # rules1A = [
     #     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
@@ -66,26 +66,205 @@ def reward_function(params):
     # ]
 
     rules3 = [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 1, 1, 1, 1, 1,
-        1, 1, 1, 9, 9, 9, 9, 9, 9, 9,  # 50
-        9, 9, 9, 9, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 9, 9, 9, 9, 9, 9, 3,
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # 100
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
-        9, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 2, 1, 1, 1, 1, 1, 1,  # 150
-        1, 1, 1, 1, 1, 1, 1, 1, 1,
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9,  # prevent error
-        9, 9, 9, 9, 9, 9, 9, 9, 9, 9  # prevent error
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,  # 0
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,  # 50
+        9,
+        9,
+        9,
+        9,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,  # 100
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,  # 150
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,  # prevent error
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,  # prevent error
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,
+        9,  # prevent error
     ]
 
     if rules3[next_waypoint] == 1:
@@ -97,26 +276,54 @@ def reward_function(params):
     else:
         reward = type9(params)
 
-    stdout_ = 'MYLOG48A,step=%d,x=%.4f,y=%.4f,reward=%.2f,prev_waypoint=%d,next_waypoint=%d,rule=%d,steering_angle=%.4f,speed=%.4f,distance_from_center=%.2f,track_width=%.2f,progress=%.4f,all_wheels_on_track=%s,is_left_of_center=%s,%s\n' % (
-        params['steps'], params['x'], params['y'],
-        reward, prev_waypoint, next_waypoint, rules3[next_waypoint],
-        params['steering_angle'], params['speed'],
-        params['distance_from_center'], params['track_width'],
-        params['progress'], params['all_wheels_on_track'], params['is_left_of_center'], time.time())
+    stdout_ = (
+        "MYLOG48A,step=%d,x=%.4f,y=%.4f,reward=%.2f,prev_waypoint=%d,next_waypoint=%d,rule=%d,steering_angle=%.4f,speed=%.4f,distance_from_center=%.2f,track_width=%.2f,progress=%.4f,all_wheels_on_track=%s,is_left_of_center=%s,%s\n"
+        % (
+            params["steps"],
+            params["x"],
+            params["y"],
+            reward,
+            prev_waypoint,
+            next_waypoint,
+            rules3[next_waypoint],
+            params["steering_angle"],
+            params["speed"],
+            params["distance_from_center"],
+            params["track_width"],
+            params["progress"],
+            params["all_wheels_on_track"],
+            params["is_left_of_center"],
+            time.time(),
+        )
+    )
     print(stdout_)
 
-    stdout_ = 'MYLOG48B,%d,%.4f,%.4f,%.2f,%d,%d,%d,%.4f,%.4f,%.2f,%.2f,%.4f,%s,%s,%s\n' % (
-        params['steps'], params['x'], params['y'],
-        reward, prev_waypoint, next_waypoint, rules3[next_waypoint],
-        params['steering_angle'], params['speed'],
-        params['distance_from_center'], params['track_width'],
-        params['progress'], params['all_wheels_on_track'], params['is_left_of_center'], time.time())
+    stdout_ = (
+        "MYLOG48B,%d,%.4f,%.4f,%.2f,%d,%d,%d,%.4f,%.4f,%.2f,%.2f,%.4f,%s,%s,%s\n"
+        % (
+            params["steps"],
+            params["x"],
+            params["y"],
+            reward,
+            prev_waypoint,
+            next_waypoint,
+            rules3[next_waypoint],
+            params["steering_angle"],
+            params["speed"],
+            params["distance_from_center"],
+            params["track_width"],
+            params["progress"],
+            params["all_wheels_on_track"],
+            params["is_left_of_center"],
+            time.time(),
+        )
+    )
     print(stdout_)
 
     return reward
 
 
-'''
+"""
 Action number	Steering	Speed
 0	-20degrees	4m/s
 1	-20degrees	8m/s
@@ -132,15 +339,15 @@ Action number	Steering	Speed
 11	13.33degrees	8m/s
 12	20degrees	4m/s
 13	20degrees	8m/s
-'''
+"""
 
 
 def type1(params):  # straight
-    all_wheels_on_track = params['all_wheels_on_track']
-    steering = params['steering_angle']
-    speed = params['speed']
-    distance_from_center = abs(params['distance_from_center'])
-    track_width = params['track_width']
+    all_wheels_on_track = params["all_wheels_on_track"]
+    steering = params["steering_angle"]
+    speed = params["speed"]
+    distance_from_center = abs(params["distance_from_center"])
+    track_width = params["track_width"]
 
     if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1
@@ -164,11 +371,11 @@ def type1(params):  # straight
 
 
 def type2(params):  # left
-    all_wheels_on_track = params['all_wheels_on_track']
-    speed = params['speed']
-    distance_from_center = abs(params['distance_from_center'])
-    track_width = params['track_width']
-    steering = params['steering_angle']  # left plus, right minus
+    all_wheels_on_track = params["all_wheels_on_track"]
+    speed = params["speed"]
+    distance_from_center = abs(params["distance_from_center"])
+    track_width = params["track_width"]
+    steering = params["steering_angle"]  # left plus, right minus
 
     if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1
@@ -192,11 +399,11 @@ def type2(params):  # left
 
 
 def type3(params):  # right
-    all_wheels_on_track = params['all_wheels_on_track']
-    speed = params['speed']
-    distance_from_center = abs(params['distance_from_center'])
-    track_width = params['track_width']
-    steering = params['steering_angle']  # left plus, right minus
+    all_wheels_on_track = params["all_wheels_on_track"]
+    speed = params["speed"]
+    distance_from_center = abs(params["distance_from_center"])
+    track_width = params["track_width"]
+    steering = params["steering_angle"]  # left plus, right minus
 
     if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1
@@ -220,10 +427,10 @@ def type3(params):  # right
 
 
 def type9(params):
-    all_wheels_on_track = params['all_wheels_on_track']
-    speed = params['speed']
-    distance_from_center = abs(params['distance_from_center'])
-    track_width = params['track_width']
+    all_wheels_on_track = params["all_wheels_on_track"]
+    speed = params["speed"]
+    distance_from_center = abs(params["distance_from_center"])
+    track_width = params["track_width"]
 
     if all_wheels_on_track and (0.5 * track_width - distance_from_center) >= 0.05:
         reward = 1

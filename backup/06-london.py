@@ -1,7 +1,7 @@
 import json
 import math
 
-CODE_NAME = 'mk10-3'
+CODE_NAME = "mk10-3"
 
 SIGHT = 0.6
 
@@ -54,7 +54,10 @@ def get_episode(progress, speed):
 
 
 def get_distance(coor1, coor2):
-    return math.sqrt((coor1[0] - coor2[0]) * (coor1[0] - coor2[0]) + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1]))
+    return math.sqrt(
+        (coor1[0] - coor2[0]) * (coor1[0] - coor2[0])
+        + (coor1[1] - coor2[1]) * (coor1[1] - coor2[1])
+    )
 
 
 def get_next_point(waypoints, this_point, closest, distance):
@@ -117,24 +120,24 @@ def reward_function(params):
     global g_max_speed
     global g_total
 
-    steps = params['steps']
-    progress = params['progress']
+    steps = params["steps"]
+    progress = params["progress"]
 
     # all_wheels_on_track = params['all_wheels_on_track']
 
-    speed = params['speed']
+    speed = params["speed"]
 
-    track_width = params['track_width']
-    distance_from_center = params['distance_from_center']
+    track_width = params["track_width"]
+    distance_from_center = params["distance_from_center"]
 
-    heading = params['heading']
-    steering = params['steering_angle']
+    heading = params["heading"]
+    steering = params["steering_angle"]
 
-    x = params['x']
-    y = params['y']
+    x = params["x"]
+    y = params["y"]
 
-    waypoints = params['waypoints']
-    closest_waypoints = params['closest_waypoints']
+    waypoints = params["waypoints"]
+    closest_waypoints = params["closest_waypoints"]
     # prev_waypoint = waypoints[closest_waypoints[0]]
     # next_waypoint = waypoints[closest_waypoints[1]]
 
@@ -146,12 +149,10 @@ def reward_function(params):
 
     # point
     this_point = [x, y]
-    next_point = get_next_point(
-        waypoints, this_point, closest_waypoints[1], SIGHT)
+    next_point = get_next_point(waypoints, this_point, closest_waypoints[1], SIGHT)
 
     # diff angle
-    diff_angle = get_diff_angle(
-        this_point, next_point, heading, steering)
+    diff_angle = get_diff_angle(this_point, next_point, heading, steering)
 
     # diff steering
     diff_steer = get_diff_steering(steering)
@@ -163,33 +164,33 @@ def reward_function(params):
 
     if diff_angle <= RAD_ANGLE and diff_steer <= MAX_STEER:
         # angle
-        reward += (BASE_REWARD - (diff_angle / RAD_ANGLE))
+        reward += BASE_REWARD - (diff_angle / RAD_ANGLE)
 
         # steering
-        reward += (BASE_REWARD - (diff_steer / MAX_STEER))
+        reward += BASE_REWARD - (diff_steer / MAX_STEER)
 
         # center
-        reward += (BASE_REWARD - (distance_from_center / (track_width / 2)))
+        reward += BASE_REWARD - (distance_from_center / (track_width / 2))
 
         # speed bonus
         if g_max_speed > 0:
-            reward += (speed / g_max_speed)
+            reward += speed / g_max_speed
 
         # steps bonus
         if steps > 0:
-            reward += (progress / steps)
+            reward += progress / steps
 
     g_total += reward
 
     # log
-    params['log_key'] = CODE_NAME
-    params['episode'] = episode
-    params['diff_angle'] = diff_angle
-    params['diff_steer'] = diff_steer
-    params['next_point'] = next_point
-    params['completed'] = completed
-    params['reward'] = reward
-    params['total'] = g_total
+    params["log_key"] = CODE_NAME
+    params["episode"] = episode
+    params["diff_angle"] = diff_angle
+    params["diff_steer"] = diff_steer
+    params["next_point"] = next_point
+    params["completed"] = completed
+    params["reward"] = reward
+    params["total"] = g_total
     print(json.dumps(params))
 
     return float(reward)

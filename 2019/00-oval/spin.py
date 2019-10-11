@@ -1,6 +1,6 @@
 def reward_function(params):
-    progress = params['progress']
-    steering = params['steering_angle']
+    progress = params["progress"]
+    steering = params["steering_angle"]
 
     reward = 1e-3
 

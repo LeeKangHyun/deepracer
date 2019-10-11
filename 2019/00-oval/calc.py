@@ -27,8 +27,8 @@ def calc():
 
     count = len(waypoints)
 
-    f = open("calc.csv", 'w')
-    f.write(',x,y,angle\n')
+    f = open("calc.csv", "w")
+    f.write(",x,y,angle\n")
 
     for i in range(count):
         next0 = waypoints[(i + 1) % count]
@@ -38,7 +38,7 @@ def calc():
         # diff angle
         diff_angle = get_diff_angle(next0, next1, next2)
 
-        f.write('{},{},{},{}\n'.format(i, next0[0], next0[1], diff_angle))
+        f.write("{},{},{},{}\n".format(i, next0[0], next0[1], diff_angle))
 
     f.close()
 
@@ -152,5 +152,5 @@ def get_waypoints():
     return waypoints
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     calc()

@@ -2,9 +2,9 @@ import json
 import math
 import time
 
-NAME = 're02-80-o'
-ACTION = '24 / 5 / 8.0 / 2'
-HYPER = '256 / 0.00003 / 40'
+NAME = "re02-80-o"
+ACTION = "24 / 5 / 8.0 / 2"
+HYPER = "256 / 0.00003 / 40"
 
 MIN_SIGHT = 3
 MAX_SIGHT = 6
@@ -40,8 +40,8 @@ def get_episode(steps, progress):
         g_start = time.time()
 
         if g_episode > 1:
-            g_param['diff_progress'] = g_param['progress']
-            g_param['progress'] = -1
+            g_param["diff_progress"] = g_param["progress"]
+            g_param["progress"] = -1
             print(json.dumps(g_param))
 
         diff_progress = 0.00001
@@ -64,14 +64,86 @@ def get_rules(index):
     # 3 : right
 
     rules = [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  # 0
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2, 1, 1, 1, 1, 1, 1, 1,  # 20
-        1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 2, 2, 2,  # 40
-        2, 2, 2, 2, 2, 1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 1,  # 60
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,  # 0
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,  # 20
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,  # 40
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,  # 60
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
     ]
 
     return rules[index]
@@ -81,19 +153,19 @@ def reward_function(params):
     global g_total
     global g_param
 
-    steps = params['steps']
-    progress = params['progress']
+    steps = params["steps"]
+    progress = params["progress"]
 
     # track_width = params['track_width']
     # distance_from_center = params['distance_from_center']
     # all_wheels_on_track = params['all_wheels_on_track']
 
-    speed = params['speed']
-    steering = params['steering_angle']
+    speed = params["speed"]
+    steering = params["steering_angle"]
     # heading = params['heading']
 
     # waypoints = params['waypoints']
-    closest_waypoints = params['closest_waypoints']
+    closest_waypoints = params["closest_waypoints"]
     # next0 = waypoints[closest_waypoints[1]]
     # next1 = waypoints[(closest_waypoints[1] + MIN_SIGHT) % len(waypoints)]
     # next2 = waypoints[(closest_waypoints[1] + MAX_SIGHT) % len(waypoints)]
@@ -107,7 +179,7 @@ def reward_function(params):
     episode, diff_progress, lap_time = get_episode(steps, progress)
 
     # distance
-    distance = params['distance_from_center']
+    distance = params["distance_from_center"]
 
     # diff steering
     abs_steer = abs(steering)
@@ -139,15 +211,15 @@ def reward_function(params):
     g_total += reward
 
     # log
-    params['name'] = NAME
-    params['params'] = ACTION
-    params['episode'] = episode
-    params['distance'] = distance
-    params['diff_progress'] = diff_progress
-    params['direction'] = direction
-    params['reward'] = reward
-    params['total'] = g_total
-    params['time'] = lap_time
+    params["name"] = NAME
+    params["params"] = ACTION
+    params["episode"] = episode
+    params["distance"] = distance
+    params["diff_progress"] = diff_progress
+    params["direction"] = direction
+    params["reward"] = reward
+    params["total"] = g_total
+    params["time"] = lap_time
     print(json.dumps(params))
 
     g_param = params
