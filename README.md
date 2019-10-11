@@ -18,16 +18,16 @@ sudo pip3 install --upgrade Image
 ## insight
 
 ```
-fields name, episode, steps, total, progress, time
-| filter progress == 100 #and name =~ 're-'
-#| order by time
+fields episode, steps, x, y, total, progress
+| filter progress > 0 and name == 're-30'
+| order by episode desc, steps desc
 
-fields episode, steps, x, y, name, total, diff_progress, time
-| filter progress < 0 and name =~ 're-'
+fields episode, steps, x, y, total, progress, time
+| filter progress < 0 and name == 're-30'
 | order by diff_progress desc, time
 
-fields steps, progress, x, y, reward, total, diff_progress, speed, steering_angle, abs_steer, time
-| filter progress > 0 and name == 're-30' and episode == 4084
+fields episode, steps, x, y, total, progress, time, reward, speed, steering_angle, abs_steer
+| filter progress > 0 and name == 're-30' and episode == 793
 | order by steps
 
 fields @timestamp, @message
@@ -38,7 +38,11 @@ fields @timestamp, @message
 ## log download
 
 ```bash
-aws logs get-log-events --log-group-name "/aws/robomaker/SimulationJobs" --log-stream-name "<STREAM_NAME>" --output text --region us-east-1 > deepracer-sim.log
+aws logs get-log-events \
+    --log-group-name "/aws/robomaker/SimulationJobs" \
+    --log-stream-name "<STREAM_NAME>" \
+    --output text \
+    --region us-east-1 > deepracer-sim.log
 ```
 
 ## track
